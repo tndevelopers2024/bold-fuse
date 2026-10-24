@@ -5,3 +5,5 @@ node_modules/
 test-results/
 *.tsbuildinfo
 .DS_Store
+
+.pnpm-store/

@@ -11,17 +11,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "scrape": "node scripts/scrape.ts && node scripts/normalize-global.ts && node scripts/verify-media.ts && node scripts/finalize-capture.ts && node scripts/verify-scrape.ts",
     "og": "node scripts/og.ts",
     "test": "node scripts/test.ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare-content": "node scripts/prepare-content.ts",
-    "verify-scrape": "node scripts/verify-scrape.ts",
-    "lighthouse": "node scripts/lighthouse.ts",
-    "test:carousel": "node scripts/test-carousel.ts"
+    "lighthouse": "node scripts/lighthouse.ts"
   },
   "dependencies": {
     "clsx": "2.1.1",
@@ -39,7 +35,6 @@
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@types/turndown": "5.0.6",
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.3",
     "lighthouse": "13.5.0",
@@ -47,7 +42,6 @@
     "prettier": "3.9.10",
     "prettier-plugin-tailwindcss": "0.8.1",
     "tailwindcss": "4.3.3",
-    "turndown": "7.2.4",
     "typescript": "6.0.3"
   }
 }
