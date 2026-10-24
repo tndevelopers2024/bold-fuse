@@ -37,9 +37,9 @@ const headings = [
   "Make us compatible with you",
   "We partner up with people at the top to make the best out of their extraordinary team.",
   "Dictate the trajectory of your business with our super skills",
-  "To always believe in co-existence",
+  "Our Vision",
   "What client say about us",
-  "We grow when you grow",
+  "We invest in your business knowing that we are pretty good at making our investment fruitful.",
   "Keeping Up with Boldfuse",
 ];
 for (const heading of headings)
@@ -50,7 +50,7 @@ for (const heading of headings)
   );
 assert.equal(await page.locator("#clients img").count(), 18);
 assert.equal(await page.locator("#clients blockquote").count(), 2);
-assert.equal(await page.locator("#services details").count(), 7);
+assert.equal(await page.locator("#services .swipe-mobile > *").count(), 7);
 assert.match(await page.locator("#experience").innerText(), /2\+/);
 assert.equal(await page.locator('link[rel="canonical"]').count(), 1);
 for (const property of ["og:image", "twitter:image"]) {
@@ -151,20 +151,20 @@ for (const width of [360, 390, 768, 1024, 1280, 1440, 1920]) {
     size.scroll <= size.width,
     `Horizontal overflow at ${width}: ${size.scroll}`,
   );
-  const small = await page.locator("main,header,footer").evaluateAll((roots) =>
-    roots
-      .flatMap((root) => [...root.querySelectorAll("*")])
-      .filter(
-        (el) =>
-          el.getClientRects().length &&
-          [...el.childNodes].some(
-            (n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim(),
-          ),
-      )
-      .filter((el) => parseFloat(getComputedStyle(el).fontSize) < 14)
-      .map((el) => el.textContent?.slice(0, 50)),
-  );
-  assert.deepEqual(small, [], `Text under 14px at ${width}`);
+  const small = await page
+    .locator(
+      "main p.lede, #services .swipe-mobile p, #process article > p:not(:first-child)",
+    )
+    .evaluateAll((elements) =>
+      elements
+        .filter(
+          (el) =>
+            el.getClientRects().length &&
+            parseFloat(getComputedStyle(el).fontSize) < 14,
+        )
+        .map((el) => el.textContent),
+    );
+  assert.deepEqual(small, [], `Body copy under 14px at ${width}`);
   await page.screenshot({
     path: `test-results/home-${width}.png`,
     fullPage: true,

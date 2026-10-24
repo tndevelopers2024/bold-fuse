@@ -1,23 +1,36 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Roboto, Raleway, Manrope, Nunito_Sans } from "next/font/google";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { site } from "@/content/site";
 import { ui } from "@/content/ui";
 import { siteUrl } from "@/config/site";
 import "./globals.css";
-const inter = Inter({
+import Experience from "@/components/editorial/Experience";
+const inter = Roboto({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-roboto",
   preload: false,
 });
-const jakarta = Plus_Jakarta_Sans({
+const raleway = Raleway({
   subsets: ["latin"],
   weight: ["500", "600", "700", "800"],
   display: "swap",
-  variable: "--font-jakarta",
+  variable: "--font-raleway",
+});
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  display: "swap",
+  variable: "--font-manrope",
+});
+const nunito = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+  variable: "--font-nunito",
 });
 const title = "Boldfuse | Helping Doctors Build The Best Healthcare";
 const description =
@@ -91,7 +104,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-IN" className={`${inter.variable} ${jakarta.variable}`}>
+    <html
+      lang="en-IN"
+      className={`${inter.variable} ${raleway.variable} ${manrope.variable} ${nunito.variable}`}
+    >
       <body>
         <a
           href="#main-content"
@@ -99,9 +115,11 @@ export default function RootLayout({
         >
           {ui.skip}
         </a>
-        <Header />
-        {children}
-        <Footer />
+        <Experience>
+          <Header />
+          {children}
+          <Footer />
+        </Experience>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

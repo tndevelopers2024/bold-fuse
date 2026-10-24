@@ -1,0 +1,23 @@
+[
+  {
+    "file": "src/assets/banner-healthcare-light-v3.png",
+    "width": 1672,
+    "height": 941,
+    "method": "Built-in image_gen",
+    "prompt": "content/generated/banner-light-prompts.md#healthcare"
+  },
+  {
+    "file": "src/assets/banner-strategy-light-v3.png",
+    "width": 1672,
+    "height": 941,
+    "method": "Built-in image_gen",
+    "prompt": "content/generated/banner-light-prompts.md#strategy"
+  },
+  {
+    "file": "src/assets/banner-growth-light-v3.png",
+    "width": 1672,
+    "height": 941,
+    "method": "Built-in image_gen",
+    "prompt": "content/generated/banner-light-prompts.md#growth"
+  }
+]

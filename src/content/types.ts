@@ -41,3 +41,8 @@ export interface HomeContent {
     }[];
   };
 }
+
+export type HeroSlide = HomeContent["hero"] & {
+  route: RouteKey;
+  action: "learnMore" | "getStarted";
+};

@@ -1,5 +1,7 @@
 # Production verification
 
+The Lighthouse scores below record the initial production release (`985d85c`). Later interface changes are listed separately; those scores have not been remeasured for the new carousel.
+
 Verified locally on 24 October 2026 with Node 24.22.1, pnpm 11.28.8, Next 16.4.3 and headless Chromium. The site was tested with `pnpm build` and `pnpm start`, not the development server. Local results are not a substitute for checking the final hosting environment after deployment.
 
 | Check                | Result                                                                                                                         |
@@ -47,3 +49,16 @@ Machine-readable summaries: `qa/browser-results.json` and `qa/lighthouse-summary
 - The official latest Node LTS security patch is dated 20 October, earlier than the brief's 21 October date floor; the actual published latest patch is pinned and documented.
 - Source service-label differences, brand spelling variants and “Kaa's kirchen” remain unchanged for review. See `content/scraped/_report.md`.
 - Future legal, service, about, contact and blog pages intentionally return the custom 404.
+
+## Subsequent interface checks
+
+The slimmer navbar, hover Services menu and three-slide background banner are implemented. The updated production build, ESLint and TypeScript checks pass. Focused browser checks verified dropdown hover behavior and carousel arrows, indicators, wraparound, keyboard arrows, swipe input, constant banner height, no overflow at 360/390/1440 px, and zero serious/critical axe findings on all slides. Carousel screenshots are saved under `test-results/carousel-{width}-slide-{number}.png`.
+
+### Parvath design adaptation — 2026-10-24
+
+- `pnpm typecheck`, focused ESLint and `git diff --check`: pass.
+- `pnpm build --webpack`: pass. Default Turbopack build was blocked by worker port permissions in this environment.
+- Browser checks at 390px and 1440px: no page-width overflow, all loaded images resolve, one H1, 7 service cards, 18 client logos and 2 testimonials. No Parvath names in the rendered page.
+- Mobile menu: logo visible, service disclosure works, Escape closes and restores focus. Service swipe dot advances to item 2. Floating header and back-to-top checked.
+- Existing regression script adjusted for the card-based services and the reference's small tracked labels; the full automated browser/axe suite was not rerun in this pass.
+- Existing planned routes remain 404s; see DESIGN-PORT.md for the content-to-component mapping.

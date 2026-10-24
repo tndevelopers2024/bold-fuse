@@ -33,6 +33,19 @@ const healthcare = servicesImages.find((i: any) =>
 );
 await asset("hero", "content/scraped/pages/services/" + healthcare.localFile);
 await local(
+  "heroLadders",
+  images.find((i: any) => i.originalUrl.endsWith("Banner-1-min-1.jpg"))
+    .originalUrl,
+);
+await local(
+  "heroGrowth",
+  images.find((i: any) =>
+    i.originalUrl.endsWith(
+      "Get-started-banner-we-grow-when-you-grow-min-scaled.jpg",
+    ),
+  ).originalUrl,
+);
+await local(
   "people",
   images.find((i: any) =>
     i.originalUrl.endsWith(

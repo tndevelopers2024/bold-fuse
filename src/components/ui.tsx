@@ -102,7 +102,7 @@ export function Button({
   arrow?: boolean;
 }) {
   const classes = cn(
-    "inline-flex min-h-12 items-center justify-center gap-5 rounded-full border text-base font-semibold transition-colors",
+    "site-button inline-flex min-h-12 items-center justify-center gap-5 rounded-full border text-base font-semibold",
     size === "lg" ? "px-7 py-4" : "px-6 py-3",
     variant === "primary" &&
       "border-brand-700 bg-brand-700 text-white hover:border-brand-800 hover:bg-brand-800",

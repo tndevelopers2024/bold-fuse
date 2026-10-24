@@ -29,6 +29,7 @@ pnpm dev
 | `pnpm lint`                         | ESLint CLI check.                                                                                                         |
 | `pnpm format` / `pnpm format:check` | Apply / check Prettier formatting.                                                                                        |
 | `pnpm test`                         | Production-browser checks, keyboard navigation, axe, metadata, planned routes and screenshots.                            |
+| `pnpm test:carousel`                | Check all three banner slides, arrows, indicators, keyboard controls, swipe gestures, layout stability and axe.           |
 | `pnpm lighthouse`                   | Mobile Lighthouse performance, accessibility, best-practices and SEO acceptance checks.                                   |
 | `pnpm audit --prod`                 | Audit production dependencies.                                                                                            |
 
@@ -70,3 +71,5 @@ No catch-all route is used: unknown and planned paths naturally receive the shar
 ## Editorial review
 
 See `content/scraped/_report.md` for the source inconsistencies that remain deliberately unchanged: service-label differences, brand spelling variants and the client spelling “Kaa's kirchen”. Privacy and Terms point to the future legal routes required by the brief. Confirm the legal-page content before implementing those routes. The source counter is **2+**, not the founder's separate experience figure.
+
+The home banner has three manually navigated slides using saved source copy and photos. Arrow buttons, slide indicators, keyboard arrows and mobile swipes move between them. Inactive slide content is inert, a shared content grid keeps the banner height stable, and reduced-motion users receive instant image changes.

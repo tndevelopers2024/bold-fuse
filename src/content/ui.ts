@@ -1,6 +1,16 @@
 export const ui = {
+  carousel: {
+    label: "Boldfuse highlights",
+    role: "carousel",
+    navigation: "Choose a banner slide",
+    goTo: "Go to slide",
+    previous: "Previous slide",
+    next: "Next slide",
+    slide: "Slide",
+    of: "of",
+  },
   learnMore: "Learn more",
-  talk: "Talk to an expert",
+  talk: "Let’s Talk",
   getStarted: "Get Started",
   email: "Email us",
   call: "Call us",
