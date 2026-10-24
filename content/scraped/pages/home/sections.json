@@ -1,0 +1,424 @@
+[
+  {
+    "order": 0,
+    "id": "78456337",
+    "eyebrow": "",
+    "heading": "",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [],
+    "images": [],
+    "background": "none"
+  },
+  {
+    "order": 1,
+    "id": "36ffbdb",
+    "eyebrow": "",
+    "heading": "Bold Fuse",
+    "subheading": "",
+    "body": [
+      "Don’t hesitate to ask us how we are doing because we are pretty cool until your company is running towards growth."
+    ],
+    "items": [],
+    "ctas": [
+      {
+        "label": "LEARN MORE",
+        "href": "https://boldfuse.in/about/"
+      }
+    ],
+    "images": [],
+    "background": "none"
+  },
+  {
+    "order": 2,
+    "id": "3f109a90",
+    "eyebrow": "",
+    "heading": "Multiply your strengths, \nEliminate your weaknesses.",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [],
+    "images": [],
+    "background": "none"
+  },
+  {
+    "order": 3,
+    "id": "7d986453",
+    "eyebrow": "",
+    "heading": "Technology management",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/09/computer-3.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/product-1.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/team-management-1.png"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 4,
+    "id": "227f35b",
+    "eyebrow": "",
+    "heading": "Business management",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/09/stats.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/public-relation-1.png"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 5,
+    "id": "7445b43b",
+    "eyebrow": "Every step towards perfection",
+    "heading": "Make us compatible with you",
+    "subheading": "",
+    "body": [
+      "We don't compromise with low or average results, so we constantly push ourselves to achieve excellence.",
+      "We understand that your strategy and business model makes you competitive, so we maintain a strict confidentiality policy.",
+      "Success doesn't come wrapped in sweet words, so we believe in confronting business leaders with hard truths.",
+      "We research, we learn, we experiment, we fail, we try again, we succeed and that's how we keep upgrading our skills."
+    ],
+    "items": [
+      {
+        "title": "",
+        "subtitle": "",
+        "text": "Every step towards perfectionWe don't compromise with low or average results, so we constantly push ourselves to achieve excellence.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/ok-1.png",
+        "link": ""
+      },
+      {
+        "title": "",
+        "subtitle": "",
+        "text": "We are secret keepersWe understand that your strategy and business model makes you competitive, so we maintain a strict confidentiality policy.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/secret-1.png",
+        "link": ""
+      },
+      {
+        "title": "",
+        "subtitle": "",
+        "text": "StraightforwardnessSuccess doesn't come wrapped in sweet words, so we believe in confronting business leaders with hard truths.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/loyalty-1.png",
+        "link": ""
+      },
+      {
+        "title": "",
+        "subtitle": "",
+        "text": "Always stay on the leading edgeWe research, we learn, we experiment, we fail, we try again, we succeed and that's how we keep upgrading our skills.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/win-1.png",
+        "link": ""
+      }
+    ],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/08/zip-03-smiling-business-man-using-digital-tablet-in-the-o-MQF8K3B.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/ok-1.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/secret-1.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/loyalty-1.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/win-1.png"
+    ],
+    "background": "linear-gradient(186deg, rgb(253, 253, 253) 35%, rgb(135, 200, 255) 100%)"
+  },
+  {
+    "order": 6,
+    "id": "59359697",
+    "eyebrow": "",
+    "heading": "We partner up with people at the top to make the best out of their extraordinary team.",
+    "subheading": "",
+    "body": [
+      "We understand the depth of your current situation before trying to renovate your business strategy. Figuring out the strengths and weaknesses of your framework builds the foundation for our strategy. We talk to your people, we scroll through your documents, we observe your operating model and assess the gap between where you stand right now and where you can be with the right approach.",
+      "Once we are well aware of the loopholes in your current operating model, we make strategies to overcome these flaws. Our team utilizes their years of experience and skills to put together a plan of action. Our strategies are based on industry trends, insights derived from your business framework, and tried & tested techniques. We create strategies that make an impact.",
+      "We start implementing our strategies from day 1. We deploy people and technology to fill gaps and enhance the performance of your resources. We stand by the leaders as they direct our strategies to their team members. It takes time to implement a change throughout the organization but we bring forth consistent and innovative approaches to succeed in that at the earliest."
+    ],
+    "items": [
+      {
+        "title": "Assess",
+        "subtitle": "",
+        "text": "AssessWe understand the depth of your current situation before trying to renovate your business strategy. Figuring out the strengths and weaknesses of your framework builds the foundation for our strategy. We talk to your people, we scroll through your documents, we observe your operating model and assess the gap between where you stand right now and where you can be with the right approach.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/analytics-1.png",
+        "link": ""
+      },
+      {
+        "title": "Strategize",
+        "subtitle": "",
+        "text": "StrategizeOnce we are well aware of the loopholes in your current operating model, we make strategies to overcome these flaws. Our team utilizes their years of experience and skills to put together a plan of action. Our strategies are based on industry trends, insights derived from your business framework, and tried & tested techniques. We create strategies that make an impact.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/08/okiona-icon-brain-light-2.png",
+        "link": ""
+      },
+      {
+        "title": "Execute",
+        "subtitle": "",
+        "text": "ExecuteWe start implementing our strategies from day 1. We deploy people and technology to fill gaps and enhance the performance of your resources. We stand by the leaders as they direct our strategies to their team members. It takes time to implement a change throughout the organization but we bring forth consistent and innovative approaches to succeed in that at the earliest.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/planning-1.png",
+        "link": ""
+      }
+    ],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/09/analytics-1.png",
+      "https://boldfuse.in/wp-content/uploads/2021/08/okiona-icon-brain-light-2.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/planning-1.png"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 7,
+    "id": "53fd86e4",
+    "eyebrow": "",
+    "heading": "Dictate the trajectory of your business with our super skills",
+    "subheading": "",
+    "body": [
+      "Anticipate and resolve the biggest challenges of your business with automation and AI. Let your business self-evolve and adapt via technology that not only empowers your employees to focus on creative tasks but also helps you to innovate and create a business model that completely suits your organization.",
+      "Learn more",
+      "We understand that achieving holistic well-being involves nurturing both the mind and body. Our comprehensive range of services is designed to support individuals and organizations in their journey towards optimal mental health and thriving workplaces.",
+      "Learn more",
+      "A trembling economy doesn’t mean that your business has to go down with it. It just highlights the importance of financial management. Monotony often directs you towards negligence and leaves no room for a new perspective. That’s when you get stuck in a poor financial plan which slowly deteriorates the foundation of your business; hence pushing you towards the sea of losses",
+      "Learn more",
+      "Change in lifestyle of your customers needs to be balanced with change in your selling experience too. Take a step forward towards your customers who are not roaming through the market but sitting in their homes and scrolling over their digital devices. Amp up your marketing and sales technique by reaching your customers in the digital world.",
+      "Learn more",
+      "Shifting customer demands and fragmented employees need an upgraded operating model. Getting ahead of your competitors even in disruptive times can soon become a reality once you reach your operational excellence. We equip organizations with the capabilities that they need to withstand the new normal.",
+      "Learn more",
+      "Ready to discuss your legal needs? Contact us today to schedule a consultation with one of our experienced independent legal consultants. Whether you require ongoing advisory services or assistance with a specific legal matter, we are here to help.",
+      "Learn more",
+      "When people behind your business climb the ladder of growth and success, they carry your business with them to those heights. Accelerating the potential of your employees makes your company strong and prepared for anything that comes next. We help to make your employees as invested in your company as you are.",
+      "Learn more"
+    ],
+    "items": [
+      {
+        "title": "2",
+        "subtitle": "",
+        "text": "Years of Experience \t\t\t\n\t\t\t\t\n\t\t\t\t2\n\t\t\t\t+",
+        "image": "",
+        "link": ""
+      }
+    ],
+    "ctas": [
+      {
+        "label": "Learn more",
+        "href": "https://boldfuse.in/services/#businessautomation"
+      },
+      {
+        "label": "Learn more",
+        "href": "https://boldfuse.in/services/#healthwellness"
+      },
+      {
+        "label": "Learn more",
+        "href": "https://boldfuse.in/services/#financialmanagement"
+      },
+      {
+        "label": "Learn more",
+        "href": "https://boldfuse.in/services/#branddigitalmanagement"
+      },
+      {
+        "label": "Learn more",
+        "href": "https://boldfuse.in/services/#operationalexcellence"
+      },
+      {
+        "label": "Learn more",
+        "href": "https://boldfuse.in/services/#legalservices"
+      },
+      {
+        "label": "Learn more",
+        "href": "https://boldfuse.in/services/#peoplelearningmanagement"
+      }
+    ],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/08/What-we-do-1-min-scaled.jpg",
+      "https://boldfuse.in/wp-content/uploads/2021/09/Chess-image-scaled.jpg"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 8,
+    "id": "82a5573",
+    "eyebrow": "",
+    "heading": "Our Vision",
+    "subheading": "",
+    "body": [
+      "To always believe in co-existence",
+      "To deliver pragmatic diverse solutions with effective restructuring strategies which sustain in the current and challenging environment"
+    ],
+    "items": [
+      {
+        "title": "Our Vision",
+        "subtitle": "",
+        "text": "Our VisionTo always believe in co-existence",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/vision.png",
+        "link": ""
+      },
+      {
+        "title": "Our Mission",
+        "subtitle": "",
+        "text": "Our MissionTo deliver pragmatic diverse solutions with effective restructuring strategies which sustain in the current and challenging environment",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/target-1.png",
+        "link": ""
+      }
+    ],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/09/vision.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/target-1.png"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 9,
+    "id": "5155b9b2",
+    "eyebrow": "",
+    "heading": "What client say about us",
+    "subheading": "",
+    "body": [
+      "Bold Fuse simplified our work to a great extent. With automation and technology roaming around our operation model, we are more free to focus on technical work and customer satisfaction. Really happy with their services.",
+      "Raising a startup became so easy for us with the help of the Bold Fuse team. They strategized every move and within days we were up and running at full pace. Thanks for giving us this amazing kickstart.",
+      "Maxivision super speciality eye hospital",
+      "Fabience",
+      "Vibhuaya technologies",
+      "River NIMS hospitals",
+      "Sparsh hospitals",
+      "Meru international school",
+      "Kaa's kirchen",
+      "Adika wellness",
+      "Shriram universal school - TSUS",
+      "Vijaya diagnostic center",
+      "Veritas prime",
+      "ekincare",
+      "Kamineni Hospitals",
+      "Best Vision Eye Hospital",
+      "Apollo Hospitals",
+      "Belief Fertility Center",
+      "Lotus Hospital & Institute",
+      "SHLOK"
+    ],
+    "items": [],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0009-e1715781240899.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0007.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-22-at-15.43.25_ff98f38b.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0006.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0005.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0013.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0004.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0003.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0012.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0011.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0010.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/05/IMG-20240514-WA0008.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/06/WhatsApp-Image-2024-06-19-at-16.21.51_98e080d7.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/06/WhatsApp-Image-2024-06-17-at-12.16.24_0dc483a9-1.jpg",
+      "https://boldfuse.in/wp-content/uploads/2024/06/WhatsApp-Image-2024-06-17-at-12.11.17_64312761-1536x804.jpg",
+      "https://boldfuse.in/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-27-at-9.42.18-AM-1.jpeg",
+      "https://boldfuse.in/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-27-at-9.42.18-AM.jpeg",
+      "https://boldfuse.in/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-27-at-9.42.18-AM-2.jpeg"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 10,
+    "id": "2d2d697d",
+    "eyebrow": "",
+    "heading": "We invest in your business knowing that we are pretty good at making our investment fruitful.",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [
+      {
+        "label": "GET STARTED",
+        "href": "https://boldfuse.in/contact/"
+      }
+    ],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2021/08/Get-started-banner-we-grow-when-you-grow-min-scaled.jpg\")"
+  },
+  {
+    "order": 11,
+    "id": "736fea45",
+    "eyebrow": "",
+    "heading": "Keeping Up with Boldfuse",
+    "subheading": "",
+    "body": [
+      "The first wave of the pandemic had struck the economy with a devastating impact. While everyone was expecting a great rebound in …",
+      "“Those who know their worth would never compromise with the less.” The brightest gem of the company can soon become the asset …",
+      "The first wave of the pandemic had struck the economy with a devastating impact. While everyone was expecting a great rebound in …",
+      "“Those who know their worth would never compromise with the less.” The brightest gem of the company can soon become the asset …",
+      "The first wave of the pandemic had struck the economy with a devastating impact. While everyone was expecting a great rebound in …"
+    ],
+    "items": [],
+    "ctas": [
+      {
+        "label": "Mental health of Entrepreneurs: <br> Tips to hold on",
+        "href": "https://boldfuse.in/mental-health-of-entrepreneurs/"
+      },
+      {
+        "label": "Mental health of Entrepreneurs:\nTips to hold on",
+        "href": "https://boldfuse.in/mental-health-of-entrepreneurs/"
+      },
+      {
+        "label": "Mental Health",
+        "href": "https://boldfuse.in/category/mental-health/"
+      },
+      {
+        "label": "Why do performing and outstanding employees leave the system sooner than the others?",
+        "href": "https://boldfuse.in/why-do-performing-and-outstanding-employees-leave-the-system-sooner-than-the-others/"
+      },
+      {
+        "label": "Why do performing and outstanding employees leave the system sooner than the others?",
+        "href": "https://boldfuse.in/why-do-performing-and-outstanding-employees-leave-the-system-sooner-than-the-others/"
+      },
+      {
+        "label": "Workplace culture",
+        "href": "https://boldfuse.in/category/workplace-culture/"
+      },
+      {
+        "label": "Mental health of Entrepreneurs: <br> Tips to hold on",
+        "href": "https://boldfuse.in/mental-health-of-entrepreneurs/"
+      },
+      {
+        "label": "Mental health of Entrepreneurs:\nTips to hold on",
+        "href": "https://boldfuse.in/mental-health-of-entrepreneurs/"
+      },
+      {
+        "label": "Mental Health",
+        "href": "https://boldfuse.in/category/mental-health/"
+      },
+      {
+        "label": "Why do performing and outstanding employees leave the system sooner than the others?",
+        "href": "https://boldfuse.in/why-do-performing-and-outstanding-employees-leave-the-system-sooner-than-the-others/"
+      },
+      {
+        "label": "Why do performing and outstanding employees leave the system sooner than the others?",
+        "href": "https://boldfuse.in/why-do-performing-and-outstanding-employees-leave-the-system-sooner-than-the-others/"
+      },
+      {
+        "label": "Workplace culture",
+        "href": "https://boldfuse.in/category/workplace-culture/"
+      },
+      {
+        "label": "Mental health of Entrepreneurs: <br> Tips to hold on",
+        "href": "https://boldfuse.in/mental-health-of-entrepreneurs/"
+      },
+      {
+        "label": "Mental health of Entrepreneurs:\nTips to hold on",
+        "href": "https://boldfuse.in/mental-health-of-entrepreneurs/"
+      },
+      {
+        "label": "Mental Health",
+        "href": "https://boldfuse.in/category/mental-health/"
+      }
+    ],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/08/Services_-People-management-min-scaled.jpg",
+      "https://boldfuse.in/wp-content/uploads/2021/09/WhatsApp-Image-2021-09-07-at-15.38.58.jpeg",
+      "https://boldfuse.in/wp-content/uploads/2021/08/Services_-People-management-min-scaled.jpg",
+      "https://boldfuse.in/wp-content/uploads/2021/09/WhatsApp-Image-2021-09-07-at-15.38.58.jpeg",
+      "https://boldfuse.in/wp-content/uploads/2021/08/Services_-People-management-min-scaled.jpg"
+    ],
+    "background": "none"
+  }
+]

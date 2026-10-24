@@ -1,0 +1,131 @@
+[
+  {
+    "order": 0,
+    "id": "25ec579",
+    "eyebrow": "",
+    "heading": "House of Bold",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2024/04/house-of-Bold-Banner-for-the-House-of-Bold-Page.png\")"
+  },
+  {
+    "order": 1,
+    "id": "e1eddd4",
+    "eyebrow": "",
+    "heading": "",
+    "subheading": "",
+    "body": [
+      "“House of Bold” focuses on women’s development, a women’s club, workshops, and awareness .",
+      "At boldfuse innovation meets human potential.",
+      "we blend cutting-edge expertise with deep understanding of human behavior and organizational dynamics to drive transformative change. With a diverse background spanning multiple disciplines, our founder brings a unique blend of skills and knowledge to every project:"
+    ],
+    "items": [],
+    "ctas": [
+      {
+        "label": "BOOK NOW",
+        "href": "https://boldfuse.in/house-of-bold/#"
+      }
+    ],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2024/04/for-house-of-bold-1-1-1024x1024.png"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 2,
+    "id": "6deb296",
+    "eyebrow": "",
+    "heading": "Mission Statement",
+    "subheading": "",
+    "body": [
+      "To empower women from all walks of life to unlock their full potential,\nembrace their unique strengths, and boldly pursue their dreams. Through community,\neducation, and advocacy, we strive to create a world where every woman feels supported,\nrespected, and empowered to lead.",
+      "To build a global sisterhood of empowered women who inspire and\nuplift each other, catalyzing positive change in their communities and beyond. We envision a\nfuture where gender equality is a reality, and every woman has the opportunity to thrive and\nsucceed on her own terms."
+    ],
+    "items": [
+      {
+        "title": "Mission Statement",
+        "subtitle": "",
+        "text": "Mission StatementTo empower women from all walks of life to unlock their full potential,\nembrace their unique strengths, and boldly pursue their dreams. Through community,\neducation, and advocacy, we strive to create a world where every woman feels supported,\nrespected, and empowered to lead.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/vision.png",
+        "link": ""
+      },
+      {
+        "title": "Vision Statement",
+        "subtitle": "",
+        "text": "Vision StatementTo build a global sisterhood of empowered women who inspire and\nuplift each other, catalyzing positive change in their communities and beyond. We envision a\nfuture where gender equality is a reality, and every woman has the opportunity to thrive and\nsucceed on her own terms.",
+        "image": "https://boldfuse.in/wp-content/uploads/2021/09/target-1.png",
+        "link": ""
+      }
+    ],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/09/vision.png",
+      "https://boldfuse.in/wp-content/uploads/2021/09/target-1.png"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 3,
+    "id": "53f7150",
+    "eyebrow": "",
+    "heading": "Core Values of House of Bold",
+    "subheading": "",
+    "body": [
+      "We believe in empowering women to take charge of their lives, careers, and futures.",
+      "We embrace diversity and create an inclusive environment where all women feel welcomed and valued.",
+      "We encourage women to step out of their comfort zones, embrace risk, and pursue their passions boldly.",
+      "We foster a spirit of collaboration, cooperation, and mutual support among women, recognizing that we are stronger together.",
+      "We inspire resilience and perseverance, helping women overcome obstacles and setbacks on their journey to success.",
+      "We celebrate individuality and encourage women to embrace their authentic selves, free from societal expectations and stereotypes.",
+      "We advocate for gender equality, social justice, and women&#39;s rights, striving to create a more equitable and inclusive world for future generations."
+    ],
+    "items": [],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2024/04/empowerment.png",
+      "https://boldfuse.in/wp-content/uploads/2024/04/team.png",
+      "https://boldfuse.in/wp-content/uploads/2024/04/goal.png",
+      "https://boldfuse.in/wp-content/uploads/2024/04/deal.png",
+      "https://boldfuse.in/wp-content/uploads/2024/04/strong.png",
+      "https://boldfuse.in/wp-content/uploads/2024/04/authenticity.png",
+      "https://boldfuse.in/wp-content/uploads/2024/04/promotion.png"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 4,
+    "id": "59e6dd3",
+    "eyebrow": "",
+    "heading": "Offerings of House of bold",
+    "subheading": "",
+    "body": [
+      "Awareness Campaigns: Highlight any awareness campaigns or advocacy efforts organized by House of Bold to address issues affecting women&#39;s rights and gender equality."
+    ],
+    "items": [],
+    "ctas": [],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2024/04/house-of-bold-2-1024x1024.png"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 5,
+    "id": "0e51892",
+    "eyebrow": "",
+    "heading": "Meet our accomplished analysts, attentive listeners, and firm but tactful communicators.",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [
+      {
+        "label": "GET STARTED",
+        "href": "https://boldfuse.in/contact/"
+      }
+    ],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2021/08/About-us-who-we-are...-Tough-minds-who-love-challenge-min-scaled.jpg\")"
+  }
+]

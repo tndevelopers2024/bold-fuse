@@ -1,0 +1,56 @@
+[
+  {
+    "order": 0,
+    "id": "50d07cb6",
+    "eyebrow": "",
+    "heading": "Depression Counselling",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2024/04/counselling-servicesbanner-for-page-wellness-2-scaled.png\")"
+  },
+  {
+    "order": 1,
+    "id": "753057f6",
+    "eyebrow": "",
+    "heading": "About Depression Counselling",
+    "subheading": "",
+    "body": [
+      "At Mind Studio we Offer support and therapy for individuals experiencing symptomsof depression, such as persistent sadness, loss of interest in activities, feelings ofworthlessness, and changes in sleep or appetite."
+    ],
+    "items": [],
+    "ctas": [
+      {
+        "label": "Play video",
+        "href": "https://boldfuse.in/depression-counselling/?playlist=&mute=0&autoplay=0&loop=no&controls=0&start=0&end="
+      },
+      {
+        "label": "Book Now",
+        "href": "https://boldfuse.in/depression-counselling/"
+      }
+    ],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2024/03/ux-and-ui-designers-discussing-project-1536x1024.jpg"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 2,
+    "id": "bcd06ed",
+    "eyebrow": "",
+    "heading": "Meet our accomplished analysts, attentive listeners, and firm but tactful communicators.",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [
+      {
+        "label": "GET STARTED",
+        "href": "https://boldfuse.in/contact/"
+      }
+    ],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2021/08/About-us-bottom-banner...-Meet-our-accomplished-min-scaled.jpg\")"
+  }
+]

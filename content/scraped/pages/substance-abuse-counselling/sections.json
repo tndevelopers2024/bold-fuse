@@ -1,0 +1,73 @@
+[
+  {
+    "order": 0,
+    "id": "50d07cb6",
+    "eyebrow": "",
+    "heading": "Substance Abuse Counselling",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [
+      {
+        "label": "Home",
+        "href": "https://boldfuse.in/"
+      },
+      {
+        "label": "Servives",
+        "href": "https://boldfuse.in/services/"
+      },
+      {
+        "label": "Counselling Services",
+        "href": "https://boldfuse.in/counselling-services/"
+      }
+    ],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2024/04/counselling-servicesbanner-for-page-wellness-2-scaled.png\")"
+  },
+  {
+    "order": 1,
+    "id": "753057f6",
+    "eyebrow": "",
+    "heading": "About Substance Abuse Counselling",
+    "subheading": "",
+    "body": [
+      "We Provide support and therapy for individuals struggling with substance abuse or addiction issues, including alcohol, drugs, or prescription medications."
+    ],
+    "items": [],
+    "ctas": [
+      {
+        "label": "Couples counselling (for specific issues)",
+        "href": "https://boldfuse.in/stress-management-counselling/"
+      },
+      {
+        "label": "Play video",
+        "href": "https://boldfuse.in/substance-abuse-counselling/?playlist=&mute=0&autoplay=0&loop=no&controls=0&start=0&end="
+      },
+      {
+        "label": "Book Now",
+        "href": "https://boldfuse.in/substance-abuse-counselling/"
+      }
+    ],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/08/photo-of-people-doing-handshakes-3183197.jpg"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 2,
+    "id": "bcd06ed",
+    "eyebrow": "",
+    "heading": "Meet our accomplished analysts, attentive listeners, and firm but tactful communicators.",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [
+      {
+        "label": "GET STARTED",
+        "href": "https://boldfuse.in/contact/"
+      }
+    ],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2021/08/About-us-bottom-banner...-Meet-our-accomplished-min-scaled.jpg\")"
+  }
+]

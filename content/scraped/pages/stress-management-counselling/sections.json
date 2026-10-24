@@ -1,0 +1,99 @@
+[
+  {
+    "order": 0,
+    "id": "50d07cb6",
+    "eyebrow": "",
+    "heading": "Stress Management Counselling",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [
+      {
+        "label": "Home",
+        "href": "https://boldfuse.in/"
+      },
+      {
+        "label": "Servives",
+        "href": "https://boldfuse.in/services/"
+      },
+      {
+        "label": "Counselling Services",
+        "href": "https://boldfuse.in/counselling-services/"
+      }
+    ],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2021/09/Image-1-scaled.jpg\")"
+  },
+  {
+    "order": 1,
+    "id": "753057f6",
+    "eyebrow": "",
+    "heading": "About Stress Management Counselling",
+    "subheading": "",
+    "body": [
+      "Mind Studio Help individuals develop coping skills and relaxation techniques to manage stress effectively and improve overall well-being.",
+      "Counselors help individuals identify the specific stressors in their lives, whether they are related to work, relationships, health, or other areas.",
+      "Clients learn about the physical, emotional, and behavioral responses to stress, such as increased heart rate, anxiety, irritability, or changes in eating or sleeping patterns.",
+      "Counseling sessions focus on teaching effective coping mechanisms to deal with stressors. This might include relaxation techniques like deep breathing, mindfulness exercises, or progressive muscle relaxation.",
+      "Counselors may assist individuals in better managing their time and organizing their tasks to reduce feelings of overwhelm and stress.",
+      "Learning to set boundaries with others and assertively communicate one's needs can be an important aspect of stress management counseling, particularly in relationships or work settings.",
+      "Cognitive-behavioral techniques are often employed to help individuals challenge and reframe negative thoughts and beliefs that contribute to stress."
+    ],
+    "items": [],
+    "ctas": [
+      {
+        "label": "Identifying Stressors",
+        "href": "https://boldfuse.in/stress-management-counselling/#collapse-6c3aab06adb91e265536"
+      },
+      {
+        "label": "Understanding Stress Responses",
+        "href": "https://boldfuse.in/stress-management-counselling/#collapse-32030356adb91e265536"
+      },
+      {
+        "label": "Developing Coping Strategies",
+        "href": "https://boldfuse.in/stress-management-counselling/#collapse-eb622966adb91e265536"
+      },
+      {
+        "label": "Improving Time Management and Organization",
+        "href": "https://boldfuse.in/stress-management-counselling/#collapse-ad970b96adb91e265536"
+      },
+      {
+        "label": "Setting Boundaries",
+        "href": "https://boldfuse.in/stress-management-counselling/#collapse-b9afec06adb91e265536"
+      },
+      {
+        "label": "Addressing Negative Thinking Patterns",
+        "href": "https://boldfuse.in/stress-management-counselling/#collapse-e8e7ad86adb91e265536"
+      },
+      {
+        "label": "Play video",
+        "href": "https://boldfuse.in/stress-management-counselling/?playlist=&mute=0&autoplay=0&loop=no&controls=0&start=0&end="
+      },
+      {
+        "label": "BOOK NOW",
+        "href": "https://boldfuse.in/stress-management-counselling/#"
+      }
+    ],
+    "images": [
+      "https://boldfuse.in/wp-content/uploads/2021/08/photo-of-people-doing-handshakes-3183197.jpg"
+    ],
+    "background": "none"
+  },
+  {
+    "order": 2,
+    "id": "bcd06ed",
+    "eyebrow": "",
+    "heading": "Meet our accomplished analysts, attentive listeners, and firm but tactful communicators.",
+    "subheading": "",
+    "body": [],
+    "items": [],
+    "ctas": [
+      {
+        "label": "GET STARTED",
+        "href": "https://boldfuse.in/contact/"
+      }
+    ],
+    "images": [],
+    "background": "url(\"https://boldfuse.in/wp-content/uploads/2021/08/About-us-bottom-banner...-Meet-our-accomplished-min-scaled.jpg\")"
+  }
+]

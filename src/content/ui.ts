@@ -1,0 +1,32 @@
+export const ui = {
+  learnMore: "Learn more",
+  talk: "Talk to an expert",
+  getStarted: "Get Started",
+  email: "Email us",
+  call: "Call us",
+  allArticles: "All articles",
+  skip: "Skip to content",
+  openMenu: "Open menu",
+  closeMenu: "Close menu",
+  menu: "Main navigation",
+  servicesMenu: "Explore services",
+  home: "Back to home",
+  readArticle: "Read article",
+  notFound: {
+    eyebrow: "A little change of direction",
+    title: "Let’s get you back on track.",
+    body: "This page may have moved, may not exist, or may still be taking shape as we rebuild our website. Our people are still here to help.",
+    explore: "Find what you need",
+    jumps: [
+      { label: "Our services", id: "services" },
+      { label: "Our process", id: "process" },
+      { label: "Our clients", id: "clients" },
+      { label: "From our blog", id: "blog" },
+    ],
+  },
+  error: {
+    title: "Let’s try that again.",
+    body: "Something interrupted this page. Please try again, or get in touch with our team.",
+    retry: "Try again",
+  },
+} as const;

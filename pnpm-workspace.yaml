@@ -1,0 +1,27 @@
+packages:
+  - "."
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - next@16.4.3
+  - eslint-config-next@16.4.3
+  - "@next/env@16.4.3"
+  - "@next/eslint-plugin-next@16.4.3"
+  - "@next/swc-darwin-arm64@16.4.3"
+  - "@next/swc-darwin-x64@16.4.3"
+  - "@next/swc-linux-arm64-gnu@16.4.3"
+  - "@next/swc-linux-arm64-musl@16.4.3"
+  - "@next/swc-linux-x64-gnu@16.4.3"
+  - "@next/swc-linux-x64-musl@16.4.3"
+  - "@next/swc-win32-arm64-msvc@16.4.3"
+  - "@next/swc-win32-x64-msvc@16.4.3"
+blockExoticSubdeps: true
+strictDepBuilds: true
+trustPolicy: no-downgrade
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+trustPolicyExclude:
+  - semver@6.3.1
+overrides:
+  lighthouse>puppeteer-core: 25.12.0
+  "@opentelemetry/api": 1.9.0

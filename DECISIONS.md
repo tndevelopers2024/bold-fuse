@@ -1,0 +1,20 @@
+# Implementation decisions
+
+- The supplied brief is the implementation contract. This is a local Next.js project intended for a Linux deployment, not a Sites/Vinext conversion or an unsolicited deployment.
+- The workspace started empty; no existing code graph was available or needed.
+- Verified npm and official Next/React advisories on 24 October 2026. Pin Next 16.4.3, React 19.3.1, Tailwind 4.3.3 and pnpm 11.28.8.
+- Next 16.4.3 and its matching ESLint configuration were released less than 24 hours ago. Those two exact versions and the ten matching @next environment, ESLint and platform compiler packages are exempted from the release age gate to use the newest patched stable Next release requested in the brief. All other protections remain enabled.
+- The official Node release inventory lists 24.22.1 (20 October 2026, security=true) as the latest LTS patch. No LTS release dated 21 October or later is published. Pin the actual latest patched LTS, rather than inventing a version. This date discrepancy is flagged for launch review.
+- The supplied badge is a WebP, despite the brief referring to a PNG. Preserve the source and derive a PNG without redrawing the mark. Its baked-in gradient is source artwork; no new gradient treatments will be added.
+- pnpm rejected the historical transitive `semver@6.3.1` in eslint-plugin-react because newer-published semver lines have stronger provenance. Its registry metadata identifies the official npm/node-semver repository and a 2023 release. Exempt only this exact package version from trust comparison; retain integrity verification and the global no-downgrade policy.
+- Pin ESLint 9.39.5 and TypeScript 6.0.3, the newest patches in the ranges supported by Next's lint plugins; the newest major releases produced peer incompatibilities and were not retained.
+- Preserve the source section order. The experience, vision and mission are grouped in one dark block; testimonials follow the complete client grid instead of a carousel that hides most clients.
+- The hero uses the original healthcare photograph from the Services capture. All 18 client names and both quotes are unchanged. No extra sections or claims were added.
+- Recolour only the white header logo pixels to brand-950, preserving its original alpha and contours for the required white header. Icons crop the actual heart-hand mark. Asset preparation reuses Next's existing sharp dependency; no extra image library is installed.
+- Sister brands appear as source-named text, since the brief permits external links only to Boldfuse's own social profiles.
+- Installed Next exposes SRI under ExperimentalConfig. SRI also does not supply a complete static inline-script CSP by itself. Use the brief's explicit static fallback (`script-src 'self' 'unsafe-inline'`), with no external script origins, no nonces and no experimental flags.
+- Add Lighthouse 13.5.0 as a development-only dependency to execute the explicitly required mobile Lighthouse audit and save reproducible results.
+- Lighthouse permits puppeteer-core ^25.9.0. Pin its transitive driver to 25.12.0, which uses provenance-attested chromium-bidi 17.0.2; pnpm rejected the newer driver's chromium-bidi trust downgrade. No trust exception was added for this chain.
+- Pin the development audit tool's OpenTelemetry API to 1.9.0 to satisfy its SDK peer ranges. This tooling is not included in the website or browser scripts.
+- The initial Lighthouse run found that a low starting reveal opacity reduced offscreen text contrast. Keep the requested 10px rise with a near-opaque 0.98→1 fade so text remains readable at every animation position.
+- Disable link prefetch throughout this single-page build, preload only the display font, and supply correct header-logo image sizes to reduce initial transfer. Add screen-reader-only context to the required visible “Learn more” labels for descriptive links.
