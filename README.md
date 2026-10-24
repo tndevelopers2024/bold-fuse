@@ -12,7 +12,7 @@ cp .env.example .env.local
 pnpm dev
 ```
 
-Set `NEXT_PUBLIC_SITE_URL` to the public production URL before building. Never commit `.env.local` or secrets.
+The site defaults to `https://boldfuse.in`. Set `NEXT_PUBLIC_SITE_URL` to override the public origin for another domain or local development. Vercel builds do not require this variable. Never commit `.env.local` or secrets.
 
 ## Production
 

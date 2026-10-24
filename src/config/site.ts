@@ -1,6 +1,4 @@
-const value = process.env.NEXT_PUBLIC_SITE_URL;
-if (!value)
-  throw new Error("NEXT_PUBLIC_SITE_URL is required. See .env.example.");
+const value = process.env.NEXT_PUBLIC_SITE_URL || "https://boldfuse.in";
 const parsed = new URL(value);
 if (
   !["http:", "https:"].includes(parsed.protocol) ||
