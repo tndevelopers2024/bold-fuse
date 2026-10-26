@@ -94,7 +94,10 @@ export const services = home.services.items.map((item, i) => ({
 export const stats = [
   { value: home.experience.number, label: home.experience.label },
   { value: String(home.services.items.length), label: "Services" },
-  { value: String(home.clients.items.length), label: home.clients.label },
+  {
+    value: home.clients.number ?? String(home.clients.items.length),
+    label: home.clients.label,
+  },
   { value: String(home.capabilities.items.length), label: "Capabilities" },
 ];
 export const processSteps = home.process.items.map((item, i) => ({

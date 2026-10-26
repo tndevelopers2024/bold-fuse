@@ -120,7 +120,7 @@ export const home = {
     ],
   },
   experience: {
-    number: "2+",
+    number: "5+",
     label: "Years of Experience",
     visionTitle: "Our Vision",
     vision: "To always believe in co-existence",
@@ -129,6 +129,7 @@ export const home = {
       "To deliver pragmatic diverse solutions with effective restructuring strategies which sustain in the current and challenging environment",
   },
   clients: {
+    number: "30+",
     eyebrow: "Testimonials",
     title: "What client say about us",
     label: "Our clients",

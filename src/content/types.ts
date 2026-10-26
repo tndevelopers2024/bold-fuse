@@ -27,6 +27,7 @@ export interface HomeContent {
   };
   clients: Heading & {
     label: string;
+    number?: string;
     items: readonly { name: string; image: StaticImageData }[];
     quotes: readonly { name: string; text: string }[];
   };
