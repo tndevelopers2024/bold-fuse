@@ -55,6 +55,8 @@ export default function BlogLoop() {
                   <Image
                     src={post.image}
                     alt=""
+                    loading="eager"
+                    unoptimized
                     sizes="(min-width: 640px) 340px, 82vw"
                     className="aspect-[16/10] w-full object-cover"
                   />
