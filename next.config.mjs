@@ -9,6 +9,7 @@ const config = {
   poweredByHeader: false,
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
+  experimental: { agentUpgrade: "security" },
   images: {
     dangerouslyAllowSVG: false,
     formats: ["image/avif", "image/webp"],
