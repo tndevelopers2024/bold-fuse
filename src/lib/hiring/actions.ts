@@ -5,8 +5,10 @@ import { ObjectId, MongoServerError } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { accountKey, digest, requireAdmin, sessionCookie } from "./auth";
 import { hiringDb, stages, type Stage } from "./db";
+import { notifyHiringApplication } from "./notify";
 import type { ActionResult } from "./types";
 
 function field(data: FormData, key: string, max: number) {
@@ -173,6 +175,7 @@ export async function applyToJob(id: string, _: string, data: FormData) {
     return "Enter a valid mobile number (7 to 15 digits).";
   const { client, jobs, applications } = await hiringDb();
   const jobId = new ObjectId(id);
+  let isNewApplication = false;
   try {
     const accepted = await client.withSession((session) =>
       session.withTransaction(async () => {
@@ -197,10 +200,23 @@ export async function applyToJob(id: string, _: string, data: FormData) {
       }),
     );
     if (!accepted) return "This opening has closed.";
+    isNewApplication = true;
   } catch (error) {
     if (!(error instanceof MongoServerError && error.code === 11000))
       throw error;
     // Return the same acknowledgement for repeat submissions.
+  }
+  if (isNewApplication) {
+    const appliedAt = new Date();
+    after(() =>
+      notifyHiringApplication({
+        jobId,
+        name,
+        email,
+        phone,
+        appliedAt,
+      }),
+    );
   }
   revalidatePath("/admin");
   return "Application received. Thank you for applying.";

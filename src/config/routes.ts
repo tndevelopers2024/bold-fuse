@@ -45,6 +45,47 @@ export const routes = {
     path: "/mental-health-of-entrepreneurs/",
     status: "built",
   },
+  blogAutomation: {
+    label: "How Smart Clinic Automation Gives Doctors Back Hours Every Week",
+    path: "/how-smart-clinic-automation-gives-doctors-back-hours-every-week/",
+    status: "built",
+  },
+  blogWellness: {
+    label:
+      "Preventing Clinician Burnout: Building Sustainable Mental Wellness in Healthcare Teams",
+    path: "/preventing-clinician-burnout-building-sustainable-mental-wellness-in-healthcare-teams/",
+    status: "built",
+  },
+  blogFinance: {
+    label:
+      "Financial Clarity for Growing Clinics: Managing Cash Flow and Growth",
+    path: "/financial-clarity-for-growing-clinics-managing-cash-flow-and-growth/",
+    status: "built",
+  },
+  blogBranding: {
+    label:
+      "Building Patient Trust Online: Why Authentic Healthcare Branding Outperforms Paid Ads",
+    path: "/building-patient-trust-online-authentic-healthcare-branding/",
+    status: "built",
+  },
+  blogProcess: {
+    label:
+      "From Waiting Room Friction to Seamless Care: Operational Excellence in Modern Hospitals",
+    path: "/from-waiting-room-friction-to-seamless-care-operational-excellence/",
+    status: "built",
+  },
+  blogLegal: {
+    label:
+      "Protecting Your Healthcare Practice: Essential Legal Foundations Every Founder Needs",
+    path: "/protecting-your-healthcare-practice-essential-legal-foundations/",
+    status: "built",
+  },
+  blogPeople: {
+    label:
+      "Hiring and Retaining Great Healthcare Staff: Turning Everyday Operations Into a Career Path",
+    path: "/hiring-and-retaining-great-healthcare-staff-building-a-career-path/",
+    status: "built",
+  },
   "counselling-services": {
     label: "Counselling Services",
     path: "/counselling-services/",

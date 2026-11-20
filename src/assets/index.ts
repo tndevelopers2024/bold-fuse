@@ -25,6 +25,13 @@ import client17 from "./client17.jpeg";
 import client18 from "./client18.jpeg";
 import blog0 from "./blog0.jpg";
 import blog1 from "./blog1.jpeg";
+import blogAutomation from "./blogs/blog-automation.jpg";
+import blogWellness from "./blogs/blog-wellness.jpg";
+import blogFinance from "./blogs/blog-finance.jpg";
+import blogBranding from "./services/creative-branding-v1.webp";
+import blogProcess from "./services/process-excellence-v1.webp";
+import blogLegal from "./services/legal-advisory-v1.webp";
+import blogPeople from "./services/people-learning-v1.webp";
 export const assets = {
   hero,
   people,
@@ -53,4 +60,11 @@ export const assets = {
   client18,
   blog0,
   blog1,
+  blogAutomation,
+  blogWellness,
+  blogFinance,
+  blogBranding,
+  blogProcess,
+  blogLegal,
+  blogPeople,
 };

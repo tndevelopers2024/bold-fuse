@@ -29,7 +29,7 @@ export interface HomeContent {
     label: string;
     number?: string;
     items: readonly { name: string; image: StaticImageData }[];
-    quotes: readonly { name: string; text: string }[];
+    quotes: readonly { name: string; text: string; sample?: boolean }[];
   };
   cta: { title: string; body: string };
   blog: Heading & {

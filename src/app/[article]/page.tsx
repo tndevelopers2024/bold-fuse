@@ -68,9 +68,9 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const otherArticles = blogArticles.filter(
-    (item) => item.slug !== article.slug,
-  );
+  const otherArticles = blogArticles
+    .filter((item) => item.slug !== article.slug)
+    .slice(0, 4);
   const readingTime = getReadingTime(article);
   const articleUrl = new URL(routes[article.route].path, siteUrl).href;
   const imageUrl = new URL(article.image.src, siteUrl).href;
@@ -196,13 +196,13 @@ export default async function ArticlePage({ params }: Props) {
         </section>
 
         <article className="mx-auto mt-10 max-w-4xl lg:mt-14">
-          <div className="overflow-hidden rounded-3xl border border-line bg-white p-3">
+          <div className="overflow-hidden rounded-3xl border border-line bg-white p-1.5">
             <Image
               src={article.image}
               alt={article.imageAlt}
               priority
               sizes="(min-width: 1024px) 896px, 92vw"
-              className="aspect-[16/9] w-full rounded-2xl object-cover"
+              className="aspect-[16/9] w-full rounded-[18px] object-cover"
             />
           </div>
 

@@ -66,7 +66,7 @@ export default function BlogsPage() {
               forward.
             </p>
           </div>
-          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:gap-8">
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-7">
             {blogArticles.map((post) => (
               <article
                 key={post.slug}
@@ -77,16 +77,16 @@ export default function BlogsPage() {
                   className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-forest"
                 >
                   {/* Image Frame */}
-                  <div className="border-b border-line rounded-b-3xl p-3.5 sm:p-4">
+                  <div className="rounded-b-3xl border-b border-line p-1.5">
                     <Image
                       src={post.image}
                       alt={post.imageAlt}
-                      sizes="(min-width: 768px) 50vw, 100vw"
-                      className="aspect-[16/10] w-full rounded-2xl object-cover"
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="aspect-[16/10] w-full rounded-[18px] object-cover"
                     />
                   </div>
-                  <div className="flex flex-1 flex-col p-6 sm:p-8">
-                    <div className="flex flex-wrap items-center gap-3 text-xs font-semibold tracking-[0.16em] text-accent-ink uppercase">
+                  <div className="flex flex-1 flex-col p-5">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-semibold tracking-[0.14em] text-accent-ink uppercase">
                       <span>{post.category}</span>
                       <span
                         aria-hidden="true"
@@ -111,13 +111,13 @@ export default function BlogsPage() {
                         {getReadingTime(post)} min read
                       </span>
                     </div>
-                    <h3 className="mt-4 font-heading text-2xl leading-snug font-bold text-forest group-hover:underline">
+                    <h3 className="mt-4 font-heading text-xl leading-snug font-bold text-forest group-hover:underline">
                       {post.title}
                     </h3>
-                    <p className="mt-4 font-description leading-relaxed font-medium text-muted">
+                    <p className="mt-3 font-description text-sm leading-relaxed font-medium text-muted sm:text-[0.9375rem]">
                       {post.excerpt}
                     </p>
-                    <span className="mt-auto inline-flex items-center gap-2 pt-7 text-sm font-semibold text-forest">
+                    <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-forest">
                       Read article <ArrowUpRight size={17} aria-hidden="true" />
                     </span>
                   </div>

@@ -257,12 +257,34 @@ export const home = {
         text: "Raising a startup became so easy for us with the help of the Bold Fuse team. They strategized every move and within days we were up and running at full pace. Thanks for giving us this amazing kickstart.",
       },
       {
-        name: "James Anderson",
+        name: "Vijaya Diagnostic Centre",
+        sample: true,
         text: "Bold Fuse helped us streamline our business operations and improve the way our team works. Their innovative approach and continuous support made our digital transformation much easier. Truly appreciate their dedication and expertise.",
       },
       {
-        name: "Emily Thompson",
+        name: "Veritas Prime",
+        sample: true,
         text: "Working with Bold Fuse has been a great experience. Their team understood our business needs and delivered practical solutions that improved our efficiency. Their professionalism, creativity, and commitment are truly impressive.",
+      },
+      {
+        name: "EkinCare",
+        sample: true,
+        text: "The team brought fresh ideas and a thoughtful approach to every stage of our project. Their support helped us move forward with confidence.",
+      },
+      {
+        name: "Kamineni Hospitals",
+        sample: true,
+        text: "From the first conversation to the final delivery, the process was clear and collaborative. We appreciated the care and attention given to our goals.",
+      },
+      {
+        name: "Jade Clinics",
+        sample: true,
+        text: "Bold Fuse made a complex project feel manageable. Their creativity and practical guidance helped our team find a clear path forward.",
+      },
+      {
+        name: "Hydron",
+        sample: true,
+        text: "We valued the team's responsiveness and willingness to understand our needs. The experience was smooth, focused, and full of useful ideas.",
       },
     ],
   },

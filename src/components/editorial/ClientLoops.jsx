@@ -37,13 +37,13 @@ export default function ClientLoops({ clients, quotes }) {
                   {row.map((client) => (
                     <li
                       key={client.name}
-                      className="flex h-24 w-36 shrink-0 items-center justify-center rounded-2xl border border-line/80 bg-white p-4 sm:h-28 sm:w-44 sm:p-5"
+                      className="flex h-24 w-36 shrink-0 items-center justify-center rounded-2xl border border-line/80 bg-white p-2 sm:h-28 sm:w-44 sm:p-2.5"
                     >
                       <Image
                         src={client.image}
                         alt={duplicate ? "" : client.name}
-                        sizes="112px"
-                        className="h-12 w-28 max-w-full object-contain sm:h-14"
+                        sizes="(min-width: 640px) 156px, 128px"
+                        className="h-20 w-full max-w-full object-contain sm:h-[92px]"
                       />
                     </li>
                   ))}
@@ -54,17 +54,20 @@ export default function ClientLoops({ clients, quotes }) {
         ))}
       </div>
 
-      {/* 2. Testimonials: All 4 Cards in the Same Row on Desktop */}
       <div
         id="testimonials"
-        className="mt-8 sm:mt-10 lg:mt-12"
+        className="client-loop mt-8 sm:mt-10 lg:mt-12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        role="region"
         aria-label="Client testimonials"
+        tabIndex={0}
       >
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-3.5 lg:grid-cols-4 lg:gap-3.5">
-          {quotes.map((quote) => (
+        <div className="client-loop-track testimonial-loop-track">
+          {[false, true].map((duplicate) => (
+          <div key={String(duplicate)} className="client-loop-group" aria-hidden={duplicate || undefined}>
+          {quotes.map((quote, index) => (
             <figure
-              key={quote.name}
-              className="flex flex-col justify-between rounded-xl border border-line/80 bg-white p-3 shadow-xs transition-colors duration-200 hover:border-accent/40 sm:rounded-2xl sm:p-3.5"
+              key={`${quote.name}-${index}`}
+              className="flex w-[min(320px,82vw)] shrink-0 flex-col justify-between rounded-xl border border-line/80 bg-white p-3 shadow-xs sm:rounded-2xl sm:p-3.5"
             >
               <div>
                 <Quote
@@ -80,10 +83,12 @@ export default function ClientLoops({ clients, quotes }) {
               <figcaption className="mt-3 flex items-center gap-1.5">
                 <span className="h-0.5 w-3 bg-accent shrink-0" aria-hidden="true" />
                 <span className="font-heading text-[10px] font-bold tracking-wider text-accent-ink uppercase sm:text-[11px]">
-                  {quote.name}
+                  {quote.name}{quote.sample ? " · Sample review" : ""}
                 </span>
               </figcaption>
             </figure>
+          ))}
+          </div>
           ))}
         </div>
       </div>
