@@ -18,10 +18,6 @@ export const footerContent = {
     { label: "FAQs", id: "faq" },
   ],
   articles: ["mentalHealth", "workplace"],
-  brands: [
-    { label: site.brands[0], route: "hello-marshmellowww" },
-    { label: site.brands[1], route: "house-of-bold" },
-  ],
 } as const satisfies {
   company: string;
   services: string;
@@ -31,5 +27,4 @@ export const footerContent = {
   backToTop: string;
   sections: readonly { label: string; id: string }[];
   articles: readonly RouteKey[];
-  brands: readonly { label: string; route: RouteKey }[];
 };

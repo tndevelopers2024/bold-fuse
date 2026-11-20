@@ -34,13 +34,13 @@ export const about = {
     eyebrow: "FOUNDER & CEO",
     name: "Keerthy Reddy",
     linkedinUrl: "https://www.linkedin.com/in/keerthy-reddy-51a012a7/",
-    imageAlt: "Keerthy Reddy, Founder and CEO of BoldFuse",
+    imageAlt: "Keerthy Reddy, Founder and CEO of Boldfuse",
     healthcarePerspective: {
       title: "Giving healthcare teams more time for patient care",
       paragraphs: [
-        "Keerthy believes outdated systems and fragmented workflows hold healthcare teams back. At BoldFuse, she works to simplify operations and people management so doctors and healthcare leaders can spend more time improving patient care.",
+        "Keerthy believes outdated systems and fragmented workflows hold healthcare teams back. At Boldfuse, she works to simplify operations and people management so doctors and healthcare leaders can spend more time improving patient care.",
         "She sees thoughtfully applied technology as a way to tackle persistent operational challenges and better support professionals on the front lines of care.",
-        "Keerthy welcomes conversations with healthcare leaders about the future of medical infrastructure and operational excellence. She also wants to hear directly from doctors and practitioners about their day-to-day challenges and how BoldFuse can help. She shares insights on healthcare innovation and updates from BoldFuse on LinkedIn.",
+        "Keerthy welcomes conversations with healthcare leaders about the future of medical infrastructure and operational excellence. She also wants to hear directly from doctors and practitioners about their day-to-day challenges and how Boldfuse can help. She shares insights on healthcare innovation and updates from Boldfuse on LinkedIn.",
       ],
       skills: [
         "Leadership",
@@ -50,12 +50,30 @@ export const about = {
         "Business strategy",
       ],
     },
-    paragraphs: [
-      "The 25 years of experience in leading corporations taught her the difference between ‘Labour’ & ‘Talent’. As an HR Head, she has worked on making workplaces more inspiring, collaborative, meaningful & enjoyable. She recently witnessed an at-scale shift to remote work, the dynamic reallocation of resources, extreme digitization & automation. There she found the need of reshaping the old business models & making them more flexible & responsive. Hence, Bold Fuse was born to help businesses in getting the best organized for the future.",
-      "She has been the voice of employees in her entire professional journey and now she aims to create a workforce where leaders are approachable enough to have a direct conversation with their team and where ideas are converted into reality with teamwork.",
-      "Keerthy Holds an MBA in HR & Marketing, and MS in Psychotherapy and counselling. She also carries her expertise in Design thinking and innovation,Change management, Lean six sigma black belt with Behavioural and organisational Psychology",
-      "She is all ready with her unique solutions to create a sustainable competitive advantage for your business. We welcome you to meet her and see how she can indulge into those key business ingredients that leads to success.",
-    ],
+    biography: {
+      title:
+        "Driving the Future of Healthcare Through Innovation at Boldfuse | Connecting with Healthcare Leaders & Doctors",
+      paragraphs: [
+        "Since joining Boldfuse, I have been driven by a simple conviction: healthcare should never be held back by outdated systems or fragmented workflows.",
+        "At Boldfuse, we are building solutions that give time back to the people who save lives. By optimising workflows and simplifying operations and people management, we help doctors and healthcare leaders focus on what matters most: patient outcomes.",
+        "I never lose my sense of wonder at how technology, when applied thoughtfully, can transform human health. At Boldfuse, we are committed to addressing some of healthcare’s most persistent operational challenges and finding new ways to support the professionals on the front lines of care.",
+      ],
+      connectionIntro: "I’m looking to connect with",
+      connections: [
+        {
+          title: "Healthcare leaders",
+          description:
+            "To discuss the future of medical infrastructure and operational excellence.",
+        },
+        {
+          title: "Doctors and practitioners",
+          description:
+            "To understand your on-the-ground challenges and explore how Boldfuse can support your vital work.",
+        },
+      ],
+      closing:
+        "If you share a passion for the future of healthcare, I invite you to follow me for insights on healthcare innovation and updates from Boldfuse. Please get in touch. I would love to hear your perspective.",
+    },
   },
   visionMission: {
     vision: {

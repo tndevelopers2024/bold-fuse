@@ -31,7 +31,7 @@ export const blogArticles: readonly BlogArticle[] = [
     category: "Workplace culture",
     published: "September 4, 2021",
     publishedISO: "2021-09-04",
-    author: "BoldFuse Team",
+    author: "Boldfuse Team",
     excerpt:
       "“Those who know their worth would never compromise with the less.” The brightest gem of the company can soon become the asset of its competitor if they fail to serve value on time.",
     leadQuote:
@@ -98,7 +98,7 @@ export const blogArticles: readonly BlogArticle[] = [
     category: "Mental Health",
     published: "August 31, 2021",
     publishedISO: "2021-08-31",
-    author: "BoldFuse Team",
+    author: "Boldfuse Team",
     excerpt:
       "The first wave of the pandemic had struck the economy with a devastating impact. While everyone was expecting a great rebound in 2021, the corona virus has been planning its own war with the entrepreneurs.",
     image: assets.blog0,

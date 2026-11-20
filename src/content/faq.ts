@@ -5,12 +5,12 @@ export const faq = {
     "A little clarity on our services, our approach and how to begin.",
   items: [
     {
-      question: "Who does BoldFuse work with?",
+      question: "Who does Boldfuse work with?",
       answer:
         "We work with doctors, healthcare leaders and business owners who want to strengthen their teams, improve day-to-day operations and build for sustainable growth. Our work connects people, processes and productivity around the needs of your organization.",
     },
     {
-      question: "What services can BoldFuse help with?",
+      question: "What services can Boldfuse help with?",
       answer:
         "Our services cover business automation, wellness and mental health, finance and advisory, creative branding and PR, business process excellence, legal advisory, and people and learning management. The right starting point depends on the challenges and priorities of your business.",
     },
@@ -32,7 +32,7 @@ export const faq = {
     {
       question: "How can we get started?",
       answer:
-        "Start with a conversation about your organization, the challenges you are facing and the goals you want to work towards. Call or email the BoldFuse team using the contact details alongside this section to discuss the next step.",
+        "Start with a conversation about your organization, the challenges you are facing and the goals you want to work towards. Call or email the Boldfuse team using the contact details alongside this section to discuss the next step.",
     },
   ],
 } as const;

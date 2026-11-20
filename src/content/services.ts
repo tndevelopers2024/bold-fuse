@@ -21,7 +21,6 @@ export interface ServiceItem {
   imageAlt: string;
   offerings?: string[];
   pillars?: { title: string; text: string }[];
-  subBrand?: string;
 }
 
 export const servicesContent = {
@@ -112,7 +111,6 @@ export const servicesContent = {
       tagline: "The growth game is all about fame. Let's spread the word about you to the entire world",
       description:
         "Change in lifestyle of your customers needs to be balanced with change in your selling experience too. Take a step forward towards your customers who are not roaming through the market but sitting in their homes and scrolling over their digital devices. Amp up your marketing and sales technique by reaching your customers in the digital world. We create an intelligent marketing strategy that builds personalized experiences for your customers. We focus on not just selling your product but also making you a brand of trust. Whether it's social media or print media, we help you to reach all those places where you can win the hearts of your customers.",
-      subBrand: "Hello @ Marshmellowww",
       image: serviceImg3,
       imageAlt: "Professional studio microphone and audio monitor representing creative podcast branding and digital PR",
     },
@@ -175,76 +173,6 @@ export const servicesContent = {
       imageAlt: "Corporate legal counsel closing an advisory agreement with a genuine handshake in a boardroom",
     },
   ] satisfies ServiceItem[],
-
-
-  itRecruitment: {
-    eyebrow: "Careers & Staffing",
-    title: "We're Hiring IT Talent Across India & the US",
-    lead: "At bOLDFUSE, we're on a mission to build workplaces where people thrive and projects succeed. Our recruitment and staffing division is growing, and we're looking for passionate IT professionals to join team and our clients' teams across India and the United States.",
-    whatWeDo: {
-      title: "What We Do",
-      body: "bOLDFUSE was born from a deep understanding of the challenges organizations face—retaining top talent, navigating project complexities, and creating inclusive, high-performance environments. We partner with companies to transform their operations, blend technology into every aspect of their business, and strengthen their workforce We don't just fill positions. We build meaningful connections between exceptional talent and organizations that value their people.",
-    },
-    hiringPositions: {
-      title: "Hiring for IT Positions",
-      lead: "We Hire qualified candidates for a wide range of IT roles. Whether you're a developer, engineer, analyst, or IT leader, we want to hear from you.",
-      categories: [
-        {
-          title: "Software Development",
-          description: "Full-stack developers, front-end/back-end engineers, mobile app developers",
-          iconName: "Code",
-        },
-        {
-          title: "IT Infrastructure & Operations",
-          description: "Network engineers, cloud architects (Azure, AWS), systems administrators",
-          iconName: "Server",
-        },
-        {
-          title: "Data & Analytics",
-          description: "Data scientists, data engineers, business intelligence analysts",
-          iconName: "BarChart3",
-        },
-        {
-          title: "Cybersecurity",
-          description: "Security analysts, compliance specialists, IT security managers",
-          iconName: "ShieldCheck",
-        },
-        {
-          title: "IT Leadership",
-          description: "CTO, IT Directors, Operations leads, Project managers",
-          iconName: "Users",
-        },
-        {
-          title: "Emerging Tech",
-          description: "AI/ML specialists, automation engineers",
-          iconName: "Cpu",
-        },
-      ],
-    },
-    locations: {
-      title: "Locations",
-      items: [
-        {
-          country: "India",
-          description: "Hyderabad and other major IT hubs",
-          flag: "🇮🇳",
-        },
-        {
-          country: "United States",
-          description: "Remote and onsite opportunities across multiple states",
-          flag: "🇺🇸",
-        },
-      ],
-    },
-    howToApply: {
-      title: "How to Apply",
-      subtitle: "Ready to take the next step in your IT career?",
-      email: "info@boldfuse.in",
-      emailPrompt: "Send your resume to:",
-      linkedinPrompt: "Connect with us: Follow us on LinkedIn @bOLDFUSE for the latest openings and updates",
-      linkedinUrl: "https://www.linkedin.com/company/boldfuse",
-    },
-  },
 
   raiseTheBar: {
     eyebrow: "Raise the bar",

@@ -16,7 +16,7 @@ React Router links were converted to Next.js links, interactive modules have cli
 - Four-step financial process → BoldFuse's Assess, Strategize and Execute process.
 - Advisory statement → BoldFuse vision, mission and experience.
 - Reference card styling → BoldFuse's 18 clients, two testimonials and two articles.
-- Financial contact CTA and footer → BoldFuse's contact details, links, other brands and legal navigation.
+- Financial contact CTA and footer → BoldFuse's contact details, links and legal navigation.
 
 Parvath's logo, founder portraits, financial copy, financial calculators, regulatory claims, analytics/SEO configuration and generated build output are not transplanted into BoldFuse. Those are source-brand content or application-specific infrastructure, rather than reusable design. The reference project itself is unchanged.
 

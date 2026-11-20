@@ -86,7 +86,7 @@ export default function FAQ() {
             </p>
             <div className="mt-7">
               <Button href={`tel:${site.telephone}`} variant="light">
-                Talk to our team
+                Let’s Talk
               </Button>
             </div>
             <div className="mt-7 flex flex-col items-start gap-3 border-t border-white/15 pt-6 font-description text-base text-white/90">

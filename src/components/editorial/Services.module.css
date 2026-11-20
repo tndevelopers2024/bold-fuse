@@ -39,14 +39,7 @@
   stroke-width: 1;
 }
 
-@property --boldfuse-services-position {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
-
 .stage {
-  --boldfuse-services-position: var(--services-manual-position, 0);
   --card-width: 370px;
   --arc-radius: 4250px;
   --arc-step: 6deg;
@@ -57,20 +50,11 @@
   touch-action: pan-y pinch-zoom;
   cursor: grab;
   user-select: none;
-  transition: --boldfuse-services-position 680ms cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-user-select: none;
 }
 
 .stage[data-dragging="true"] {
   cursor: grabbing;
-  transition: none;
-}
-
-.stage[data-auto-advancing="true"]:not([data-dragging="true"]) {
-  --boldfuse-services-position: var(
-    --services-auto-position,
-    var(--services-manual-position)
-  );
-  transition: none;
 }
 
 .stage[data-dragging="true"] .link {
@@ -84,10 +68,7 @@
 .card {
   --half-count: calc(var(--slide-count) / 2);
   --offset: calc(
-    mod(
-        var(--index) - var(--boldfuse-services-position) + var(--half-count),
-        var(--slide-count)
-      ) -
+    mod(var(--index) + var(--half-count), var(--slide-count)) -
       var(--half-count)
   );
   --angle: calc(var(--offset) * var(--arc-step));
@@ -98,13 +79,15 @@
   flex-direction: column;
   min-width: 0;
   padding: 24px;
+  border: 1px solid var(--color-line);
   border-radius: 26px;
   background: white;
-  outline: 1px solid var(--color-line);
   opacity: clamp(0, (3 - abs(var(--offset))) * 2, 1);
   z-index: calc(4 - round(up, abs(var(--offset)), 1));
-  /* Keep the artwork rasterized while the cards travel around the arc. */
-  will-change: transform, opacity;
+  /* Keep each card isolated and GPU-composited for silky 60/120fps motion on iOS & Android. */
+  contain: layout style paint;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transform: translate3d(
       calc(var(--arc-radius) * sin(var(--angle))),
@@ -198,7 +181,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--color-accent-ink);
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .previewStep,
@@ -439,7 +422,7 @@
 
 .documentScan {
   position: absolute;
-  inset: 36% 0 auto;
+  inset: 26% 0 auto;
   display: flex;
   height: 6cqi;
   align-items: center;
@@ -448,24 +431,25 @@
   border-block: 1px solid #65b69e;
   background: rgb(104 202 170 / 25%);
   color: var(--color-accent-ink);
+  transform: translate3d(0, 0, 0);
 }
 
 @keyframes preview-signal {
   0%,
   100% {
-    left: 12%;
+    transform: translate3d(-50%, -50%, 0);
     opacity: 0;
   }
   12% {
-    left: 12%;
+    transform: translate3d(-50%, -50%, 0);
     opacity: 1;
   }
   78% {
-    left: 88%;
+    transform: translate3d(calc(56cqi - 50%), -50%, 0);
     opacity: 1;
   }
   90% {
-    left: 88%;
+    transform: translate3d(calc(56cqi - 50%), -50%, 0);
     opacity: 0;
   }
 }
@@ -474,42 +458,43 @@
   0%,
   86%,
   100% {
-    transform: scale(0.72);
-    background: #699687;
+    transform: scale3d(0.76, 0.76, 1);
+    opacity: 0.65;
   }
   16% {
-    transform: scale(1.18);
+    transform: scale3d(1.14, 1.14, 1);
+    opacity: 1;
   }
   26%,
   72% {
-    transform: scale(1);
-    background: var(--color-forest);
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
   }
 }
 
 @keyframes preview-balance {
   0%,
   100% {
-    transform: rotate(-7deg);
+    transform: rotate(-7deg) translateZ(0);
   }
   50% {
-    transform: rotate(7deg);
+    transform: rotate(7deg) translateZ(0);
   }
 }
 
 @keyframes preview-cycle {
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg) translateZ(0);
   }
 }
 
 @keyframes preview-scan {
   0%,
   100% {
-    top: 26%;
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    top: 77%;
+    transform: translate3d(0, 18cqi, 0);
   }
 }
 

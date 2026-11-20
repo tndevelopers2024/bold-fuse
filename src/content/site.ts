@@ -3,7 +3,7 @@ export const site = {
   tagline: "Helping Doctors Build The Best Healthcare",
   phone: "+91 9000120291",
   telephone: "+919000120291",
-  email: "info@boldfuse.in",
+  email: "partner.support@boldfuse.in",
   address: "Lanco hills road, Gachibowli, Hyd 500089",
   socials: [
     {
@@ -19,9 +19,7 @@ export const site = {
       href: "https://www.linkedin.com/company/boldfuse/",
     },
   ],
-  brands: ["Marshmellowww", "House of Bold"],
   reach: "Reach us",
   quickLinks: "Quick Links",
-  otherBrands: "Our other brands",
   socialTitle: "Social Media",
 } as const;

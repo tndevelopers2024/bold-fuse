@@ -1,10 +1,23 @@
 import CTA from "@/components/editorial/CTA";
-import { ForestCardBackdrop, forestCardClass, forestCardIconClass } from "@/components/editorial/ForestCard";
+import {
+  ForestCardBackdrop,
+  forestCardClass,
+  forestCardIconClass,
+} from "@/components/editorial/ForestCard";
 import { pageMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, CheckCircle2, Compass, Eye, Phone, Sparkles, Target, Zap } from "lucide-react";
+import {
+  ArrowUpRight,
+  CheckCircle2,
+  Compass,
+  Eye,
+  Phone,
+  Sparkles,
+  Target,
+  Zap,
+} from "lucide-react";
 import aboutImage from "@/assets/about-healthcare-team-v1.jpg";
 import founderImage from "@/assets/founder-keerthy-reddy.jpeg";
 import { about } from "@/content/about";
@@ -19,11 +32,10 @@ export const metadata: Metadata = pageMetadata({
 
 const pillarIcons = [Compass, Zap, Sparkles];
 
-
 export default function AboutPage() {
   return (
     <main id="main-content" className="bg-white">
-      <div className="shell pt-8 sm:pt-12">
+      <div className="shell pt-7 sm:pt-10">
         {/* 1. Top Banner */}
         <section className="page-hero relative isolate overflow-hidden rounded-3xl bg-forest-surface px-6 text-white sm:px-12 lg:px-16">
           <div
@@ -68,7 +80,7 @@ export default function AboutPage() {
                 alt={about.whoWeAre.imageAlt}
                 sizes="(min-width: 1280px) 520px, (min-width: 1024px) 45vw, 92vw"
                 className="aspect-[4/3] w-full rounded-2xl object-cover lg:absolute lg:inset-3 lg:aspect-auto lg:h-[calc(100%-1.5rem)] lg:w-[calc(100%-1.5rem)]"
-                priority
+                preload
               />
             </div>
             <div>
@@ -77,7 +89,7 @@ export default function AboutPage() {
               </p>
               <h2
                 id="who-we-are"
-                className="mt-3 font-heading text-3xl font-bold tracking-tight text-forest sm:text-4xl"
+                className="scroll-mt-24 mt-3 font-heading text-3xl font-bold tracking-tight text-forest sm:text-4xl"
               >
                 {about.whoWeAre.title}
               </h2>
@@ -134,16 +146,16 @@ export default function AboutPage() {
           aria-labelledby="founder-section"
           className="pt-9 sm:pt-12 lg:pt-16"
         >
-          <div className="rounded-3xl border border-[#dbe9e1] bg-white p-6 sm:p-10 lg:p-14">
-            <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+          <div className="rounded-3xl border border-line bg-white p-5 sm:p-8 lg:p-10">
+            <div className="grid items-start gap-7 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-12">
               {/* Left: Founder Image */}
-              <div className="relative mx-auto flex w-full max-w-md overflow-hidden rounded-3xl border border-line bg-white p-3 shadow-sm lg:max-w-none lg:self-stretch">
+              <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-2xl bg-forest-surface">
                 <Image
                   src={founderImage}
                   alt={about.founder.imageAlt}
-                  sizes="(min-width: 1024px) 440px, 92vw"
-                  className="h-[480px] w-full rounded-2xl object-cover object-top sm:h-[560px] lg:absolute lg:inset-3 lg:h-[calc(100%-1.5rem)] lg:w-[calc(100%-1.5rem)]"
-                  priority
+                  sizes="(min-width: 768px) 47vw, 100vw"
+                  className="origin-top-left scale-[1.22] object-cover"
+                  fill
                 />
               </div>
 
@@ -159,63 +171,76 @@ export default function AboutPage() {
                   {about.founder.name}
                 </h2>
 
-                <div className="mt-6 space-y-4 font-description text-base leading-[1.8] font-medium text-muted">
-                  {about.founder.paragraphs.map((p, idx) => (
-                    <p
-                      key={idx}
-                      className={
-                        idx === 2
-                          ? "rounded-2xl border-l-4 border-forest bg-forest/5 p-4 text-sm font-semibold text-forest"
-                          : ""
-                      }
-                    >
-                      {p}
-                    </p>
+                <div className="mt-6 space-y-4 font-description text-sm leading-[1.8] font-medium text-muted">
+                  <h3 className="font-heading text-lg font-bold text-forest sm:text-xl">
+                    {about.founder.biography.title}
+                  </h3>
+                  {about.founder.biography.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
                   ))}
-                </div>
-
-                <div className="@container mt-8">
-                  <div className="grid gap-3 @min-[28rem]:grid-cols-[auto_auto_auto] @min-[28rem]:justify-start">
-                    <Link
-                      href="/contact/"
-                      className="inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-forest px-3 py-3 text-sm font-semibold text-white hover:bg-forest-soft"
-                    >
-                      Connect with Keerthy
-                      <ArrowUpRight size={17} aria-hidden="true" />
-                    </Link>
-                    <a
-                      href={`tel:${site.telephone}`}
-                      className="inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-line px-3 py-3 text-sm font-semibold text-forest hover:bg-forest/5"
-                    >
-                      <Phone size={16} aria-hidden="true" />
-                      {site.telephone}
-                    </a>
-                    <a
-                      href={about.founder.linkedinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Keerthy Reddy on LinkedIn"
-                      className="inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-line px-3 py-3 text-sm font-semibold text-forest hover:bg-forest/5"
-                    >
-                      LinkedIn
-                      <ArrowUpRight size={17} aria-hidden="true" />
-                    </a>
-                  </div>
                 </div>
               </div>
             </div>
-            <div className="mt-6 grid gap-6 border-t border-line pt-6 sm:mt-8 sm:pt-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)] lg:gap-10">
+            <div className="mt-6 grid gap-5 border-t border-line pt-6 font-description text-sm leading-[1.8] font-medium text-muted sm:mt-8 sm:pt-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-12">
+              <div className="space-y-2">
+                <p className="font-semibold text-forest">
+                  {about.founder.biography.connectionIntro}
+                </p>
+                <ul role="list" className="space-y-2">
+                  {about.founder.biography.connections.map((connection) => (
+                    <li key={connection.title}>
+                      <strong className="font-semibold text-forest">
+                        {connection.title}.
+                      </strong>{" "}
+                      {connection.description}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p>{about.founder.biography.closing}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link
+                    href="/contact/"
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-forest px-3 py-3 text-sm font-semibold text-white hover:bg-forest-soft"
+                  >
+                    Connect with Keerthy
+                    <ArrowUpRight size={17} aria-hidden="true" />
+                  </Link>
+                  <a
+                    href={`tel:${site.telephone}`}
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-line px-3 py-3 text-sm font-semibold text-forest hover:bg-forest/5"
+                  >
+                    <Phone size={16} aria-hidden="true" />
+                    {site.telephone}
+                  </a>
+                  <a
+                    href={about.founder.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Keerthy Reddy on LinkedIn"
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-line px-3 py-3 text-sm font-semibold text-forest hover:bg-forest/5"
+                  >
+                    LinkedIn
+                    <ArrowUpRight size={17} aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 grid gap-6 border-t border-line pt-6 sm:mt-8 sm:pt-8 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-10">
               <div>
                 <h3 className="font-heading text-xl font-bold text-forest sm:text-2xl">
                   {about.founder.healthcarePerspective.title}
                 </h3>
                 <div className="mt-4 max-w-3xl space-y-4 font-description text-base leading-[1.8] font-medium text-muted">
-                  {about.founder.healthcarePerspective.paragraphs.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
+                  {about.founder.healthcarePerspective.paragraphs.map(
+                    (paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ),
+                  )}
                 </div>
               </div>
-              <div className="self-start rounded-2xl border border-line p-5">
+              <div className="self-start border-l-2 border-accent pl-4 md:pl-6">
                 <h3 className="font-heading text-base font-bold text-forest">
                   Top skills
                 </h3>
@@ -235,7 +260,7 @@ export default function AboutPage() {
           className="pt-9 sm:pt-12 lg:pt-16"
         >
           <div
-            className="relative isolate overflow-hidden rounded-3xl border border-forest-soft/60 bg-forest-soft px-6 py-7 sm:px-9 sm:py-9 lg:px-12"
+            className="relative isolate overflow-hidden rounded-3xl bg-forest-surface px-6 py-8 sm:px-10 sm:py-10 lg:px-12"
             data-cursor-theme="dark"
           >
             <ForestCardBackdrop />

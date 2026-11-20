@@ -618,12 +618,28 @@
 
 /* Static, flat controls throughout the site. */
 :is(button, [data-button], .site-button, a.rounded-full),
-:is(button, [data-button], .site-button, a.rounded-full) * {
+:is(button, [data-button], .site-button, a.rounded-full)
+  :not([data-refresh-spin="true"]) {
   box-shadow: none !important;
   text-shadow: none !important;
   animation: none !important;
   transition: none !important;
   transform: none !important;
+}
+
+@keyframes refresh-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button [data-refresh-spin="true"] {
+    animation: refresh-spin 0.65s var(--ease-editorial) infinite !important;
+  }
 }
 
 @media (min-width: 1024px) {

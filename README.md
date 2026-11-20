@@ -55,3 +55,15 @@ Page copy lives in `src/content`, active media in `src/assets`, and shared secti
 The production build, lint, type checking and browser suite pass. The browser suite covers 35 built pages, 88 internal links, seven homepage widths, keyboard menus, appointment enquiry validation, page metadata, security headers and accessibility. The production dependency audit reported no known vulnerabilities.
 
 Lighthouse measured mobile scores of **95 performance / 100 accessibility / 100 best practices / 100 SEO**, with zero layout shift. Its simulated LCP was **2.92 seconds**, so the separate Lighthouse command still fails the repository’s stricter **2.5-second LCP** assertion. This budget remains open; remeasure on the final HTTPS/CDN host before launch. Local checks used Node 24.21.0; CI uses the local 24.22.1 pin; deployment accepts maintained Node 24.x patch versions.
+
+### Hiring dashboard
+
+Set `MONGODB_URI` (including the database name), `HIRING_ADMIN_EMAIL`, and a unique random `HIRING_ADMIN_PASSWORD` in the server environment. Use a MongoDB replica set or Atlas with read/write access to that database. Store local values in the ignored `.env.local` file. Use HTTPS for the production dashboard.
+
+Sign in at `/admin/` to publish, close, or reopen jobs. Candidates submit a name, email, and shareable HTTPS résumé link on `/careers/`. Select a job title in the dashboard to review applications and update candidate statuses. Closing a posting keeps its applications available. Applications sent to the general email address are handled separately.
+
+For the local development instance provisioned on this Mac, the data directory is `~/Library/Application Support/BoldFuse/hiring-mongo`. After a restart, start the existing replica set with:
+
+```sh
+mongod --dbpath "$HOME/Library/Application Support/BoldFuse/hiring-mongo" --bind_ip 127.0.0.1 --port 27028 --replSet boldfuseHiring
+```

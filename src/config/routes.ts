@@ -24,6 +24,11 @@ export const routes = {
     path: "/services/",
     status: "built",
   },
+  careers: {
+    label: "Careers",
+    path: "/careers/",
+    status: "built",
+  },
   workplace: {
     label:
       "Why do performing and outstanding employees leave the system sooner than the others?",
@@ -59,11 +64,6 @@ export const routes = {
     label: "Home2",
     path: "/home2/",
     status: "planned",
-  },
-  "house-of-bold": {
-    label: "House of Bold",
-    path: "/house-of-bold/",
-    status: "built",
   },
   "depression-counselling": {
     label: "Depression Counselling",
@@ -153,11 +153,6 @@ export const routes = {
   "cancel-payment": {
     label: "Cancel Payment",
     path: "/cancel-payment/",
-    status: "built",
-  },
-  "hello-marshmellowww": {
-    label: "Hello @ Marshmellowww",
-    path: "/hello-marshmellowww/",
     status: "built",
   },
   therapy: {
@@ -291,6 +286,7 @@ export const navigation: RouteKey[] = [
   "home",
   "about",
   "services",
+  "careers",
   "blogs",
   "contact",
 ];

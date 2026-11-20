@@ -68,21 +68,6 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <h2 className={`${titleClass} mt-5`}>{site.otherBrands}</h2>
-            <ul className="space-y-1">
-              {footerContent.brands.map((brand) => (
-                <li key={brand.route}>
-                  <AppLink route={brand.route} className={linkClass}>
-                    {brand.label}
-                    <ArrowUpRight
-                      size={14}
-                      className="shrink-0"
-                      aria-hidden="true"
-                    />
-                  </AppLink>
-                </li>
-              ))}
-            </ul>
           </nav>
           <div className="min-w-0 sm:col-span-2 md:col-span-1">
             <h2 className={titleClass}>{site.reach}</h2>
