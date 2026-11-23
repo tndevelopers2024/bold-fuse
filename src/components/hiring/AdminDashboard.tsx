@@ -16,7 +16,6 @@ import {
   ArrowUpRight,
   Briefcase,
   Calendar,
-  Check,
   CheckCircle2,
   ChevronDown,
   LogOut,
@@ -109,6 +108,8 @@ const emptyDraft: PostingDraft = {
   description: "",
 };
 
+const postingsPerPage = 8;
+
 export function AdminDashboard({
   postings,
   selectedJobId,
@@ -121,6 +122,12 @@ export function AdminDashboard({
   // Posting directory filters (preserved across incoming live updates)
   const [postingQuery, setPostingQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [postingPage, setPostingPage] = useState(() =>
+    Math.floor(
+      Math.max(0, postings.findIndex((posting) => posting.id === selectedJobId)) /
+        postingsPerPage,
+    ),
+  );
 
   // Candidate workspace filters (preserved across incoming live updates)
   const [candidateQuery, setCandidateQuery] = useState("");
@@ -225,6 +232,17 @@ export function AdminDashboard({
     });
   }, [postings, postingQuery, statusFilter]);
 
+  const lastPostingPage = Math.max(
+    0,
+    Math.ceil(filteredPostings.length / postingsPerPage) - 1,
+  );
+  const currentPostingPage = Math.min(postingPage, lastPostingPage);
+  const firstPostingIndex = currentPostingPage * postingsPerPage;
+  const visiblePostings = filteredPostings.slice(
+    firstPostingIndex,
+    firstPostingIndex + postingsPerPage,
+  );
+
   const selectedStageCounts = useMemo(() => {
     const counts: StageCounts = {
       Applied: 0,
@@ -298,6 +316,7 @@ export function AdminDashboard({
       setCreateOpen(false);
       setStatusFilter("all");
       setPostingQuery("");
+      setPostingPage(0);
       setStageFilter("All");
       setCandidateQuery("");
       setNotice({
@@ -811,14 +830,20 @@ export function AdminDashboard({
                   id="posting-search"
                   type="search"
                   value={postingQuery}
-                  onChange={(event) => setPostingQuery(event.target.value)}
+                  onChange={(event) => {
+                    setPostingQuery(event.target.value);
+                    setPostingPage(0);
+                  }}
                   placeholder="Search postings by title or location…"
                   className="w-full appearance-none rounded-xl border border-line bg-white py-2.5 pr-10 pl-10 font-description text-base font-medium text-forest placeholder:text-muted/75 focus:border-accent-ink focus:outline-none focus:ring-2 focus:ring-accent-ink/20 sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
                 />
                 {postingQuery && (
                   <button
                     type="button"
-                    onClick={() => setPostingQuery("")}
+                    onClick={() => {
+                      setPostingQuery("");
+                      setPostingPage(0);
+                    }}
                     aria-label="Clear posting search"
                     className="absolute top-1/2 right-1.5 flex h-8 w-8 -translate-y-1/2 touch-manipulation items-center justify-center rounded-full text-muted hover:text-forest"
                   >
@@ -845,7 +870,10 @@ export function AdminDashboard({
                       key={key}
                       type="button"
                       aria-pressed={active}
-                      onClick={() => setStatusFilter(key)}
+                      onClick={() => {
+                        setStatusFilter(key);
+                        setPostingPage(0);
+                      }}
                       className={
                         active
                           ? "inline-flex min-h-10 touch-manipulation items-center gap-1.5 rounded-full border border-forest bg-forest px-3.5 py-1.5 text-xs font-semibold text-white sm:min-h-9"
@@ -908,6 +936,7 @@ export function AdminDashboard({
                     onClick={() => {
                       setPostingQuery("");
                       setStatusFilter("all");
+                      setPostingPage(0);
                     }}
                     className="mt-4 inline-flex min-h-9 items-center rounded-full border border-forest bg-white px-4 py-1.5 text-xs font-semibold text-forest hover:bg-forest hover:text-white"
                   >
@@ -915,143 +944,88 @@ export function AdminDashboard({
                   </button>
                 </div>
               ) : (
-                filteredPostings.map((posting) => {
-                  const isSelected = selectedPosting?.id === posting.id;
-                  const isLoadingThis =
-                    isSelectingJob && pendingJobId === posting.id;
-                  const isToggling = Boolean(togglingJobIds[posting.id]);
+                <ul className="overflow-hidden rounded-xl border border-line">
+                  {visiblePostings.map((posting) => {
+                    const isSelected = selectedPosting?.id === posting.id;
+                    const isLoading =
+                      isSelectingJob && pendingJobId === posting.id;
 
-                  return (
-                    <article
-                      key={posting.id}
-                      data-posting-id={posting.id}
-                      className={
-                        isSelected
-                          ? "rounded-2xl border-2 border-forest bg-white p-4"
-                          : "rounded-2xl border border-line bg-white p-4 hover:border-forest/45"
-                      }
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span
-                          className={
-                            posting.open
-                              ? "inline-flex items-center gap-1.5 rounded-full border border-accent/35 bg-accent/12 px-2.5 py-0.5 text-xs font-semibold text-accent-ink"
-                              : "inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-2.5 py-0.5 text-xs font-semibold text-muted"
-                          }
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={
-                              posting.open
-                                ? "h-1.5 w-1.5 rounded-full bg-accent-ink"
-                                : "h-1.5 w-1.5 rounded-full bg-muted"
-                            }
-                          />
-                          {posting.open ? "Open" : "Closed"}
-                        </span>
-                        <span className="text-xs font-medium text-muted">
-                          {formatDate(posting.createdAt)}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-2.5 font-heading text-base font-bold break-words text-forest">
-                        <button
-                          type="button"
-                          onClick={() => selectPosting(posting.id, true)}
-                          className="text-left hover:text-accent-ink"
-                        >
-                          {posting.title}
-                        </button>
-                      </h3>
-
-                      <p className="mt-1 flex items-center gap-1.5 text-sm font-medium break-words text-muted">
-                        <MapPin
-                          size={14}
-                          aria-hidden="true"
-                          className="shrink-0 text-accent-ink"
-                        />
-                        <span className="min-w-0 break-words">
-                          {posting.location}
-                        </span>
-                      </p>
-
-                      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-semibold">
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-forest tabular-nums">
-                          <Users size={13} aria-hidden="true" />
-                          {posting.applicants}{" "}
-                          {posting.applicants === 1
-                            ? "application"
-                            : "applications"}
-                        </span>
-                        {posting.stageCounts.Applied > 0 && (
-                          <span className="rounded-full bg-forest/8 px-2.5 py-1 text-forest tabular-nums">
-                            {posting.stageCounts.Applied} new
-                          </span>
-                        )}
-                        {posting.stageCounts.Interview > 0 && (
-                          <span className="rounded-full bg-accent/12 px-2.5 py-1 text-accent-ink tabular-nums">
-                            {posting.stageCounts.Interview} interview
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 border-t border-line/80 pt-3">
+                    return (
+                      <li
+                        key={posting.id}
+                        data-posting-id={posting.id}
+                        className="border-b border-line last:border-b-0"
+                      >
                         <button
                           type="button"
                           onClick={() => selectPosting(posting.id, true)}
                           aria-current={isSelected ? "true" : undefined}
+                          aria-busy={isLoading}
+                          aria-controls="candidates"
                           className={
                             isSelected
-                              ? "inline-flex min-h-10 touch-manipulation items-center gap-1.5 rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-white sm:min-h-9"
-                              : "inline-flex min-h-10 touch-manipulation items-center gap-1.5 rounded-full border border-forest bg-white px-3.5 py-1.5 text-xs font-semibold text-forest hover:bg-forest hover:text-white sm:min-h-9"
+                              ? "flex w-full items-start justify-between gap-3 border-l-4 border-accent-ink bg-accent/8 px-3 py-2.5 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent-ink"
+                              : "flex w-full items-start justify-between gap-3 border-l-4 border-transparent bg-white px-3 py-2.5 text-left hover:bg-accent/5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent-ink"
                           }
                         >
-                          {isLoadingThis ? (
-                            "Loading…"
-                          ) : isSelected ? (
-                            <>
-                              <Check size={13} aria-hidden="true" />
-                              Reviewing
-                            </>
-                          ) : (
-                            "Review candidates"
-                          )}
+                          <span className="min-w-0">
+                            <span className="block font-heading text-sm font-bold break-words text-forest">
+                              {posting.title}
+                            </span>
+                            <span className="mt-0.5 block text-xs font-medium break-words text-muted">
+                              {posting.location}
+                            </span>
+                          </span>
+                          <span className="shrink-0 text-right text-xs font-medium tabular-nums">
+                            <span
+                              className={
+                                posting.open
+                                  ? "block font-semibold text-accent-ink"
+                                  : "block font-semibold text-muted"
+                              }
+                            >
+                              {posting.open ? "Open" : "Closed"}
+                            </span>
+                            <span className="mt-0.5 block text-muted">
+                              {isLoading
+                                ? "Loading…"
+                                : `${posting.applicants} ${posting.applicants === 1 ? "applicant" : "applicants"}`}
+                            </span>
+                          </span>
                         </button>
-
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            disabled={isToggling}
-                            onClick={() => handleToggleJobOpen(posting)}
-                            className="inline-flex min-h-10 touch-manipulation items-center rounded-full border border-line bg-white px-3.5 py-1.5 text-xs font-semibold text-forest hover:border-forest disabled:opacity-60 sm:min-h-9"
-                          >
-                            {isToggling
-                              ? posting.open
-                                ? "Closing…"
-                                : "Reopening…"
-                              : posting.open
-                                ? "Close posting"
-                                : "Reopen posting"}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setDeleteError(null);
-                              setDeleteTarget({ kind: "job", posting });
-                            }}
-                            aria-label={`Delete posting ${posting.title}`}
-                            title="Delete posting"
-                            className="inline-flex h-10 w-10 touch-manipulation items-center justify-center rounded-full border border-line bg-white text-muted hover:border-danger hover:text-danger sm:h-9 sm:w-9"
-                          >
-                            <Trash2 size={14} aria-hidden="true" />
-                          </button>
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })
+                      </li>
+                    );
+                  })}
+                </ul>
               )}
             </div>
+
+            {lastPostingPage > 0 && (
+              <nav
+                aria-label="Job posting pages"
+                className="mt-3 flex flex-wrap items-center justify-between gap-2"
+              >
+                <button
+                  type="button"
+                  disabled={currentPostingPage === 0}
+                  onClick={() => setPostingPage(currentPostingPage - 1)}
+                  className="min-h-10 rounded-full border border-line px-3 text-xs font-semibold text-forest enabled:hover:border-forest disabled:opacity-50"
+                >
+                  Previous
+                </button>
+                <span aria-live="polite" className="text-xs font-medium text-muted tabular-nums">
+                  {firstPostingIndex + 1}–{firstPostingIndex + visiblePostings.length} of {filteredPostings.length}
+                </span>
+                <button
+                  type="button"
+                  disabled={currentPostingPage === lastPostingPage}
+                  onClick={() => setPostingPage(currentPostingPage + 1)}
+                  className="min-h-10 rounded-full border border-line px-3 text-xs font-semibold text-forest enabled:hover:border-forest disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </nav>
+            )}
           </section>
 
           {/* Right Pane: Dedicated Candidate Review Workspace */}

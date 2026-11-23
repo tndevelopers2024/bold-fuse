@@ -44,8 +44,21 @@ const emptyDraft: ApplicationDraft = {
   phone: "",
 };
 
-export function OpeningsGrid({ jobs }: { jobs: PublicOpening[] }) {
+function descriptionPreview(description: string) {
+  return description.split("\n", 3).join("\n").slice(0, 150).trimEnd();
+}
+
+export function OpeningsGrid({
+  jobs,
+  showPreview,
+}: {
+  jobs: PublicOpening[];
+  showPreview: boolean;
+}) {
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
+  const [expandedDescriptions, setExpandedDescriptions] = useState<
+    Record<string, boolean>
+  >({});
   // Keep unsaved form drafts per job ID so incoming SSE updates never clear them
   const [drafts, setDrafts] = useState<Record<string, ApplicationDraft>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -171,6 +184,11 @@ export function OpeningsGrid({ jobs }: { jobs: PublicOpening[] }) {
       <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {jobs.map((job) => {
           const posted = formatPostedDate(job.createdAt);
+          const description = job.description.trimEnd();
+          const preview = descriptionPreview(description);
+          const hasMore = preview !== description;
+          const expanded = expandedDescriptions[job.id] ?? false;
+          const descriptionId = `job-description-${job.id}`;
           return (
             <article
               key={job.id}
@@ -201,19 +219,40 @@ export function OpeningsGrid({ jobs }: { jobs: PublicOpening[] }) {
                   <span className="min-w-0 break-words">{job.location}</span>
                 </p>
 
-                <p className="mt-3 line-clamp-3 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted">
-                  {job.description}
+                <p
+                  id={descriptionId}
+                  className="mt-3 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted"
+                >
+                  {hasMore && !expanded ? `${preview}…` : description}
                 </p>
+                {hasMore && (
+                  <button
+                    type="button"
+                    aria-expanded={expanded}
+                    aria-controls={descriptionId}
+                    aria-label={`${expanded ? "View less" : "View more"} about ${job.title}`}
+                    onClick={() =>
+                      setExpandedDescriptions((previous) => ({
+                        ...previous,
+                        [job.id]: !previous[job.id],
+                      }))
+                    }
+                    className="mt-2 min-h-10 rounded-sm text-sm font-semibold text-accent-ink underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+                  >
+                    {expanded ? "View less" : "View more"}
+                  </button>
+                )}
               </div>
 
               <div className="mt-5 border-t border-line/80 pt-4">
                 <button
                   type="button"
+                  disabled={showPreview}
                   onClick={() => {
                     setFeedback(null);
                     setActiveJobId(job.id);
                   }}
-                  className="inline-flex min-h-10 w-full items-center justify-center rounded-full bg-forest px-4 py-2 text-sm font-semibold text-white hover:bg-forest-soft"
+                  className="inline-flex min-h-10 w-full items-center justify-center rounded-full bg-forest px-4 py-2 text-sm font-semibold text-white enabled:hover:bg-forest-soft disabled:opacity-60"
                 >
                   Apply for this role
                 </button>

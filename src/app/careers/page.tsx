@@ -13,7 +13,13 @@ export const metadata: Metadata = pageMetadata({
   alternates: { canonical: "/careers/" },
 });
 
-export default function CareersPage() {
+export default async function CareersPage({
+  searchParams,
+}: PageProps<"/careers">) {
+  const showPreview =
+    process.env.NODE_ENV === "development" &&
+    (await searchParams).preview === "1";
+
   return (
     <main id="main-content" className="bg-white">
       <div className="shell pt-8 pb-12 sm:pt-12 sm:pb-16">
@@ -67,7 +73,7 @@ export default function CareersPage() {
           </div>
 
           {/* "Open Positions / Hiring for IT Positions" — live postings from /admin/ */}
-          <Openings />
+          <Openings showPreview={showPreview} />
 
           {/* Locations & How to Apply split */}
           <div className="mt-12 grid gap-8 sm:mt-16 lg:grid-cols-2">

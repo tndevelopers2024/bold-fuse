@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { itRecruitment } from "@/content/careers";
 import { hiringDb } from "@/lib/hiring/db";
 import { LiveUpdates } from "./LiveUpdates";
@@ -27,8 +28,19 @@ async function availableJobs(): Promise<PublicOpening[] | null> {
   }
 }
 
-export default async function Openings() {
-  const jobs = await availableJobs();
+const previewJobs: PublicOpening[] = [
+  {
+    id: "preview-developer",
+    title: "Frontend Developer",
+    location: "Hyderabad",
+    description:
+      "Experience: 2–4 years\nBuild accessible interfaces for healthcare teams and help improve the tools they use every day.\nWork with designers and engineers to turn prototypes into responsive features.\nReview changes, test across screen sizes, and address usability issues before release.",
+    createdAt: "",
+  },
+];
+
+export default async function Openings({ showPreview }: { showPreview: boolean }) {
+  const jobs = showPreview ? previewJobs : await availableJobs();
 
   return (
     <section
@@ -36,7 +48,7 @@ export default async function Openings() {
       aria-labelledby="openings-heading"
       className="mt-12 scroll-mt-24 sm:mt-16"
     >
-      <LiveUpdates />
+      {!showPreview && <LiveUpdates />}
       <div className="border-b border-line pb-6">
         <div className="flex flex-wrap items-center gap-2.5">
           <p className="text-xs font-semibold tracking-[0.2em] text-accent-ink uppercase">
@@ -44,7 +56,9 @@ export default async function Openings() {
           </p>
           {jobs && jobs.length > 0 && (
             <span className="inline-flex items-center rounded-full border border-accent/35 bg-accent/12 px-2.5 py-0.5 text-xs font-semibold text-accent-ink tabular-nums">
-              {jobs.length} {jobs.length === 1 ? "open role" : "open roles"}
+              {showPreview
+                ? "Sample listing"
+                : `${jobs.length} ${jobs.length === 1 ? "open role" : "open roles"}`}
             </span>
           )}
         </div>
@@ -71,9 +85,17 @@ export default async function Openings() {
               ? "New openings published by our team will appear here automatically. You can also share your résumé by email below."
               : "You can still send your résumé by email below while we restore live listings."}
           </p>
+          {process.env.NODE_ENV === "development" && (
+            <Link
+              href="/careers/?preview=1#openings"
+              className="mt-4 inline-flex min-h-10 items-center font-semibold text-accent-ink underline underline-offset-4"
+            >
+              Preview a sample job card
+            </Link>
+          )}
         </div>
       ) : (
-        <OpeningsGrid jobs={jobs} />
+        <OpeningsGrid jobs={jobs} showPreview={showPreview} />
       )}
     </section>
   );

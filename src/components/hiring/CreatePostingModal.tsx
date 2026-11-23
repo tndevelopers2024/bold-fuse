@@ -47,7 +47,9 @@ export function CreatePostingModal({
 
     previousFocusRef.current = document.activeElement as HTMLElement | null;
     const originalOverflow = document.body.style.overflow;
+    const originalRootOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     const focusTimer = setTimeout(() => {
       titleInputRef.current?.focus();
@@ -82,6 +84,7 @@ export function CreatePostingModal({
     return () => {
       clearTimeout(focusTimer);
       document.body.style.overflow = originalOverflow;
+      document.documentElement.style.overflow = originalRootOverflow;
       window.removeEventListener("keydown", handleKeyDown);
       previousFocusRef.current?.focus();
     };
@@ -96,6 +99,7 @@ export function CreatePostingModal({
   return (
     <div
       role="presentation"
+      data-lenis-prevent
       className="fixed inset-0 z-50 flex items-end justify-center overscroll-contain bg-forest/70 p-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] sm:items-center sm:p-6"
       onClick={(event) => {
         if (event.target === event.currentTarget && !pending) {
@@ -257,7 +261,7 @@ export function CreatePostingModal({
               onChange={(event) =>
                 onDraftChange({ ...draft, description: event.target.value })
               }
-              className={`${inputClass} min-h-36 resize-y leading-relaxed`}
+              className={`${inputClass} min-h-36 resize-y overscroll-contain leading-relaxed`}
             />
           </div>
 
