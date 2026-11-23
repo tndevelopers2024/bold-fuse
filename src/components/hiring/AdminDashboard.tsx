@@ -19,8 +19,9 @@ import {
   Calendar,
   CheckCircle2,
   ChevronDown,
+  Download,
   ExternalLink,
-  FileText,
+  Eye,
   LogOut,
   Mail,
   MapPin,
@@ -1532,26 +1533,37 @@ export function AdminDashboard({
                                 </a>
                               )}
                               {person.hasResumeFile && (
-                                <a
-                                  href={`/api/admin/resume/${person.id}?download=1`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  download={person.resumeFileName || "resume.pdf"}
-                                  className="inline-flex items-center gap-1.5 font-semibold text-accent-ink hover:underline"
-                                  title={`Download ${person.resumeFileName || "resume.pdf"}`}
-                                >
-                                  <FileText
-                                    size={14}
-                                    aria-hidden="true"
-                                    className="shrink-0"
-                                  />
-                                  <span>
-                                    {person.resumeFileName || "Resume PDF"}
-                                    {person.resumeFileSize
-                                      ? ` (${formatFileSize(person.resumeFileSize)})`
-                                      : ""}
-                                  </span>
-                                </a>
+                                <div className="inline-flex items-center gap-2">
+                                  <a
+                                    href={`/api/admin/resume/${person.id}?download=1`}
+                                    download={person.resumeFileName || "resume.pdf"}
+                                    className="inline-flex items-center gap-1.5 font-semibold text-accent-ink hover:underline"
+                                    title={`Download ${person.resumeFileName || "resume.pdf"}`}
+                                  >
+                                    <Download
+                                      size={14}
+                                      aria-hidden="true"
+                                      className="shrink-0"
+                                    />
+                                    <span>
+                                      Download{" "}
+                                      {person.resumeFileName || "Resume PDF"}
+                                      {person.resumeFileSize
+                                        ? ` (${formatFileSize(person.resumeFileSize)})`
+                                        : ""}
+                                    </span>
+                                  </a>
+                                  <a
+                                    href={`/api/admin/resume/${person.id}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-xs font-semibold text-forest/75 hover:text-forest hover:underline"
+                                    title="Open and view PDF in new tab"
+                                  >
+                                    <Eye size={12} aria-hidden="true" />
+                                    <span>View</span>
+                                  </a>
+                                </div>
                               )}
                               <button
                                 type="button"

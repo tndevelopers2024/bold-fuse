@@ -23,27 +23,70 @@ export async function GET(
   }
 
   try {
-    const { resumes } = await hiringDb();
-    const candidateId = new ObjectId(id);
-    let doc = await resumes.findOne({ candidateId });
+    const { resumes, applications } = await hiringDb();
+    const targetId = new ObjectId(id);
+
+    // Look up resume by candidateId, by resume _id, or via application doc
+    let doc = await resumes.findOne({ candidateId: targetId });
     if (!doc) {
-      doc = await resumes.findOne({ _id: candidateId });
+      doc = await resumes.findOne({ _id: targetId });
     }
+    if (!doc) {
+      const app = await applications.findOne({ _id: targetId });
+      if (app?.resumeFileId) {
+        doc = await resumes.findOne({ _id: app.resumeFileId });
+      }
+    }
+
     if (!doc || !doc.data) {
       return new Response("Resume file not found", { status: 404 });
     }
 
-    const url = new URL(request.url);
-    const download = url.searchParams.get("download") === "1";
-    const disposition = download ? "attachment" : "inline";
-    const filename = (doc.filename || "resume.pdf").replace(/["\r\n]/g, "");
+    // Extract raw buffer from MongoDB Binary or Buffer to avoid text corruption
+    const rawData = doc.data as {
+      buffer?: Buffer | ArrayBuffer;
+      read?: (offset: number, length: number) => Buffer;
+      length?: (() => number) | number;
+    } | Buffer;
 
-    return new Response(doc.data as unknown as BodyInit, {
+    let fileBuffer: Buffer;
+    if (Buffer.isBuffer(rawData)) {
+      fileBuffer = rawData;
+    } else if (rawData?.buffer && Buffer.isBuffer(rawData.buffer)) {
+      fileBuffer = rawData.buffer;
+    } else if (rawData?.buffer && rawData.buffer instanceof ArrayBuffer) {
+      fileBuffer = Buffer.from(rawData.buffer);
+    } else if (
+      typeof rawData?.read === "function" &&
+      typeof rawData.length === "function"
+    ) {
+      fileBuffer = rawData.read(0, rawData.length());
+    } else {
+      fileBuffer = Buffer.from(rawData as unknown as Uint8Array);
+    }
+
+    const url = new URL(request.url);
+    const isDownload = url.searchParams.get("download") === "1";
+    const rawFilename = (doc.filename || "resume.pdf").replace(/["\r\n]/g, "");
+    const safeAsciiName =
+      rawFilename.replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "") ||
+      "resume.pdf";
+    const encodedFilename = encodeURIComponent(rawFilename);
+
+    const dispositionType = isDownload ? "attachment" : "inline";
+    // application/octet-stream for download=1 guarantees the browser downloads the file directly
+    // rather than intercepting it in the browser PDF viewer
+    const contentType = isDownload
+      ? "application/octet-stream"
+      : doc.contentType || "application/pdf";
+
+    return new Response(new Uint8Array(fileBuffer), {
       status: 200,
       headers: {
-        "Content-Type": doc.contentType || "application/pdf",
-        "Content-Disposition": `${disposition}; filename="${encodeURIComponent(filename)}"`,
-        "Content-Length": String(doc.size || doc.data.length),
+        "Content-Type": contentType,
+        "Content-Disposition": `${dispositionType}; filename="${safeAsciiName}"; filename*=UTF-8''${encodedFilename}`,
+        "Content-Length": String(fileBuffer.length),
+        "X-Content-Type-Options": "nosniff",
         "Cache-Control": "private, no-cache, no-store",
       },
     });
