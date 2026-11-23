@@ -1535,7 +1535,7 @@ export function AdminDashboard({
                               {person.hasResumeFile && (
                                 <div className="inline-flex items-center gap-2">
                                   <a
-                                    href={`/api/admin/resume/${person.id}?download=1`}
+                                    href={`/admin/resume/${person.id}?download=1`}
                                     download={person.resumeFileName || "resume.pdf"}
                                     className="inline-flex items-center gap-1.5 font-semibold text-accent-ink hover:underline"
                                     title={`Download ${person.resumeFileName || "resume.pdf"}`}
@@ -1554,7 +1554,7 @@ export function AdminDashboard({
                                     </span>
                                   </a>
                                   <a
-                                    href={`/api/admin/resume/${person.id}`}
+                                    href={`/admin/resume/${person.id}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-1 text-xs font-semibold text-forest/75 hover:text-forest hover:underline"

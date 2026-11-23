@@ -28,15 +28,15 @@ const details = [
   {
     icon: MapPin,
     label: "Visit us",
-    value: site.address,
-    href: "https://www.google.com/maps/search/?api=1&query=Lanco%20Hills%20Road%2C%20Gachibowli%2C%20Hyderabad%20500089"
+    value: "Ayyappa Society, Madhapur, Hyderabad",
+    href: "https://www.google.com/maps/search/?api=1&query=Ayyappa%20Society%2C%20Madhapur%2C%20Hyderabad",
   },
 ];
 
 const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 const mapEmbedUrl = googleMapsApiKey
-  ? `https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&q=Lanco+Hills+Road,+Gachibowli,+Hyderabad+500089`
-  : "https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1sLanco+Hills+Road,+Gachibowli,+Hyderabad+500089";
+  ? `https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&q=Ayyappa+Society,+Madhapur,+Hyderabad`
+  : "https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1sAyyappa+Society,+Madhapur,+Hyderabad";
 
 export default function ContactPage() {
   return (
@@ -158,13 +158,13 @@ export default function ContactPage() {
               </h2>
             </div>
             <p className="max-w-xs font-description leading-relaxed text-muted">
-              Find us on Lanco Hills Road in Gachibowli.
+              Find us in Ayyappa Society, Madhapur.
             </p>
           </div>
           <div className="relative overflow-hidden rounded-3xl border border-[#dbe9e1]">
             <div className="h-[350px] w-full sm:h-[480px] lg:h-[520px]">
               <iframe
-                title="Map showing Lanco Hills Road, Gachibowli, Hyderabad"
+                title="Map showing Ayyappa Society, Madhapur, Hyderabad"
                 src={mapEmbedUrl}
                 width="100%"
                 height="100%"
@@ -203,13 +203,13 @@ export default function ContactPage() {
                 </p>
               </div>
               <p className="mt-5 font-heading text-xl font-bold text-white">
-                Lanco Hills Road
+                Ayyappa Society
               </p>
               <p className="mt-2 font-description leading-relaxed text-white/80">
-                Gachibowli, Hyderabad 500089
+                Madhapur, Hyderabad
               </p>
               <a
-                href="https://maps.google.com/?q=Lanco+hills+road,+Gachibowli,+Hyderabad+500089"
+                href="https://maps.google.com/?q=Ayyappa+Society,+Madhapur,+Hyderabad"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex min-h-11 items-center gap-3 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-forest hover:bg-[#e8f5ef] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"

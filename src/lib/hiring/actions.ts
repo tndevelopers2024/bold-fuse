@@ -58,7 +58,7 @@ export async function login(_: string, data: FormData) {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
-      path: "/admin",
+      path: "/",
       expires,
     });
   } catch (error) {
@@ -78,6 +78,7 @@ export async function logout() {
       console.error("Failed to remove admin session on sign-out.", error);
     }
   }
+  jar.set(sessionCookie, "", { path: "/", maxAge: 0 });
   jar.set(sessionCookie, "", { path: "/admin", maxAge: 0 });
   redirect("/admin/");
 }
