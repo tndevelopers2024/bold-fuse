@@ -29,19 +29,39 @@ async function availableJobs(): Promise<PublicOpening[] | null> {
   }
 }
 
-const previewJobs: PublicOpening[] = [
+const fallbackJobs: PublicOpening[] = [
   {
-    id: "preview-developer",
-    title: "Frontend Developer",
-    location: "Hyderabad",
+    id: "job-mbd-mumbai",
+    title: "Manager-Business Developemnt",
+    location: "Mumbai",
     description:
-      "Experience: 2–4 years\nBuild accessible interfaces for healthcare teams and help improve the tools they use every day.\nWork with designers and engineers to turn prototypes into responsive features.\nReview changes, test across screen sizes, and address usability issues before release.",
-    createdAt: "",
+      "Exp - 4-8 yrs\n• Business Development: Identify and acquire new B2B customers, focusing on hospitals, diagnostic centres, pharmaceutical companies...\nRevenue & P&L Ownership: Drive top-line revenue, surgical volumes, and brand presence.",
+    postedAt: "2026-11-23T00:00:00.000Z",
+    createdAt: "2026-11-23T00:00:00.000Z",
+  },
+  {
+    id: "job-crs-cochin",
+    title: "Cataract & Refractive Surgeon",
+    location: "Cochin",
+    description:
+      "Exp - 5-10 yrs\n*Perform independent phacoemulsification and intraocular lens (IOL) implantation surgeries, manual small incision cataract surger...",
+    postedAt: "2026-11-23T00:00:00.000Z",
+    createdAt: "2026-11-23T00:00:00.000Z",
+  },
+  {
+    id: "job-mbd-chennai",
+    title: "Manager-Business Developemnt",
+    location: "Chennai",
+    description:
+      "Exp - 4-8 yrs\nBusiness Acquisition & Field Sales: aggressive new customer acquisition, cold calling, field visits, direct...",
+    postedAt: "2026-11-23T00:00:00.000Z",
+    createdAt: "2026-11-23T00:00:00.000Z",
   },
 ];
 
 export default async function Openings({ showPreview }: { showPreview: boolean }) {
-  const jobs = showPreview ? previewJobs : await availableJobs();
+  const loaded = await availableJobs();
+  const jobs = showPreview ? fallbackJobs : loaded;
 
   return (
     <section

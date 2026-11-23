@@ -28,6 +28,10 @@ export interface AdminCandidate {
   name: string;
   email: string;
   phone?: string;
+  resumeUrl?: string;
+  hasResumeFile?: boolean;
+  resumeFileName?: string;
+  resumeFileSize?: number;
   stage: Stage;
   createdAt: string;
 }

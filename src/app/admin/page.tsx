@@ -115,6 +115,21 @@ export default async function AdminPage({
       typeof doc.phone === "string" && doc.phone.trim()
         ? doc.phone.trim()
         : undefined,
+    resumeUrl:
+      typeof doc.resumeUrl === "string" && doc.resumeUrl.trim()
+        ? doc.resumeUrl.trim()
+        : typeof doc.resume === "string" && /^https?:\/\//i.test(doc.resume)
+          ? doc.resume.trim()
+          : undefined,
+    hasResumeFile: Boolean(doc.resumeFileId || doc.resumeFileName),
+    resumeFileName:
+      typeof doc.resumeFileName === "string" && doc.resumeFileName.trim()
+        ? doc.resumeFileName.trim()
+        : undefined,
+    resumeFileSize:
+      typeof doc.resumeFileSize === "number" && doc.resumeFileSize > 0
+        ? doc.resumeFileSize
+        : undefined,
     stage: stages.includes(doc.stage) ? doc.stage : "Applied",
     createdAt:
       doc.createdAt instanceof Date

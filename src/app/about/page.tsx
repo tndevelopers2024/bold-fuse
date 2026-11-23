@@ -154,7 +154,7 @@ export default function AboutPage() {
                   src={founderImage}
                   alt={about.founder.imageAlt}
                   sizes="(min-width: 768px) 47vw, 100vw"
-                  className="origin-top-left scale-[1.22] object-cover"
+                  className="object-cover"
                   fill
                 />
               </div>

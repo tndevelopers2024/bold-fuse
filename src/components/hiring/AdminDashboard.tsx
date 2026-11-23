@@ -19,9 +19,12 @@ import {
   Calendar,
   CheckCircle2,
   ChevronDown,
+  ExternalLink,
+  FileText,
   LogOut,
   Mail,
   MapPin,
+  Pencil,
   Phone,
   Plus,
   RefreshCw,
@@ -36,6 +39,7 @@ import {
   deleteJob,
   logout,
   publishJob,
+  updateCandidateResume,
   updateJob,
   setJobOpen,
   updateStage,
@@ -65,6 +69,12 @@ function formatDate(iso: string) {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return "";
   return dateFormatter.format(date);
+}
+
+function formatFileSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function stageBadgeClass(stage: Stage) {
@@ -146,6 +156,11 @@ export function AdminDashboard({
   const [candidateFeedback, setCandidateFeedback] = useState<
     Record<string, BannerNotice>
   >({});
+
+  // Editing candidate resume URL
+  const [editingResumeId, setEditingResumeId] = useState<string | null>(null);
+  const [editingResumeUrl, setEditingResumeUrl] = useState("");
+  const [savingResumeId, setSavingResumeId] = useState<string | null>(null);
 
   // Posting open/close pending state per job ID
   const [togglingJobIds, setTogglingJobIds] = useState<Record<string, boolean>>(
@@ -445,6 +460,42 @@ export function AdminDashboard({
         delete next[candidate.id];
         return next;
       });
+    }
+  }
+
+  async function handleSaveResumeUrl(candidateId: string) {
+    setSavingResumeId(candidateId);
+    try {
+      const result = await updateCandidateResume(candidateId, editingResumeUrl);
+      if (!result.ok) {
+        setCandidateFeedback((prev) => ({
+          ...prev,
+          [candidateId]: {
+            tone: "error",
+            text: result.error ?? "Could not save resume link.",
+          },
+        }));
+        return;
+      }
+      setEditingResumeId(null);
+      setCandidateFeedback((prev) => ({
+        ...prev,
+        [candidateId]: {
+          tone: "success",
+          text: result.message ?? "Resume link updated.",
+        },
+      }));
+      router.refresh();
+    } catch {
+      setCandidateFeedback((prev) => ({
+        ...prev,
+        [candidateId]: {
+          tone: "error",
+          text: "Network error while saving resume link.",
+        },
+      }));
+    } finally {
+      setSavingResumeId(null);
     }
   }
 
@@ -1437,7 +1488,7 @@ export function AdminDashboard({
                           </summary>
 
                           <div className="grid gap-3 border-t border-line px-3 py-3 sm:px-4">
-                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium text-muted">
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-medium text-muted">
                               <a
                                 href={`mailto:${person.email}`}
                                 className="inline-flex min-w-0 items-center gap-1.5 break-all hover:text-forest"
@@ -1464,7 +1515,107 @@ export function AdminDashboard({
                                   <span>{person.phone}</span>
                                 </a>
                               )}
+                              {person.resumeUrl && (
+                                <a
+                                  href={person.resumeUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 font-semibold text-accent-ink hover:underline"
+                                  title={person.resumeUrl}
+                                >
+                                  <ExternalLink
+                                    size={14}
+                                    aria-hidden="true"
+                                    className="shrink-0"
+                                  />
+                                  <span>Resume link</span>
+                                </a>
+                              )}
+                              {person.hasResumeFile && (
+                                <a
+                                  href={`/api/admin/resume/${person.id}?download=1`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  download={person.resumeFileName || "resume.pdf"}
+                                  className="inline-flex items-center gap-1.5 font-semibold text-accent-ink hover:underline"
+                                  title={`Download ${person.resumeFileName || "resume.pdf"}`}
+                                >
+                                  <FileText
+                                    size={14}
+                                    aria-hidden="true"
+                                    className="shrink-0"
+                                  />
+                                  <span>
+                                    {person.resumeFileName || "Resume PDF"}
+                                    {person.resumeFileSize
+                                      ? ` (${formatFileSize(person.resumeFileSize)})`
+                                      : ""}
+                                  </span>
+                                </a>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingResumeId(
+                                    editingResumeId === person.id
+                                      ? null
+                                      : person.id,
+                                  );
+                                  setEditingResumeUrl(person.resumeUrl || "");
+                                }}
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-forest/75 hover:text-forest hover:underline"
+                              >
+                                <Pencil size={11} aria-hidden="true" />
+                                <span>
+                                  {person.resumeUrl
+                                    ? "Edit link"
+                                    : "Add resume link"}
+                                </span>
+                              </button>
                             </div>
+
+                            {editingResumeId === person.id && (
+                              <form
+                                onSubmit={(event) => {
+                                  event.preventDefault();
+                                  void handleSaveResumeUrl(person.id);
+                                }}
+                                className="flex flex-wrap items-center gap-2 rounded-xl border border-line bg-forest/5 p-2.5 sm:p-3"
+                              >
+                                <label
+                                  htmlFor={`edit-resume-${person.id}`}
+                                  className="sr-only"
+                                >
+                                  Resume link URL
+                                </label>
+                                <input
+                                  id={`edit-resume-${person.id}`}
+                                  type="url"
+                                  value={editingResumeUrl}
+                                  placeholder="https://drive.google.com/... or linkedin.com/in/..."
+                                  onChange={(e) =>
+                                    setEditingResumeUrl(e.target.value)
+                                  }
+                                  className="min-h-9 flex-1 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-medium text-forest placeholder:text-muted/70 focus:border-accent-ink focus:outline-none focus:ring-1 focus:ring-accent-ink"
+                                />
+                                <button
+                                  type="submit"
+                                  disabled={savingResumeId === person.id}
+                                  className="inline-flex min-h-9 items-center justify-center rounded-full bg-forest px-4 py-1.5 text-xs font-semibold text-white hover:bg-forest-soft disabled:opacity-60"
+                                >
+                                  {savingResumeId === person.id
+                                    ? "Saving…"
+                                    : "Save"}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingResumeId(null)}
+                                  className="inline-flex min-h-9 items-center justify-center rounded-full border border-line bg-white px-3 py-1.5 text-xs font-semibold text-forest hover:border-forest"
+                                >
+                                  Cancel
+                                </button>
+                              </form>
+                            )}
 
                             {/* Stage Update Controls */}
                             <form

@@ -215,8 +215,75 @@ export async function applyToJob(id: string, _: string, data: FormData): Promise
     phoneDigits.length > 15
   )
     return { ok: false, error: "Enter a valid mobile number (7 to 15 digits)." };
-  const { client, jobs, applications } = await hiringDb();
+
+  let resumeUrl = field(data, "resumeUrl", 500);
+  if (resumeUrl) {
+    if (!/^https?:\/\//i.test(resumeUrl)) {
+      resumeUrl = `https://${resumeUrl}`;
+    }
+    try {
+      const parsed = new URL(resumeUrl);
+      if (
+        !["http:", "https:"].includes(parsed.protocol) ||
+        !parsed.hostname.includes(".")
+      ) {
+        return {
+          ok: false,
+          error:
+            "Enter a valid website link for your resume (e.g. Google Drive, LinkedIn).",
+        };
+      }
+    } catch {
+      return {
+        ok: false,
+        error: "Enter a valid website link for your resume.",
+      };
+    }
+  }
+
+  const rawFile = data.get("resumeFile");
+  let resumeBuffer: Buffer | undefined;
+  let resumeFileName: string | undefined;
+  let resumeFileSize: number | undefined;
+
+  if (
+    rawFile &&
+    typeof rawFile === "object" &&
+    "arrayBuffer" in rawFile &&
+    (rawFile as File).size > 0
+  ) {
+    const file = rawFile as File;
+    if (file.size > 5 * 1024 * 1024) {
+      return { ok: false, error: "Resume PDF file must be 5 MB or smaller." };
+    }
+    const isPdf =
+      file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf");
+    if (!isPdf) {
+      return { ok: false, error: "Resume file must be a PDF document (.pdf)." };
+    }
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    if (
+      buffer.length < 4 ||
+      buffer.subarray(0, 4).toString("utf8") !== "%PDF"
+    ) {
+      return {
+        ok: false,
+        error: "The uploaded file is not a valid PDF document.",
+      };
+    }
+    resumeBuffer = buffer;
+    resumeFileName = (file.name || "resume.pdf")
+      .slice(0, 150)
+      .replace(/[^\w.\- ]+/g, "_");
+    resumeFileSize = file.size;
+  }
+
+  const { client, jobs, applications, resumes } = await hiringDb();
   const jobId = new ObjectId(id);
+  const appId = new ObjectId();
+  const resumeFileId = new ObjectId();
   let isNewApplication = false;
   try {
     const accepted = await client.withSession((session) =>
@@ -229,15 +296,40 @@ export async function applyToJob(id: string, _: string, data: FormData): Promise
         if (!job.matchedCount) return false;
         await applications.insertOne(
           {
+            _id: appId,
             jobId,
             name,
             email,
             phone,
+            ...(resumeUrl ? { resumeUrl, resume: resumeUrl } : {}),
+            ...(resumeBuffer
+              ? {
+                  resumeFileId,
+                  resumeFileName,
+                  resumeFileSize,
+                  resume: resumeFileName || resumeUrl,
+                }
+              : {}),
             stage: "Applied",
             createdAt: new Date(),
           },
           { session },
         );
+        if (resumeBuffer && resumeFileName) {
+          await resumes.insertOne(
+            {
+              _id: resumeFileId,
+              candidateId: appId,
+              jobId,
+              filename: resumeFileName,
+              contentType: "application/pdf",
+              size: resumeFileSize!,
+              data: resumeBuffer,
+              createdAt: new Date(),
+            },
+            { session },
+          );
+        }
         return true;
       }),
     );
@@ -256,6 +348,9 @@ export async function applyToJob(id: string, _: string, data: FormData): Promise
         name,
         email,
         phone,
+        resumeUrl: resumeUrl || undefined,
+        resumeFileName: resumeFileName || undefined,
+        resumeBuffer: resumeBuffer || undefined,
         appliedAt,
       }),
     );
@@ -301,13 +396,14 @@ export async function deleteJob(id: string): Promise<ActionResult> {
     return { ok: false, error: "Invalid job posting." };
   }
   try {
-    const { client, jobs, applications } = await hiringDb();
+    const { client, jobs, applications, resumes } = await hiringDb();
     const jobId = new ObjectId(id);
     const deleted = await client.withSession((session) =>
       session.withTransaction(async () => {
         const jobResult = await jobs.deleteOne({ _id: jobId }, { session });
         if (!jobResult.deletedCount) return false;
         await applications.deleteMany({ jobId }, { session });
+        await resumes.deleteMany({ jobId }, { session });
         return true;
       }),
     );
@@ -335,7 +431,7 @@ export async function deleteCandidate(id: string): Promise<ActionResult> {
     return { ok: false, error: "Invalid candidate application." };
   }
   try {
-    const { client, jobs, applications } = await hiringDb();
+    const { client, jobs, applications, resumes } = await hiringDb();
     const appId = new ObjectId(id);
     const deletedName = await client.withSession((session) =>
       session.withTransaction(async () => {
@@ -349,6 +445,7 @@ export async function deleteCandidate(id: string): Promise<ActionResult> {
           { $inc: { applicants: -1 } },
           { session },
         );
+        await resumes.deleteMany({ candidateId: appId }, { session });
         return removed.name;
       }),
     );
@@ -365,6 +462,63 @@ export async function deleteCandidate(id: string): Promise<ActionResult> {
     return {
       ok: false,
       error: "Could not delete the candidate right now. Please try again.",
+    };
+  }
+}
+
+export async function updateCandidateResume(
+  id: string,
+  resumeUrlInput: string,
+): Promise<ActionResult<{ resumeUrl?: string }>> {
+  await requireAdmin();
+  if (!ObjectId.isValid(id)) {
+    return { ok: false, error: "Invalid candidate application." };
+  }
+  let resumeUrl = resumeUrlInput.trim().slice(0, 500);
+  if (resumeUrl) {
+    if (!/^https?:\/\//i.test(resumeUrl)) {
+      resumeUrl = `https://${resumeUrl}`;
+    }
+    try {
+      const parsed = new URL(resumeUrl);
+      if (
+        !["http:", "https:"].includes(parsed.protocol) ||
+        !parsed.hostname.includes(".")
+      ) {
+        return {
+          ok: false,
+          error: "Enter a valid website link for the resume.",
+        };
+      }
+    } catch {
+      return {
+        ok: false,
+        error: "Enter a valid website link for the resume.",
+      };
+    }
+  }
+  try {
+    const { applications } = await hiringDb();
+    const result = await applications.updateOne(
+      { _id: new ObjectId(id) },
+      resumeUrl
+        ? { $set: { resumeUrl, resume: resumeUrl } }
+        : { $unset: { resumeUrl: "", resume: "" } },
+    );
+    if (!result.matchedCount) {
+      return { ok: false, error: "That candidate application was not found." };
+    }
+    revalidatePath("/admin");
+    return {
+      ok: true,
+      message: resumeUrl ? "Resume link saved." : "Resume link removed.",
+      data: { resumeUrl: resumeUrl || undefined },
+    };
+  } catch (error) {
+    console.error("Failed to update candidate resume link.", error);
+    return {
+      ok: false,
+      error: "Could not save the resume link. Please try again.",
     };
   }
 }

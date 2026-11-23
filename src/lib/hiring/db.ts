@@ -14,12 +14,27 @@ interface Job {
   postedAt?: Date;
 }
 
-interface Application {
+export interface ResumeDoc {
+  _id: ObjectId;
+  candidateId: ObjectId;
+  jobId: ObjectId;
+  filename: string;
+  contentType: string;
+  size: number;
+  data: Buffer;
+  createdAt: Date;
+}
+
+export interface Application {
   jobId: ObjectId;
   name: string;
   email: string;
   phone?: string;
   resume?: string;
+  resumeUrl?: string;
+  resumeFileId?: ObjectId;
+  resumeFileName?: string;
+  resumeFileSize?: number;
   stage: Stage;
   createdAt: Date;
 }
@@ -36,6 +51,7 @@ async function connect() {
     const db = client.db();
     const jobs = db.collection<Job>("hiring_jobs");
     const applications = db.collection<Application>("hiring_applications");
+    const resumes = db.collection<ResumeDoc>("hiring_resumes");
     const sessions = db.collection<{
       _id: string;
       expires: Date;
@@ -50,10 +66,12 @@ async function connect() {
       jobs.createIndex({ open: 1, createdAt: -1 }),
       applications.createIndex({ jobId: 1, email: 1 }, { unique: true }),
       applications.createIndex({ jobId: 1, createdAt: -1 }),
+      resumes.createIndex({ candidateId: 1 }),
+      resumes.createIndex({ jobId: 1 }),
       sessions.createIndex({ expires: 1 }, { expireAfterSeconds: 0 }),
       attempts.createIndex({ expires: 1 }, { expireAfterSeconds: 0 }),
     ]);
-    return { client, jobs, applications, sessions, attempts };
+    return { client, jobs, applications, resumes, sessions, attempts };
   } catch (error) {
     await client.close();
     throw error;

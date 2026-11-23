@@ -10,6 +10,9 @@ export interface ApplicationNotification {
   name: string;
   email: string;
   phone: string;
+  resumeUrl?: string;
+  resumeFileName?: string;
+  resumeBuffer?: Buffer;
   appliedAt: Date;
 }
 
@@ -106,7 +109,7 @@ export async function notifyHiringApplication(
 
     const subject = `New Job Application: ${safeTitle} — ${safeName}`;
 
-    const text = [
+    const textLines = [
       "New job application received on Boldfuse Careers.",
       "",
       `Role: ${safeTitle}`,
@@ -116,10 +119,21 @@ export async function notifyHiringApplication(
       `Full Name: ${safeName}`,
       `Email: ${safeEmail}`,
       `Mobile: ${safePhone}`,
+    ];
+    if (application.resumeUrl) {
+      textLines.push(`Resume Link: ${sanitizeHeader(application.resumeUrl)}`);
+    }
+    if (application.resumeFileName) {
+      textLines.push(
+        `Resume File: ${sanitizeHeader(application.resumeFileName)} (attached)`,
+      );
+    }
+    textLines.push(
       `Submitted: ${submittedAt} (${application.appliedAt.toISOString()})`,
       "",
       `Review in Hiring Dashboard: ${adminUrl}`,
-    ].join("\n");
+    );
+    const text = textLines.join("\n");
 
     const telHref = safePhone.replace(/[^\d+]/g, "");
 
@@ -163,6 +177,26 @@ export async function notifyHiringApplication(
                 <a href="tel:${escapeHtml(telHref)}" style="color:#007a58;text-decoration:underline;">${escapeHtml(safePhone)}</a>
               </td>
             </tr>
+            ${
+              application.resumeUrl
+                ? `<tr>
+              <td style="padding:10px 14px;border-bottom:1px solid #e2ece7;font-size:13px;font-weight:600;color:#4a6359;">Resume Link</td>
+              <td style="padding:10px 14px;border-bottom:1px solid #e2ece7;font-size:14px;font-weight:500;color:#102a22;">
+                <a href="${escapeHtml(application.resumeUrl)}" target="_blank" rel="noopener noreferrer" style="color:#007a58;text-decoration:underline;">${escapeHtml(application.resumeUrl)}</a>
+              </td>
+            </tr>`
+                : ""
+            }
+            ${
+              application.resumeFileName
+                ? `<tr>
+              <td style="padding:10px 14px;border-bottom:1px solid #e2ece7;font-size:13px;font-weight:600;color:#4a6359;">Resume File</td>
+              <td style="padding:10px 14px;border-bottom:1px solid #e2ece7;font-size:14px;font-weight:500;color:#102a22;">
+                Attached (${escapeHtml(application.resumeFileName)})
+              </td>
+            </tr>`
+                : ""
+            }
             <tr>
               <td style="padding:10px 14px;font-size:13px;font-weight:600;color:#4a6359;">Submitted</td>
               <td style="padding:10px 14px;font-size:14px;font-weight:500;color:#102a22;">${escapeHtml(submittedAt)}</td>
@@ -191,6 +225,15 @@ export async function notifyHiringApplication(
       socketTimeout: 15_000,
     });
 
+    const attachments = [];
+    if (application.resumeBuffer && application.resumeFileName) {
+      attachments.push({
+        filename: application.resumeFileName,
+        content: application.resumeBuffer,
+        contentType: "application/pdf",
+      });
+    }
+
     await transporter.sendMail({
       from: smtp.from,
       to: smtp.to,
@@ -198,6 +241,7 @@ export async function notifyHiringApplication(
       subject,
       text,
       html,
+      attachments,
     });
   } catch (error) {
     console.error(

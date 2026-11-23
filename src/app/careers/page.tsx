@@ -59,19 +59,6 @@ export default async function CareersPage({
             </p>
           </div>
 
-          {/* "What We Do" card */}
-          <div className="mt-8 rounded-3xl border border-line bg-white p-6 sm:p-10 lg:p-12">
-            <div className="flex items-center gap-2.5 text-accent-ink">
-              <Users2 size={22} aria-hidden="true" />
-              <h2 className="font-heading text-2xl font-bold text-forest">
-                {itRecruitment.whatWeDo.title}
-              </h2>
-            </div>
-            <p className="mt-4 font-description text-base leading-[1.8] font-medium text-muted sm:text-lg">
-              {itRecruitment.whatWeDo.body}
-            </p>
-          </div>
-
           {/* "Open Positions / Hiring for IT Positions" — live postings from /admin/ */}
           <Openings showPreview={showPreview} />
 
@@ -176,6 +163,19 @@ export default async function CareersPage({
                 </a>
               </div>
             </div>
+          </div>
+
+          {/* "What We Do" card */}
+          <div className="mt-12 rounded-3xl border border-line bg-white p-6 sm:mt-16 sm:p-10 lg:p-12">
+            <div className="flex items-center gap-2.5 text-accent-ink">
+              <Users2 size={22} aria-hidden="true" />
+              <h2 className="font-heading text-2xl font-bold text-forest">
+                {itRecruitment.whatWeDo.title}
+              </h2>
+            </div>
+            <p className="mt-4 font-description text-base leading-[1.8] font-medium text-muted sm:text-lg">
+              {itRecruitment.whatWeDo.body}
+            </p>
           </div>
         </section>
       </div>

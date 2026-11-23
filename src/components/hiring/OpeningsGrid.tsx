@@ -6,6 +6,9 @@ import {
   AlertCircle,
   Calendar,
   CheckCircle2,
+  FileText,
+  FileUp,
+  Link2,
   MapPin,
   X,
 } from "lucide-react";
@@ -38,13 +41,21 @@ interface ApplicationDraft {
   name: string;
   email: string;
   phone: string;
+  resumeUrl: string;
 }
 
 const emptyDraft: ApplicationDraft = {
   name: "",
   email: "",
   phone: "",
+  resumeUrl: "",
 };
+
+function formatFileSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 function descriptionPreview(description: string) {
   return description.split("\n", 3).join("\n").slice(0, 150).trimEnd();
@@ -64,6 +75,9 @@ export function OpeningsGrid({
   const [visibleJobCount, setVisibleJobCount] = useState(jobsPerBatch);
   // Keep unsaved form drafts per job ID so incoming SSE updates never clear them
   const [drafts, setDrafts] = useState<Record<string, ApplicationDraft>>({});
+  const [draftFiles, setDraftFiles] = useState<Record<string, File | null>>({});
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [applicationError, setApplicationError] = useState<string | null>(null);
   const [applicationReceived, setApplicationReceived] = useState(false);
@@ -72,6 +86,7 @@ export function OpeningsGrid({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const submittingRef = useRef(submitting);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const activeJob =
     activeJobId !== null
@@ -145,6 +160,8 @@ export function OpeningsGrid({
 
   const currentDraft =
     activeJob ? (drafts[activeJob.id] ?? emptyDraft) : emptyDraft;
+  const currentFile =
+    activeJob ? (draftFiles[activeJob.id] ?? null) : null;
 
   function openRole(
     jobId: string,
@@ -154,6 +171,7 @@ export function OpeningsGrid({
     previousFocusRef.current = trigger;
     setShowApplication(openApplication);
     setApplicationError(null);
+    setFileError(null);
     setActiveJobId(jobId);
   }
 
@@ -168,6 +186,38 @@ export function OpeningsGrid({
     }));
   }
 
+  function handleFileSelected(file: File) {
+    setFileError(null);
+    const isPdf =
+      file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf");
+    if (!isPdf) {
+      setFileError("Please select a PDF document (.pdf).");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setFileError("PDF file size must be 5 MB or smaller.");
+      return;
+    }
+    if (!activeJob) return;
+    setDraftFiles((prev) => ({
+      ...prev,
+      [activeJob.id]: file,
+    }));
+  }
+
+  function handleRemoveFile() {
+    if (!activeJob) return;
+    setDraftFiles((prev) => ({
+      ...prev,
+      [activeJob.id]: null,
+    }));
+    setFileError(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!activeJob || showPreview || submittingRef.current) return;
@@ -179,9 +229,18 @@ export function OpeningsGrid({
       formData.set("name", currentDraft.name);
       formData.set("email", currentDraft.email);
       formData.set("phone", currentDraft.phone);
+      if (currentDraft.resumeUrl.trim()) {
+        formData.set("resumeUrl", currentDraft.resumeUrl.trim());
+      }
+      const currentFile = draftFiles[activeJob.id];
+      if (currentFile) {
+        formData.set("resumeFile", currentFile);
+      }
       const result = await applyToJob(activeJob.id, "", formData);
       if (!result.ok) {
-        setApplicationError(result.error ?? "Could not submit your application. Please try again.");
+        setApplicationError(
+          result.error ?? "Could not submit your application. Please try again.",
+        );
         return;
       }
       setDrafts((prev) => {
@@ -189,6 +248,14 @@ export function OpeningsGrid({
         delete next[activeJob.id];
         return next;
       });
+      setDraftFiles((prev) => {
+        const next = { ...prev };
+        delete next[activeJob.id];
+        return next;
+      });
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
       setActiveJobId(null);
       setApplicationReceived(true);
     } catch {
@@ -259,7 +326,6 @@ export function OpeningsGrid({
               <div className="mt-5 border-t border-line/80 pt-4">
                 <button
                   type="button"
-                  disabled={showPreview}
                   aria-haspopup="dialog"
                   onClick={(event) => openRole(job.id, event.currentTarget, true)}
                   className="inline-flex min-h-10 w-full items-center justify-center rounded-full bg-forest px-4 py-2 text-sm font-semibold text-white enabled:hover:bg-forest-soft disabled:opacity-60"
@@ -478,6 +544,121 @@ export function OpeningsGrid({
                     }
                   />
                 </label>
+
+                <label className="block text-sm font-semibold text-forest">
+                  <span>Resume link</span>
+                  <span className="ml-1.5 text-xs font-medium text-muted">
+                    (optional — Google Drive, LinkedIn, portfolio)
+                  </span>
+                  <div className="relative mt-1.5">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-muted">
+                      <Link2 size={16} aria-hidden="true" />
+                    </div>
+                    <input
+                      className={`${inputClass} mt-0 pl-10`}
+                      type="url"
+                      name="resumeUrl"
+                      maxLength={500}
+                      placeholder="https://drive.google.com/... or linkedin.com/in/..."
+                      value={currentDraft.resumeUrl}
+                      onChange={(event) =>
+                        updateDraft({ resumeUrl: event.target.value })
+                      }
+                    />
+                  </div>
+                </label>
+
+                <div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-sm font-semibold text-forest">
+                      Upload resume (PDF)
+                    </span>
+                    <span className="text-xs font-medium text-muted">
+                      (optional — max 5 MB)
+                    </span>
+                  </div>
+
+                  {!currentFile ? (
+                    <label
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setIsDragging(true);
+                      }}
+                      onDragLeave={(e) => {
+                        e.preventDefault();
+                        setIsDragging(false);
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setIsDragging(false);
+                        const file = e.dataTransfer.files?.[0];
+                        if (file) handleFileSelected(file);
+                      }}
+                      className={`mt-1.5 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-4 py-4 text-center transition-colors ${
+                        isDragging
+                          ? "border-accent-ink bg-accent/10"
+                          : "border-line bg-white hover:border-accent-ink/60"
+                      }`}
+                    >
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        name="resumeFile"
+                        accept=".pdf,application/pdf"
+                        className="sr-only"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleFileSelected(file);
+                        }}
+                      />
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-forest/8 text-forest">
+                        <FileUp size={18} aria-hidden="true" />
+                      </div>
+                      <p className="mt-2 text-sm font-semibold text-forest">
+                        Upload PDF file{" "}
+                        <span className="font-medium text-muted">
+                          or drag & drop
+                        </span>
+                      </p>
+                      <p className="mt-0.5 text-xs font-medium text-muted">
+                        PDF format only (maximum 5 MB)
+                      </p>
+                    </label>
+                  ) : (
+                    <div className="mt-1.5 flex items-center justify-between rounded-xl border border-line bg-white p-3">
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-forest text-white">
+                          <FileText size={18} aria-hidden="true" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-forest">
+                            {currentFile.name}
+                          </p>
+                          <p className="text-xs font-medium text-muted">
+                            {formatFileSize(currentFile.size)}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRemoveFile}
+                        aria-label="Remove selected resume file"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted hover:bg-forest/5 hover:text-danger focus-visible:outline-2 focus-visible:outline-accent-ink"
+                      >
+                        <X size={16} aria-hidden="true" />
+                      </button>
+                    </div>
+                  )}
+
+                  {fileError && (
+                    <p
+                      role="alert"
+                      className="mt-1.5 text-xs font-medium text-danger"
+                    >
+                      {fileError}
+                    </p>
+                  )}
+                </div>
 
                 {applicationError && (
                   <div

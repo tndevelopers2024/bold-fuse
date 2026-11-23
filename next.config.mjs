@@ -9,7 +9,12 @@ const config = {
   poweredByHeader: false,
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
-  experimental: { agentUpgrade: "security" },
+  experimental: {
+    agentUpgrade: "security",
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
   images: {
     dangerouslyAllowSVG: false,
     formats: ["image/avif", "image/webp"],

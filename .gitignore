@@ -10,3 +10,4 @@ test-results/
 
 releases/*.zip
 releases/*.sha256
+screenshots/
