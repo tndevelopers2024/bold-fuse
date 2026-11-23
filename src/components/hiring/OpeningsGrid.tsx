@@ -17,6 +17,7 @@ export interface PublicOpening {
   location: string;
   description: string;
   createdAt: string;
+  postedAt?: string;
 }
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
@@ -199,9 +200,9 @@ export function OpeningsGrid({
 
   return (
     <>
-      <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {jobs.slice(0, visibleJobCount).map((job) => {
-          const posted = formatPostedDate(job.createdAt);
+          const posted = formatPostedDate(job.postedAt ?? job.createdAt);
           const description = job.description.trimEnd();
           const preview = descriptionPreview(description);
           const hasMore = preview !== description;
@@ -313,7 +314,7 @@ export function OpeningsGrid({
             role="dialog"
             aria-modal="true"
             aria-labelledby="apply-modal-title"
-            className="flex max-h-[calc(100vh-1rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-line bg-white supports-[height:100dvh]:max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] sm:rounded-3xl"
+            className={`flex max-h-[calc(100vh-1rem)] w-full flex-col overflow-hidden rounded-2xl border border-line bg-white supports-[height:100dvh]:max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] sm:rounded-3xl ${showApplication ? "max-w-xl" : "max-w-4xl"}`}
           >
             <div className="relative isolate flex shrink-0 items-start justify-between gap-2 overflow-hidden bg-forest-surface px-4 py-3 text-white sm:gap-4 sm:px-8 sm:py-5">
               <div
@@ -352,10 +353,10 @@ export function OpeningsGrid({
                     <MapPin size={14} aria-hidden="true" className="mt-0.5 shrink-0" />
                     <span className="break-words">{activeJob.location}</span>
                   </span>
-                  {formatPostedDate(activeJob.createdAt) && (
+                  {formatPostedDate(activeJob.postedAt ?? activeJob.createdAt) && (
                     <span className="inline-flex items-center gap-1.5">
                       <Calendar size={14} aria-hidden="true" />
-                      Posted {formatPostedDate(activeJob.createdAt)}
+                      Posted {formatPostedDate(activeJob.postedAt ?? activeJob.createdAt)}
                     </span>
                   )}
                 </div>

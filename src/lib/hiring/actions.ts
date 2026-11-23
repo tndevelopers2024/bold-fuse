@@ -135,11 +135,23 @@ export async function updateJob(id: string, data: FormData): Promise<ActionResul
     return { ok: false, error: "Enter the title, location, and description within the field limits." };
   }
 
+  const postingDate = data.get("postingDate");
+  let postedAt: Date | undefined;
+  if (postingDate !== null) {
+    if (typeof postingDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(postingDate)) {
+      return { ok: false, error: "Enter a valid posting date." };
+    }
+    postedAt = new Date(`${postingDate}T00:00:00Z`);
+    if (!Number.isFinite(postedAt.getTime()) || postedAt.toISOString().slice(0, 10) !== postingDate) {
+      return { ok: false, error: "Enter a valid posting date." };
+    }
+  }
+
   try {
     const { jobs } = await hiringDb();
     const result = await jobs.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { title, location, description } },
+      { $set: { title, location, description, ...(postedAt && { postedAt }) } },
     );
     if (!result.matchedCount) {
       return { ok: false, error: "That job posting could not be found." };

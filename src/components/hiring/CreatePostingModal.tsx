@@ -8,6 +8,7 @@ export interface PostingDraft {
   title: string;
   location: string;
   description: string;
+  postingDate?: string;
 }
 
 interface CreatePostingModalProps {
@@ -240,6 +241,23 @@ export function CreatePostingModal({
               className={inputClass}
             />
           </div>
+
+          {editing && (
+            <label className="block text-sm font-semibold text-forest">
+              Posting date
+              <input
+                type="date"
+                name="postingDate"
+                required
+                disabled={pending}
+                className={inputClass}
+                value={draft.postingDate ?? ""}
+                onChange={(event) =>
+                  onDraftChange({ ...draft, postingDate: event.target.value })
+                }
+              />
+            </label>
+          )}
 
           <div>
             <div className="flex items-baseline justify-between gap-2">

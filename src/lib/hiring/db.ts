@@ -11,6 +11,7 @@ interface Job {
   open: boolean;
   applicants: number;
   createdAt: Date;
+  postedAt?: Date;
 }
 
 interface Application {

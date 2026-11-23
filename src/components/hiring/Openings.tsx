@@ -17,6 +17,7 @@ async function availableJobs(): Promise<PublicOpening[] | null> {
       title: job.title,
       location: job.location,
       description: job.description,
+      postedAt: job.postedAt?.toISOString(),
       createdAt:
         job.createdAt instanceof Date
           ? job.createdAt.toISOString()

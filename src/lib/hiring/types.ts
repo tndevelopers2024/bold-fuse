@@ -18,6 +18,7 @@ export interface AdminPosting {
   open: boolean;
   applicants: number;
   createdAt: string;
+  postedAt?: string;
   stageCounts: StageCounts;
 }
 

@@ -84,6 +84,7 @@ export default async function AdminPage({
       description: doc.description,
       open: Boolean(doc.open),
       applicants: actualApplicantTotal,
+      postedAt: doc.postedAt?.toISOString(),
       createdAt:
         doc.createdAt instanceof Date
           ? doc.createdAt.toISOString()

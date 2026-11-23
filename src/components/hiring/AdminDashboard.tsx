@@ -309,6 +309,7 @@ export function AdminDashboard({
       formData.set("location", posting.location);
       formData.set("description", posting.description);
       if (editing) {
+        formData.set("postingDate", editing.postingDate ?? "");
         const result = await updateJob(editing.id, formData);
         if (!result.ok) {
           setPublishError(result.error ?? "Could not save the posting.");
@@ -1135,7 +1136,7 @@ export function AdminDashboard({
                             aria-hidden="true"
                             className="text-accent-ink"
                           />
-                          Posted {formatDate(selectedPosting.createdAt)}
+                          Posted {formatDate(selectedPosting.postedAt ?? selectedPosting.createdAt)}
                         </span>
                         <span className="inline-flex items-center gap-1.5 tabular-nums">
                           <Users
@@ -1156,8 +1157,15 @@ export function AdminDashboard({
                         type="button"
                         onClick={() => {
                           setPublishError(null);
-                          const { id, title, location, description } = selectedPosting;
-                          setEditing({ id, title, location, description });
+                          const { id, title, location, description, postedAt, createdAt } =
+                            selectedPosting;
+                          setEditing({
+                            id,
+                            title,
+                            location,
+                            description,
+                            postingDate: (postedAt ?? createdAt).slice(0, 10),
+                          });
                         }}
                         className="inline-flex min-h-10 items-center rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-forest-soft sm:min-h-9 sm:px-4"
                       >
