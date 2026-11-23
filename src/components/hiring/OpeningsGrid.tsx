@@ -65,26 +65,20 @@ export function OpeningsGrid({
   // Keep unsaved form drafts per job ID so incoming SSE updates never clear them
   const [drafts, setDrafts] = useState<Record<string, ApplicationDraft>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<{
-    tone: "success" | "error";
-    text: string;
-  } | null>(null);
+  const [applicationError, setApplicationError] = useState<string | null>(null);
+  const [applicationReceived, setApplicationReceived] = useState(false);
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const submittingRef = useRef(submitting);
 
-  useEffect(() => {
-    submittingRef.current = submitting;
-  }, [submitting]);
-
   const activeJob =
     activeJobId !== null
       ? (jobs.find((job) => job.id === activeJobId) ?? null)
       : null;
 
-  const isModalOpen = activeJob !== null;
+  const isModalOpen = activeJob !== null || applicationReceived;
 
   useEffect(() => {
     if (!isModalOpen) return;
@@ -103,7 +97,8 @@ export function OpeningsGrid({
         event.preventDefault();
         if (!submittingRef.current) {
           setActiveJobId(null);
-          setFeedback(null);
+          setApplicationReceived(false);
+          setApplicationError(null);
         }
         return;
       }
@@ -140,6 +135,14 @@ export function OpeningsGrid({
     };
   }, [isModalOpen]);
 
+  useEffect(() => {
+    if (!applicationReceived) return;
+
+    titleRef.current?.focus({ preventScroll: true });
+    const timer = setTimeout(() => setApplicationReceived(false), 5000);
+    return () => clearTimeout(timer);
+  }, [applicationReceived]);
+
   const currentDraft =
     activeJob ? (drafts[activeJob.id] ?? emptyDraft) : emptyDraft;
 
@@ -150,7 +153,7 @@ export function OpeningsGrid({
   ) {
     previousFocusRef.current = trigger;
     setShowApplication(openApplication);
-    setFeedback(null);
+    setApplicationError(null);
     setActiveJobId(jobId);
   }
 
@@ -167,34 +170,33 @@ export function OpeningsGrid({
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!activeJob || showPreview) return;
+    if (!activeJob || showPreview || submittingRef.current) return;
+    submittingRef.current = true;
     setSubmitting(true);
-    setFeedback(null);
+    setApplicationError(null);
     try {
       const formData = new FormData();
       formData.set("name", currentDraft.name);
       formData.set("email", currentDraft.email);
       formData.set("phone", currentDraft.phone);
-      const message = await applyToJob(activeJob.id, "", formData);
-      const isError =
-        /enter|closed|unavailable|invalid/i.test(message);
-      setFeedback({
-        tone: isError ? "error" : "success",
-        text: message,
-      });
-      if (!isError) {
-        setDrafts((prev) => {
-          const next = { ...prev };
-          delete next[activeJob.id];
-          return next;
-        });
+      const result = await applyToJob(activeJob.id, "", formData);
+      if (!result.ok) {
+        setApplicationError(result.error ?? "Could not submit your application. Please try again.");
+        return;
       }
-    } catch {
-      setFeedback({
-        tone: "error",
-        text: "Could not submit your application right now. Please try again.",
+      setDrafts((prev) => {
+        const next = { ...prev };
+        delete next[activeJob.id];
+        return next;
       });
+      setActiveJobId(null);
+      setApplicationReceived(true);
+    } catch {
+      setApplicationError(
+        "Could not submit your application right now. Please try again.",
+      );
     } finally {
+      submittingRef.current = false;
       setSubmitting(false);
     }
   }
@@ -282,6 +284,43 @@ export function OpeningsGrid({
         </div>
       )}
 
+      {applicationReceived && (
+        <div
+          role="presentation"
+          data-lenis-prevent
+          className="fixed inset-0 z-50 flex items-center justify-center bg-forest/70 p-4"
+        >
+          <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="application-received-title"
+            aria-describedby="application-received-message"
+            className="w-full max-w-sm rounded-2xl border border-line bg-white p-6 text-center"
+          >
+            <CheckCircle2 size={32} aria-hidden="true" className="mx-auto text-accent-ink" />
+            <h3
+              ref={titleRef}
+              id="application-received-title"
+              tabIndex={-1}
+              className="mt-3 font-heading text-xl font-bold text-forest focus:outline-none"
+            >
+              Application received
+            </h3>
+            <p id="application-received-message" className="mt-2 font-description text-sm font-medium text-muted">
+              Thank you for applying.
+            </p>
+            <button
+              type="button"
+              onClick={() => setApplicationReceived(false)}
+              className="mt-5 min-h-11 rounded-full bg-forest px-6 py-2 text-sm font-semibold text-white hover:bg-forest-soft"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Role Details & Application Modal */}
       {activeJob && (
         <div
@@ -291,7 +330,7 @@ export function OpeningsGrid({
           onClick={(event) => {
             if (event.target === event.currentTarget && !submitting) {
               setActiveJobId(null);
-              setFeedback(null);
+              setApplicationError(null);
             }
           }}
         >
@@ -352,7 +391,7 @@ export function OpeningsGrid({
                 disabled={submitting}
                 onClick={() => {
                   setActiveJobId(null);
-                  setFeedback(null);
+                  setApplicationError(null);
                 }}
                 aria-label="Close role dialog"
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10 focus-visible:outline-accent-soft disabled:opacity-50"
@@ -440,29 +479,13 @@ export function OpeningsGrid({
                   />
                 </label>
 
-                {feedback && (
+                {applicationError && (
                   <div
-                    role={feedback.tone === "error" ? "alert" : "status"}
-                    className={
-                      feedback.tone === "error"
-                        ? "flex items-start gap-2.5 rounded-xl border border-danger/30 bg-danger/5 px-3.5 py-3 font-description text-sm font-medium text-danger"
-                        : "flex items-start gap-2.5 rounded-xl border border-accent/35 bg-accent/10 px-3.5 py-3 font-description text-sm font-medium text-forest"
-                    }
+                    role="alert"
+                    className="flex items-start gap-2.5 rounded-xl border border-danger/30 bg-danger/5 px-3.5 py-3 font-description text-sm font-medium text-danger"
                   >
-                    {feedback.tone === "error" ? (
-                      <AlertCircle
-                        size={18}
-                        aria-hidden="true"
-                        className="mt-0.5 shrink-0"
-                      />
-                    ) : (
-                      <CheckCircle2
-                        size={18}
-                        aria-hidden="true"
-                        className="mt-0.5 shrink-0 text-accent-ink"
-                      />
-                    )}
-                    <span>{feedback.text}</span>
+                    <AlertCircle size={18} aria-hidden="true" className="mt-0.5 shrink-0" />
+                    <span>{applicationError}</span>
                   </div>
                 )}
 
@@ -472,7 +495,7 @@ export function OpeningsGrid({
                     disabled={submitting}
                     onClick={() => {
                       setActiveJobId(null);
-                      setFeedback(null);
+                      setApplicationError(null);
                     }}
                     className="inline-flex min-h-11 items-center rounded-full border border-line bg-white px-5 py-2 text-sm font-semibold text-forest hover:border-forest disabled:opacity-50"
                   >

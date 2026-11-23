@@ -197,7 +197,7 @@ export async function setJobOpen(
   }
 }
 
-export async function applyToJob(id: string, _: string, data: FormData) {
+export async function applyToJob(id: string, _: string, data: FormData): Promise<ActionResult> {
   const name = field(data, "name", 120);
   const email = field(data, "email", 254).toLowerCase();
   const phone = field(data, "phone", 30);
@@ -206,7 +206,7 @@ export async function applyToJob(id: string, _: string, data: FormData) {
     !name ||
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
   )
-    return "Enter your name and a valid email address.";
+    return { ok: false, error: "Enter your name and a valid email address." };
   const phoneDigits = phone.replace(/\D/g, "");
   if (
     !phone ||
@@ -214,7 +214,7 @@ export async function applyToJob(id: string, _: string, data: FormData) {
     phoneDigits.length < 7 ||
     phoneDigits.length > 15
   )
-    return "Enter a valid mobile number (7 to 15 digits).";
+    return { ok: false, error: "Enter a valid mobile number (7 to 15 digits)." };
   const { client, jobs, applications } = await hiringDb();
   const jobId = new ObjectId(id);
   let isNewApplication = false;
@@ -241,7 +241,7 @@ export async function applyToJob(id: string, _: string, data: FormData) {
         return true;
       }),
     );
-    if (!accepted) return "This opening has closed.";
+    if (!accepted) return { ok: false, error: "This opening has closed." };
     isNewApplication = true;
   } catch (error) {
     if (!(error instanceof MongoServerError && error.code === 11000))
@@ -261,7 +261,7 @@ export async function applyToJob(id: string, _: string, data: FormData) {
     );
   }
   revalidatePath("/admin");
-  return "Application received. Thank you for applying.";
+  return { ok: true };
 }
 
 export async function updateStage(
