@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type FormEvent } from "react";
+import { PostingDescription } from "./PostingDescription";
 import { AlertCircle, Briefcase, X } from "lucide-react";
 import { inputClass } from "@/components/hiring/Forms";
 
@@ -35,6 +36,7 @@ export function CreatePostingModal({
   onSubmit,
 }: CreatePostingModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const onCloseRef = useRef(onClose);
@@ -92,6 +94,40 @@ export function CreatePostingModal({
       previousFocusRef.current?.focus();
     };
   }, [open]);
+
+  function formatDescription(format: "bold" | "italic" | "bullet" | "paragraph") {
+    const field = descriptionRef.current;
+    if (!field) return;
+    let { selectionStart: start, selectionEnd: end } = field;
+    const text = draft.description;
+    let insertion: string;
+    let caret: number;
+
+    if (format === "bullet") {
+      start = text.slice(0, start).lastIndexOf("\n") + 1;
+      insertion = text.slice(start, end).split("\n").map((line) => `• ${line}`).join("\n");
+      caret = start + insertion.length;
+    } else if (format === "paragraph") {
+      end = start;
+      insertion = "\n\n";
+      caret = start + insertion.length;
+    } else {
+      const marker = format === "bold" ? "**" : "_";
+      const selection = text.slice(start, end);
+      insertion = selection
+        ? selection.split("\n").map((line) => line.trim() ? line.replace(/^(\s*)(.*?)(\s*)$/, `$1${marker}$2${marker}$3`) : line).join("\n")
+        : marker + marker;
+      caret = start + (selection ? insertion.length : marker.length);
+    }
+
+    const description = text.slice(0, start) + insertion + text.slice(end);
+    if (description.length > 8000) return;
+    onDraftChange({ ...draft, description });
+    requestAnimationFrame(() => {
+      field.focus();
+      field.setSelectionRange(caret, caret);
+    });
+  }
 
   if (!open) return null;
 
@@ -271,7 +307,26 @@ export function CreatePostingModal({
                 {draft.description.length}/8000
               </span>
             </div>
+            <div role="group" aria-label="Description formatting" className="mt-2 flex flex-wrap gap-2">
+              {([
+                ["bold", "Bold"],
+                ["italic", "Italic"],
+                ["bullet", "Bullet"],
+                ["paragraph", "Paragraph break"],
+              ] as const).map(([format, label]) => (
+                <button
+                  key={format}
+                  type="button"
+                  disabled={pending}
+                  onClick={() => formatDescription(format)}
+                  className="min-h-10 rounded-lg border border-line bg-white px-3 text-sm font-semibold text-forest hover:border-forest"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
             <textarea
+              ref={descriptionRef}
               id="posting-description"
               name="description"
               rows={6}
@@ -284,6 +339,14 @@ export function CreatePostingModal({
               }
               className={`${inputClass} min-h-36 resize-y overscroll-contain leading-relaxed`}
             />
+            {draft.description.trim() && (
+              <details className="mt-2 text-sm font-medium text-muted">
+                <summary className="cursor-pointer py-2 font-semibold text-accent-ink">Preview formatting</summary>
+                <p className="rounded-xl border border-line bg-white p-3 font-description leading-relaxed break-words whitespace-pre-wrap">
+                  <PostingDescription text={draft.description} />
+                </p>
+              </details>
+            )}
           </div>
 
           <div className="flex flex-col-reverse gap-2.5 border-t border-line pt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:pt-5">

@@ -8,6 +8,7 @@ import {
   useTransition,
   type FormEvent,
 } from "react";
+import { PostingDescription } from "./PostingDescription";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -1233,8 +1234,8 @@ export function AdminDashboard({
                         : "Show role description"}
                     </button>
                     {descriptionExpanded && (
-                      <div className="mt-3 rounded-2xl border border-line/80 bg-white p-4 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted">
-                        {selectedPosting.description}
+                      <div className="mt-3 rounded-2xl border border-line/80 bg-white p-4 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-wrap text-muted">
+                        <PostingDescription text={selectedPosting.description} />
                       </div>
                     )}
                   </div>

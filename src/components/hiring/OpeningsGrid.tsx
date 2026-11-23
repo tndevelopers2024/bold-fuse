@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { PostingDescription, plainDescription } from "./PostingDescription";
 import {
   AlertCircle,
   Calendar,
@@ -49,7 +50,7 @@ function descriptionPreview(description: string) {
   return description.split("\n", 3).join("\n").slice(0, 150).trimEnd();
 }
 
-const jobsPerBatch = 4;
+const jobsPerBatch = 6;
 
 export function OpeningsGrid({
   jobs,
@@ -204,8 +205,9 @@ export function OpeningsGrid({
         {jobs.slice(0, visibleJobCount).map((job) => {
           const posted = formatPostedDate(job.postedAt ?? job.createdAt);
           const description = job.description.trimEnd();
-          const preview = descriptionPreview(description);
-          const hasMore = preview !== description;
+          const plain = plainDescription(description);
+          const preview = descriptionPreview(plain);
+          const hasMore = preview !== plain;
           return (
             <article
               key={job.id}
@@ -236,32 +238,16 @@ export function OpeningsGrid({
                   <span className="min-w-0 break-words">{job.location}</span>
                 </p>
 
-                <p className={`mt-3 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted ${hasMore ? "hidden sm:block" : ""}`}>
-                  {hasMore ? `${preview}…` : description}
+                <p className="mt-3 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-wrap text-muted">
+                  {hasMore ? `${preview}…` : <PostingDescription text={description} />}
                 </p>
-                {hasMore && (
-                  <details className="group mt-3 sm:hidden">
-                    <summary className="block cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 [&::-webkit-details-marker]:hidden">
-                      <span className="block font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted group-open:hidden">
-                        {preview}…
-                      </span>
-                      <span className="flex min-h-11 items-center text-sm font-semibold text-accent-ink underline underline-offset-4">
-                        <span className="group-open:hidden">View more</span>
-                        <span className="hidden group-open:inline">View less</span>
-                      </span>
-                    </summary>
-                    <p className="mt-1 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted">
-                      {description}
-                    </p>
-                  </details>
-                )}
                 {hasMore && (
                   <button
                     type="button"
                     aria-haspopup="dialog"
                     aria-label={`View more about ${job.title}`}
                     onClick={(event) => openRole(job.id, event.currentTarget)}
-                    className="mt-2 hidden min-h-10 rounded-sm text-sm font-semibold text-accent-ink underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 sm:inline-block"
+                    className="mt-2 min-h-11 rounded-sm text-sm font-semibold text-accent-ink underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
                   >
                     View more
                   </button>
@@ -383,8 +369,8 @@ export function OpeningsGrid({
                 <p className="text-xs font-semibold tracking-wider text-accent-ink uppercase">
                   Role description
                 </p>
-                <p className="mt-2 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted">
-                  {activeJob.description}
+                <p className="mt-2 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-wrap text-muted">
+                  <PostingDescription text={activeJob.description} />
                 </p>
               </div>
 
