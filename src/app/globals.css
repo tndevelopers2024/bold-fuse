@@ -254,8 +254,10 @@
     animation: marquee var(--marquee-duration, 38s) linear infinite;
   }
 
-  .animate-marquee:hover {
-    animation-play-state: paused;
+  @media (hover: hover) and (pointer: fine) {
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -586,8 +588,11 @@
 .blog-loop-track { animation-duration: 60s; }
 .blog-loop-card { width: min(340px, 82vw); flex-shrink: 0; }
 .testimonial-loop-card { width: min(520px, 82vw); flex-shrink: 0; }
-.client-loop:hover .client-loop-track,
-.client-loop:focus-within .client-loop-track { animation-play-state: paused; }
+@media (hover: hover) and (pointer: fine) {
+  .client-loop:hover .client-loop-track { animation-play-state: paused; }
+}
+.client-loop:focus-visible .client-loop-track,
+.client-loop:has(:focus-visible) .client-loop-track { animation-play-state: paused; }
 @keyframes client-loop-scroll { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
   .client-loop { overflow-x: auto; }
