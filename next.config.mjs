@@ -4,7 +4,7 @@ const csp =
   "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'self' https://maps.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests";
 /** @type {import("next").NextConfig} */
 const config = {
-  allowedDevOrigins: ["192.168.1.4", "localhost"],
+  allowedDevOrigins: ["192.168.1.4", "localhost", "127.0.0.1", "localhost:3000", "localhost:3001"],
   trailingSlash: true,
   poweredByHeader: false,
   reactStrictMode: true,

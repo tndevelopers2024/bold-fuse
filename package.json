@@ -8,7 +8,7 @@
     "node": "24.x"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "build": "node scripts/prepare-swc.mjs && next build --webpack",
     "start": "next start",
     "og": "node scripts/og.ts",

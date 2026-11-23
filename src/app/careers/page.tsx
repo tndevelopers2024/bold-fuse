@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({
   title: "Careers",
   description:
-    "Explore Boldfuse’s IT opportunities across India and the United States, and learn how to apply.",
+    "Explore Boldfuse’s healthcare and IT opportunities across India and the United States, and learn how to apply.",
   alternates: { canonical: "/careers/" },
 });
 
@@ -159,7 +159,7 @@ export default async function CareersPage({
 
               <div className="mt-8 flex flex-wrap gap-4">
                 <a
-                  href={`mailto:${itRecruitment.howToApply.email}?subject=Application for IT Position - Boldfuse`}
+                  href={`mailto:${itRecruitment.howToApply.email}?subject=Application for Healthcare / IT Position - Boldfuse`}
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-forest px-7 py-3 text-sm font-semibold text-white hover:bg-forest-soft"
                 >
                   <Mail size={16} aria-hidden="true" />

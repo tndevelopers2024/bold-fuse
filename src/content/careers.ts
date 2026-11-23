@@ -1,15 +1,21 @@
 export const itRecruitment = {
   eyebrow: "Careers & Staffing",
-  title: "We're Hiring IT Talent Across India & the US",
-  lead: "At Boldfuse, we're on a mission to build workplaces where people thrive and projects succeed. Our recruitment and staffing division is growing, and we're looking for passionate IT professionals to join team and our clients' teams across India and the United States.",
+  title: "We're Hiring Healthcare and IT Talent Across India & the US",
+  lead: "At Boldfuse, we're on a mission to build workplaces where people thrive and projects succeed. Our recruitment and staffing division is growing, and we're looking for passionate healthcare and IT professionals to join our team and our clients' teams across India and the United States.",
   whatWeDo: {
     title: "What We Do",
-    body: "Boldfuse was born from a deep understanding of the challenges organizations face—retaining top talent, navigating project complexities, and creating inclusive, high-performance environments. We partner with companies to transform their operations, blend technology into every aspect of their business, and strengthen their workforce We don't just fill positions. We build meaningful connections between exceptional talent and organizations that value their people.",
+    body: "Boldfuse was born from a deep understanding of the challenges organizations face—retaining top talent, navigating project complexities, and creating inclusive, high-performance environments. We partner with companies to transform their operations, blend technology into every aspect of their business, and strengthen their workforce. We don't just fill positions. We build meaningful connections between exceptional talent and organizations that value their people.",
   },
   hiringPositions: {
-    title: "Hiring for IT Positions",
-    lead: "We Hire qualified candidates for a wide range of IT roles. Whether you're a developer, engineer, analyst, or IT leader, we want to hear from you.",
+    title: "Hiring for below open positions",
+    lead: "We hire qualified candidates for a wide range of roles. Whether you're in healthcare, software, data, or leadership, explore our current openings below.",
     categories: [
+      {
+        title: "Healthcare Professionals",
+        description:
+          "Clinical specialists, healthcare administrators, medical informatics, and care coordinators",
+        iconName: "Users",
+      },
       {
         title: "Software Development",
         description:
@@ -29,19 +35,19 @@ export const itRecruitment = {
         iconName: "BarChart3",
       },
       {
-        title: "Cybersecurity",
+        title: "Cybersecurity & Compliance",
         description:
-          "Security analysts, compliance specialists, IT security managers",
+          "Security analysts, HIPAA compliance specialists, IT security managers",
         iconName: "ShieldCheck",
       },
       {
-        title: "IT Leadership",
-        description: "CTO, IT Directors, Operations leads, Project managers",
-        iconName: "Users",
+        title: "Leadership & Management",
+        description: "Practice directors, CTOs, Operations leads, Project managers",
+        iconName: "Users2",
       },
       {
-        title: "Emerging Tech",
-        description: "AI/ML specialists, automation engineers",
+        title: "Emerging Tech & HealthTech",
+        description: "AI/ML specialists, healthcare automation engineers",
         iconName: "Cpu",
       },
     ],
@@ -51,7 +57,7 @@ export const itRecruitment = {
     items: [
       {
         country: "India",
-        description: "Hyderabad and other major IT hubs",
+        description: "Hyderabad and other major healthcare and IT hubs",
         flag: "🇮🇳",
       },
       {
@@ -63,7 +69,7 @@ export const itRecruitment = {
   },
   howToApply: {
     title: "How to Apply",
-    subtitle: "Ready to take the next step in your IT career?",
+    subtitle: "Ready to take the next step in your healthcare or IT career?",
     email: "hiring@boldfuse.in",
     emailPrompt: "Send your resume to:",
     linkedinPrompt:
