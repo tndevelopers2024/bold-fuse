@@ -67,13 +67,6 @@ function formatDate(iso: string) {
   return dateFormatter.format(date);
 }
 
-function candidateInitials(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return "?";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
-}
-
 function stageBadgeClass(stage: Stage) {
   switch (stage) {
     case "Applied":
@@ -111,6 +104,7 @@ const emptyDraft: PostingDraft = {
 };
 
 const postingsPerPage = 8;
+const candidatesPerPage = 8;
 
 export function AdminDashboard({
   postings,
@@ -133,6 +127,7 @@ export function AdminDashboard({
 
   // Candidate workspace filters (preserved across incoming live updates)
   const [candidateQuery, setCandidateQuery] = useState("");
+  const [candidatePage, setCandidatePage] = useState(0);
   const [stageFilter, setStageFilter] = useState<StageFilter>("All");
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
 
@@ -274,6 +269,17 @@ export function AdminDashboard({
     });
   }, [candidates, candidateQuery, stageFilter]);
 
+  const lastCandidatePage = Math.max(
+    0,
+    Math.ceil(filteredCandidates.length / candidatesPerPage) - 1,
+  );
+  const currentCandidatePage = Math.min(candidatePage, lastCandidatePage);
+  const firstCandidateIndex = currentCandidatePage * candidatesPerPage;
+  const visibleCandidates = filteredCandidates.slice(
+    firstCandidateIndex,
+    firstCandidateIndex + candidatesPerPage,
+  );
+
   const hasUnsavedPostingDraft = Boolean(
     draft.title.trim() || draft.location.trim() || draft.description.trim(),
   );
@@ -288,6 +294,7 @@ export function AdminDashboard({
     setPendingJobId(id);
     setStageFilter("All");
     setCandidateQuery("");
+    setCandidatePage(0);
     setDescriptionExpanded(false);
     startSelectTransition(() => {
       router.replace(`/admin/?job=${encodeURIComponent(id)}`, {
@@ -335,6 +342,7 @@ export function AdminDashboard({
       setPostingPage(0);
       setStageFilter("All");
       setCandidateQuery("");
+      setCandidatePage(0);
       setNotice({
         tone: "success",
         text: result.message ?? "Posting published and live on Careers.",
@@ -465,6 +473,7 @@ export function AdminDashboard({
           const fallback = postings.find((p) => p.id !== deletedId);
           setStageFilter("All");
           setCandidateQuery("");
+          setCandidatePage(0);
           setDescriptionExpanded(false);
           startSelectTransition(() => {
             router.replace(
@@ -1259,7 +1268,10 @@ export function AdminDashboard({
                           key={stage}
                           type="button"
                           aria-pressed={active}
-                          onClick={() => setStageFilter(stage)}
+                          onClick={() => {
+                            setStageFilter(stage);
+                            setCandidatePage(0);
+                          }}
                           className={
                             active
                               ? "inline-flex min-h-10 touch-manipulation items-center gap-1.5 rounded-full border border-forest bg-forest px-3 py-1.5 text-xs font-semibold text-white sm:min-h-9 sm:px-3.5"
@@ -1295,16 +1307,20 @@ export function AdminDashboard({
                         id="candidate-search"
                         type="search"
                         value={candidateQuery}
-                        onChange={(event) =>
-                          setCandidateQuery(event.target.value)
-                        }
+                        onChange={(event) => {
+                          setCandidateQuery(event.target.value);
+                          setCandidatePage(0);
+                        }}
                         placeholder="Filter candidates by name, email, or mobile…"
                         className="w-full appearance-none rounded-xl border border-line bg-white py-2.5 pr-10 pl-10 font-description text-base font-medium text-forest placeholder:text-muted/75 focus:border-accent-ink focus:outline-none focus:ring-2 focus:ring-accent-ink/20 sm:py-2 sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
                       />
                       {candidateQuery && (
                         <button
                           type="button"
-                          onClick={() => setCandidateQuery("")}
+                          onClick={() => {
+                            setCandidateQuery("");
+                            setCandidatePage(0);
+                          }}
                           aria-label="Clear candidate search"
                           className="absolute top-1/2 right-1.5 flex h-8 w-8 -translate-y-1/2 touch-manipulation items-center justify-center rounded-full text-muted hover:text-forest"
                         >
@@ -1315,8 +1331,8 @@ export function AdminDashboard({
                   )}
                 </div>
 
-                {/* Candidate Cards or Empty States */}
-                <div className="mt-5 space-y-4">
+                {/* Candidate list and empty states */}
+                <div className="mt-5 space-y-2">
                   {candidates.length === 0 ? (
                     <div className="rounded-2xl border border-dashed border-line px-6 py-12 text-center">
                       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-forest/6 text-forest">
@@ -1369,6 +1385,7 @@ export function AdminDashboard({
                         onClick={() => {
                           setStageFilter("All");
                           setCandidateQuery("");
+                          setCandidatePage(0);
                         }}
                         className="mt-4 inline-flex min-h-9 items-center rounded-full border border-forest bg-white px-4 py-1.5 text-xs font-semibold text-forest hover:bg-forest hover:text-white"
                       >
@@ -1376,7 +1393,7 @@ export function AdminDashboard({
                       </button>
                     </div>
                   ) : (
-                    filteredCandidates.map((person) => {
+                    visibleCandidates.map((person) => {
                       const draftStage = stageDrafts[person.id];
                       const selectedStage = draftStage ?? person.stage;
                       const isDirty =
@@ -1385,80 +1402,68 @@ export function AdminDashboard({
                       const feedback = candidateFeedback[person.id];
 
                       return (
-                        <article
+                        <details
                           key={person.id}
+                          name="candidate-review"
                           data-candidate-id={person.id}
-                          className={
-                            isDirty
-                              ? "rounded-2xl border-2 border-forest/65 bg-white p-4 sm:p-5"
-                              : "rounded-2xl border border-line bg-white p-4 sm:p-5"
-                          }
+                          className="group rounded-xl border border-line bg-white"
                         >
-                          <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-                            {/* Candidate Profile */}
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-start gap-3.5">
-                                <div
-                                  aria-hidden="true"
-                                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest/10 font-heading text-sm font-bold text-forest"
-                                >
-                                  {candidateInitials(person.name)}
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                  <div className="flex flex-wrap items-center gap-2">
-                                    <h3 className="font-heading text-lg font-bold break-words text-forest">
-                                      {person.name}
-                                    </h3>
-                                    <span
-                                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${stageBadgeClass(person.stage)}`}
-                                    >
-                                      {person.stage}
-                                    </span>
-                                    {isDirty && (
-                                      <span className="rounded-full border border-forest/35 px-2.5 py-0.5 text-xs font-semibold text-forest">
-                                        Unsaved change
-                                      </span>
-                                    )}
-                                  </div>
+                          <summary className="flex min-h-11 cursor-pointer list-none items-start justify-between gap-3 rounded-xl px-3 py-2.5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent-ink sm:px-4 [&::-webkit-details-marker]:hidden">
+                            <span className="min-w-0">
+                              <span className="block font-heading text-sm font-bold break-words text-forest">
+                                {person.name}
+                              </span>
+                              <span className="mt-0.5 block text-xs font-medium text-muted">
+                                Applied {formatDate(person.createdAt)}
+                              </span>
+                              {isDirty && (
+                                <span className="mt-0.5 block text-xs font-semibold text-accent-ink">
+                                  Unsaved status change
+                                </span>
+                              )}
+                            </span>
+                            <span className="flex shrink-0 items-center gap-2">
+                              <span
+                                className={`rounded-full px-2 py-0.5 text-xs font-semibold ${stageBadgeClass(person.stage)}`}
+                              >
+                                {person.stage}
+                              </span>
+                              <ChevronDown
+                                size={15}
+                                aria-hidden="true"
+                                className="text-muted group-open:rotate-180"
+                              />
+                            </span>
+                          </summary>
 
-                                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium text-muted">
-                                    <a
-                                      href={`mailto:${person.email}`}
-                                      className="inline-flex min-w-0 items-center gap-1.5 break-all hover:text-forest"
-                                    >
-                                      <Mail
-                                        size={14}
-                                        aria-hidden="true"
-                                        className="shrink-0 text-accent-ink"
-                                      />
-                                      <span className="break-all">
-                                        {person.email}
-                                      </span>
-                                    </a>
-                                    {person.phone && (
-                                      <a
-                                        href={`tel:${person.phone.replace(/[^\d+]/g, "")}`}
-                                        className="inline-flex items-center gap-1.5 hover:text-forest"
-                                      >
-                                        <Phone
-                                          size={14}
-                                          aria-hidden="true"
-                                          className="shrink-0 text-accent-ink"
-                                        />
-                                        <span>{person.phone}</span>
-                                      </a>
-                                    )}
-                                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted">
-                                      <Calendar
-                                        size={13}
-                                        aria-hidden="true"
-                                        className="shrink-0"
-                                      />
-                                      Applied {formatDate(person.createdAt)}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
+                          <div className="grid gap-3 border-t border-line px-3 py-3 sm:px-4">
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium text-muted">
+                              <a
+                                href={`mailto:${person.email}`}
+                                className="inline-flex min-w-0 items-center gap-1.5 break-all hover:text-forest"
+                              >
+                                <Mail
+                                  size={14}
+                                  aria-hidden="true"
+                                  className="shrink-0 text-accent-ink"
+                                />
+                                <span className="break-all">
+                                  {person.email}
+                                </span>
+                              </a>
+                              {person.phone && (
+                                <a
+                                  href={`tel:${person.phone.replace(/[^\d+]/g, "")}`}
+                                  className="inline-flex items-center gap-1.5 hover:text-forest"
+                                >
+                                  <Phone
+                                    size={14}
+                                    aria-hidden="true"
+                                    className="shrink-0 text-accent-ink"
+                                  />
+                                  <span>{person.phone}</span>
+                                </a>
+                              )}
                             </div>
 
                             {/* Stage Update Controls */}
@@ -1467,9 +1472,9 @@ export function AdminDashboard({
                                 event.preventDefault();
                                 void handleSaveStage(person);
                               }}
-                              className="flex w-full shrink-0 flex-col gap-2.5 rounded-2xl border border-line/80 bg-white p-3.5 sm:flex-row sm:items-end xl:w-64 xl:flex-col xl:items-stretch"
+                              className="flex flex-wrap items-end gap-2.5"
                             >
-                              <div className="min-w-0 flex-1">
+                              <div className="w-full sm:min-w-32 sm:flex-1">
                                 <label
                                   htmlFor={`stage-${person.id}`}
                                   className="block text-xs font-semibold tracking-wider text-forest uppercase"
@@ -1540,32 +1545,59 @@ export function AdminDashboard({
                                 Delete candidate
                               </button>
                             </form>
-                          </div>
 
-                          {feedback && (
-                            <p
-                              role={
-                                feedback.tone === "error" ? "alert" : "status"
-                              }
-                              className={
-                                feedback.tone === "error"
-                                  ? "mt-3 flex items-center gap-1.5 text-xs font-semibold text-danger"
-                                  : "mt-3 flex items-center gap-1.5 text-xs font-semibold text-accent-ink"
-                              }
-                            >
-                              {feedback.tone === "error" ? (
-                                <AlertCircle size={14} aria-hidden="true" />
-                              ) : (
-                                <CheckCircle2 size={14} aria-hidden="true" />
-                              )}
-                              <span>{feedback.text}</span>
-                            </p>
-                          )}
-                        </article>
+                            {feedback && (
+                              <p
+                                role={
+                                  feedback.tone === "error" ? "alert" : "status"
+                                }
+                                className={
+                                  feedback.tone === "error"
+                                    ? "flex items-center gap-1.5 text-xs font-semibold text-danger"
+                                    : "flex items-center gap-1.5 text-xs font-semibold text-accent-ink"
+                                }
+                              >
+                                {feedback.tone === "error" ? (
+                                  <AlertCircle size={14} aria-hidden="true" />
+                                ) : (
+                                  <CheckCircle2 size={14} aria-hidden="true" />
+                                )}
+                                <span>{feedback.text}</span>
+                              </p>
+                            )}
+                          </div>
+                        </details>
                       );
                     })
                   )}
                 </div>
+
+                {lastCandidatePage > 0 && (
+                  <nav
+                    aria-label="Candidate pages"
+                    className="mt-3 flex flex-wrap items-center justify-between gap-2"
+                  >
+                    <button
+                      type="button"
+                      disabled={currentCandidatePage === 0}
+                      onClick={() => setCandidatePage(currentCandidatePage - 1)}
+                      className="min-h-10 rounded-full border border-line px-3 text-xs font-semibold text-forest enabled:hover:border-forest disabled:opacity-50"
+                    >
+                      Previous
+                    </button>
+                    <span aria-live="polite" className="text-xs font-medium text-muted tabular-nums">
+                      {firstCandidateIndex + 1}–{firstCandidateIndex + visibleCandidates.length} of {filteredCandidates.length}
+                    </span>
+                    <button
+                      type="button"
+                      disabled={currentCandidatePage === lastCandidatePage}
+                      onClick={() => setCandidatePage(currentCandidatePage + 1)}
+                      className="min-h-10 rounded-full border border-line px-3 text-xs font-semibold text-forest enabled:hover:border-forest disabled:opacity-50"
+                    >
+                      Next
+                    </button>
+                  </nav>
+                )}
               </div>
             )}
           </section>
