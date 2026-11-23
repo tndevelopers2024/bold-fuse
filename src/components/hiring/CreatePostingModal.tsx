@@ -12,6 +12,7 @@ export interface PostingDraft {
 
 interface CreatePostingModalProps {
   open: boolean;
+  editing: boolean;
   draft: PostingDraft;
   pending: boolean;
   error: string | null;
@@ -23,6 +24,7 @@ interface CreatePostingModalProps {
 
 export function CreatePostingModal({
   open,
+  editing,
   draft,
   pending,
   error,
@@ -138,27 +140,28 @@ export function CreatePostingModal({
           <div className="min-w-0">
             <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.18em] text-accent-soft uppercase">
               <Briefcase size={14} aria-hidden="true" />
-              New opening
+              {editing ? "Existing opening" : "New opening"}
             </p>
             <h2
               id="create-posting-heading"
               className="mt-1 font-heading text-2xl font-bold text-white"
             >
-              Create a job posting
+              {editing ? "Edit job posting" : "Create a job posting"}
             </h2>
             <p
               id="create-posting-subtitle"
               className="mt-1 font-description text-sm font-medium text-white/80"
             >
-              Published roles appear immediately on the public Careers page and
-              stay synced across sessions.
+              {editing
+                ? "Changes to open postings appear on the Careers page."
+                : "Published roles appear immediately on the public Careers page and stay synced across sessions."}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             disabled={pending}
-            aria-label="Close create posting dialog"
+            aria-label="Close posting dialog"
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10 focus-visible:outline-accent-soft disabled:opacity-50"
           >
             <X size={18} aria-hidden="true" />
@@ -275,7 +278,7 @@ export function CreatePostingModal({
               >
                 Cancel
               </button>
-              {hasDraftContent && (
+              {!editing && hasDraftContent && (
                 <button
                   type="button"
                   onClick={onClearDraft}
@@ -292,7 +295,9 @@ export function CreatePostingModal({
               disabled={pending}
               className="inline-flex min-h-11 w-full touch-manipulation items-center justify-center rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-white hover:bg-forest-soft disabled:opacity-60 sm:w-auto"
             >
-              {pending ? "Publishing…" : "Publish opening"}
+              {editing
+                ? pending ? "Saving…" : "Save changes"
+                : pending ? "Publishing…" : "Publish opening"}
             </button>
           </div>
         </form>

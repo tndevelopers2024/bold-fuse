@@ -35,6 +35,7 @@ import {
   deleteJob,
   logout,
   publishJob,
+  updateJob,
   setJobOpen,
   updateStage,
 } from "@/lib/hiring/actions";
@@ -137,6 +138,7 @@ export function AdminDashboard({
   // Unsaved draft for "Create a posting" modal (preserved across SSE refreshes)
   const [createOpen, setCreateOpen] = useState(false);
   const [draft, setDraft] = useState<PostingDraft>(emptyDraft);
+  const [editing, setEditing] = useState<(PostingDraft & { id: string }) | null>(null);
   const [publishPending, setPublishPending] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
 
@@ -301,10 +303,22 @@ export function AdminDashboard({
     setPublishError(null);
     setPublishPending(true);
     try {
+      const posting = editing ?? draft;
       const formData = new FormData();
-      formData.set("title", draft.title);
-      formData.set("location", draft.location);
-      formData.set("description", draft.description);
+      formData.set("title", posting.title);
+      formData.set("location", posting.location);
+      formData.set("description", posting.description);
+      if (editing) {
+        const result = await updateJob(editing.id, formData);
+        if (!result.ok) {
+          setPublishError(result.error ?? "Could not save the posting.");
+          return;
+        }
+        setEditing(null);
+        setNotice({ tone: "success", text: result.message ?? "Posting updated." });
+        router.refresh();
+        return;
+      }
       const result = await publishJob(formData);
       if (!result.ok) {
         setPublishError(
@@ -1138,6 +1152,17 @@ export function AdminDashboard({
                     </div>
 
                     <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPublishError(null);
+                          const { id, title, location, description } = selectedPosting;
+                          setEditing({ id, title, location, description });
+                        }}
+                        className="inline-flex min-h-10 items-center rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-forest-soft sm:min-h-9 sm:px-4"
+                      >
+                        Edit posting
+                      </button>
                       {selectedPosting.open && (
                         <Link
                           href="/careers/#openings"
@@ -1540,16 +1565,21 @@ export function AdminDashboard({
 
       {/* Create Posting Modal (draft state lives here in AdminDashboard so SSE refreshes never clear it) */}
       <CreatePostingModal
-        open={createOpen}
-        draft={draft}
+        open={createOpen || editing !== null}
+        editing={editing !== null}
+        draft={editing ?? draft}
         pending={publishPending}
         error={publishError}
-        onDraftChange={setDraft}
+        onDraftChange={(next) => {
+          if (editing) setEditing({ ...next, id: editing.id });
+          else setDraft(next);
+        }}
         onClearDraft={() => {
           setDraft(emptyDraft);
           setPublishError(null);
         }}
         onClose={() => {
+          setEditing(null);
           setCreateOpen(false);
           setPublishError(null);
         }}

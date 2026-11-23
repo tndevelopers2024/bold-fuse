@@ -48,6 +48,8 @@ function descriptionPreview(description: string) {
   return description.split("\n", 3).join("\n").slice(0, 150).trimEnd();
 }
 
+const jobsPerBatch = 4;
+
 export function OpeningsGrid({
   jobs,
   showPreview,
@@ -56,6 +58,8 @@ export function OpeningsGrid({
   showPreview: boolean;
 }) {
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
+  const [showApplication, setShowApplication] = useState(false);
+  const [visibleJobCount, setVisibleJobCount] = useState(jobsPerBatch);
   // Keep unsaved form drafts per job ID so incoming SSE updates never clear them
   const [drafts, setDrafts] = useState<Record<string, ApplicationDraft>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -66,9 +70,7 @@ export function OpeningsGrid({
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const nameInputRef = useRef<HTMLInputElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  const focusApplicationRef = useRef(false);
   const submittingRef = useRef(submitting);
 
   useEffect(() => {
@@ -91,10 +93,7 @@ export function OpeningsGrid({
     document.documentElement.style.overflow = "hidden";
 
     const focusTimer = setTimeout(() => {
-      const initialFocus = focusApplicationRef.current
-        ? nameInputRef
-        : titleRef;
-      initialFocus.current?.focus();
+      titleRef.current?.focus({ preventScroll: true });
     }, 20);
 
     function handleKeyDown(event: KeyboardEvent) {
@@ -145,10 +144,10 @@ export function OpeningsGrid({
   function openRole(
     jobId: string,
     trigger: HTMLButtonElement,
-    focusApplication = false,
+    openApplication = false,
   ) {
     previousFocusRef.current = trigger;
-    focusApplicationRef.current = focusApplication;
+    setShowApplication(openApplication);
     setFeedback(null);
     setActiveJobId(jobId);
   }
@@ -201,7 +200,7 @@ export function OpeningsGrid({
   return (
     <>
       <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {jobs.map((job) => {
+        {jobs.slice(0, visibleJobCount).map((job) => {
           const posted = formatPostedDate(job.createdAt);
           const description = job.description.trimEnd();
           const preview = descriptionPreview(description);
@@ -236,16 +235,32 @@ export function OpeningsGrid({
                   <span className="min-w-0 break-words">{job.location}</span>
                 </p>
 
-                <p className="mt-3 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted">
+                <p className={`mt-3 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted ${hasMore ? "hidden sm:block" : ""}`}>
                   {hasMore ? `${preview}…` : description}
                 </p>
+                {hasMore && (
+                  <details className="group mt-3 sm:hidden">
+                    <summary className="block cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 [&::-webkit-details-marker]:hidden">
+                      <span className="block font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted group-open:hidden">
+                        {preview}…
+                      </span>
+                      <span className="flex min-h-11 items-center text-sm font-semibold text-accent-ink underline underline-offset-4">
+                        <span className="group-open:hidden">View more</span>
+                        <span className="hidden group-open:inline">View less</span>
+                      </span>
+                    </summary>
+                    <p className="mt-1 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted">
+                      {description}
+                    </p>
+                  </details>
+                )}
                 {hasMore && (
                   <button
                     type="button"
                     aria-haspopup="dialog"
                     aria-label={`View more about ${job.title}`}
                     onClick={(event) => openRole(job.id, event.currentTarget)}
-                    className="mt-2 min-h-10 rounded-sm text-sm font-semibold text-accent-ink underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+                    className="mt-2 hidden min-h-10 rounded-sm text-sm font-semibold text-accent-ink underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 sm:inline-block"
                   >
                     View more
                   </button>
@@ -268,12 +283,24 @@ export function OpeningsGrid({
         })}
       </div>
 
+      {visibleJobCount < jobs.length && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setVisibleJobCount((count) => count + jobsPerBatch)}
+            className="min-h-11 rounded-full border border-line bg-white px-5 py-2 text-sm font-semibold text-forest hover:border-forest focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            Show more jobs
+          </button>
+        </div>
+      )}
+
       {/* Role Details & Application Modal */}
       {activeJob && (
         <div
           role="presentation"
           data-lenis-prevent
-          className="fixed inset-0 z-50 flex items-center justify-center bg-forest/70 p-4 sm:p-6"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-forest/70 p-2 sm:p-6"
           onClick={(event) => {
             if (event.target === event.currentTarget && !submitting) {
               setActiveJobId(null);
@@ -286,9 +313,9 @@ export function OpeningsGrid({
             role="dialog"
             aria-modal="true"
             aria-labelledby="apply-modal-title"
-            className="max-h-[92vh] w-full max-w-2xl overflow-y-auto overscroll-contain rounded-3xl border border-line bg-white supports-[height:100dvh]:max-h-[92dvh]"
+            className="flex max-h-[calc(100vh-1rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-line bg-white supports-[height:100dvh]:max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] sm:rounded-3xl"
           >
-            <div className="relative isolate flex items-start justify-between gap-4 overflow-hidden bg-forest-surface px-6 py-5 text-white sm:px-8 sm:py-6">
+            <div className="relative isolate flex shrink-0 items-start justify-between gap-2 overflow-hidden bg-forest-surface px-4 py-3 text-white sm:gap-4 sm:px-8 sm:py-5">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_0%_0%,rgba(2,170,119,0.28),transparent_60%),radial-gradient(ellipse_at_100%_100%,rgba(97,198,168,0.18),transparent_55%)]"
@@ -316,14 +343,14 @@ export function OpeningsGrid({
                   ref={titleRef}
                   id="apply-modal-title"
                   tabIndex={-1}
-                  className="mt-1 font-heading text-2xl font-bold break-words text-white focus:outline-none"
+                  className="mt-1 font-heading text-xl leading-tight font-bold break-words text-white focus:outline-none sm:text-2xl"
                 >
                   {activeJob.title}
                 </h3>
                 <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium text-white/85">
-                  <span className="inline-flex items-center gap-1.5">
-                    <MapPin size={14} aria-hidden="true" />
-                    {activeJob.location}
+                  <span className="inline-flex min-w-0 items-start gap-1.5">
+                    <MapPin size={14} aria-hidden="true" className="mt-0.5 shrink-0" />
+                    <span className="break-words">{activeJob.location}</span>
                   </span>
                   {formatPostedDate(activeJob.createdAt) && (
                     <span className="inline-flex items-center gap-1.5">
@@ -341,14 +368,17 @@ export function OpeningsGrid({
                   setFeedback(null);
                 }}
                 aria-label="Close role dialog"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10 focus-visible:outline-accent-soft disabled:opacity-50"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10 focus-visible:outline-accent-soft disabled:opacity-50"
               >
                 <X size={18} aria-hidden="true" />
               </button>
             </div>
 
-            <div className="p-6 sm:p-8">
-              <div className="rounded-2xl border border-line/80 bg-white p-4">
+            <div
+              key={showApplication ? "application" : "description"}
+              className="min-h-0 overflow-y-auto overscroll-contain px-4 py-4 sm:px-8 sm:py-6"
+            >
+              <div className={showApplication ? "hidden" : "bg-white sm:rounded-2xl sm:border sm:border-line/80 sm:p-5"}>
                 <p className="text-xs font-semibold tracking-wider text-accent-ink uppercase">
                   Role description
                 </p>
@@ -357,14 +387,26 @@ export function OpeningsGrid({
                 </p>
               </div>
 
+              {!showPreview && !showApplication && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    titleRef.current?.focus({ preventScroll: true });
+                    setShowApplication(true);
+                  }}
+                  className="mt-4 min-h-11 w-full rounded-full bg-forest px-5 py-2 text-sm font-semibold text-white hover:bg-forest-soft sm:w-auto"
+                >
+                  Apply for this role
+                </button>
+              )}
+
               <form
                 onSubmit={handleSubmit}
-                className={showPreview ? "hidden" : "mt-6 grid gap-4"}
+                className={showApplication && !showPreview ? "grid gap-4" : "hidden"}
               >
                 <label className="block text-sm font-semibold text-forest">
                   Full name
                   <input
-                    ref={nameInputRef}
                     className={inputClass}
                     type="text"
                     name="name"

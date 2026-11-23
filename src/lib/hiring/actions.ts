@@ -123,6 +123,36 @@ export async function publishJob(
   }
 }
 
+export async function updateJob(id: string, data: FormData): Promise<ActionResult> {
+  await requireAdmin();
+  if (typeof id !== "string" || !ObjectId.isValid(id)) {
+    return { ok: false, error: "Invalid job posting." };
+  }
+  const title = field(data, "title", 120);
+  const location = field(data, "location", 160);
+  const description = field(data, "description", 8000);
+  if (!title || !location || !description) {
+    return { ok: false, error: "Enter the title, location, and description within the field limits." };
+  }
+
+  try {
+    const { jobs } = await hiringDb();
+    const result = await jobs.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { title, location, description } },
+    );
+    if (!result.matchedCount) {
+      return { ok: false, error: "That job posting could not be found." };
+    }
+    revalidatePath("/admin");
+    revalidatePath("/careers");
+    return { ok: true, message: "Posting updated." };
+  } catch (error) {
+    console.error("Failed to edit job posting.", error);
+    return { ok: false, error: "Could not save the posting. Please try again." };
+  }
+}
+
 export async function setJobOpen(
   id: string,
   open: boolean,
