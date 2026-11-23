@@ -56,9 +56,6 @@ export function OpeningsGrid({
   showPreview: boolean;
 }) {
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
-  const [expandedDescriptions, setExpandedDescriptions] = useState<
-    Record<string, boolean>
-  >({});
   // Keep unsaved form drafts per job ID so incoming SSE updates never clear them
   const [drafts, setDrafts] = useState<Record<string, ApplicationDraft>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -68,8 +65,10 @@ export function OpeningsGrid({
   } | null>(null);
 
   const dialogRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const focusApplicationRef = useRef(false);
   const submittingRef = useRef(submitting);
 
   useEffect(() => {
@@ -86,12 +85,16 @@ export function OpeningsGrid({
   useEffect(() => {
     if (!isModalOpen) return;
 
-    previousFocusRef.current = document.activeElement as HTMLElement | null;
     const originalOverflow = document.body.style.overflow;
+    const originalRootOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     const focusTimer = setTimeout(() => {
-      nameInputRef.current?.focus();
+      const initialFocus = focusApplicationRef.current
+        ? nameInputRef
+        : titleRef;
+      initialFocus.current?.focus();
     }, 20);
 
     function handleKeyDown(event: KeyboardEvent) {
@@ -112,7 +115,11 @@ export function OpeningsGrid({
       if (!focusables.length) return;
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
+      if (
+        event.shiftKey &&
+        (document.activeElement === first ||
+          document.activeElement === titleRef.current)
+      ) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && document.activeElement === last) {
@@ -126,6 +133,7 @@ export function OpeningsGrid({
     return () => {
       clearTimeout(focusTimer);
       document.body.style.overflow = originalOverflow;
+      document.documentElement.style.overflow = originalRootOverflow;
       window.removeEventListener("keydown", handleKeyDown);
       previousFocusRef.current?.focus();
     };
@@ -133,6 +141,17 @@ export function OpeningsGrid({
 
   const currentDraft =
     activeJob ? (drafts[activeJob.id] ?? emptyDraft) : emptyDraft;
+
+  function openRole(
+    jobId: string,
+    trigger: HTMLButtonElement,
+    focusApplication = false,
+  ) {
+    previousFocusRef.current = trigger;
+    focusApplicationRef.current = focusApplication;
+    setFeedback(null);
+    setActiveJobId(jobId);
+  }
 
   function updateDraft(patch: Partial<ApplicationDraft>) {
     if (!activeJob) return;
@@ -147,7 +166,7 @@ export function OpeningsGrid({
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!activeJob) return;
+    if (!activeJob || showPreview) return;
     setSubmitting(true);
     setFeedback(null);
     try {
@@ -187,8 +206,6 @@ export function OpeningsGrid({
           const description = job.description.trimEnd();
           const preview = descriptionPreview(description);
           const hasMore = preview !== description;
-          const expanded = expandedDescriptions[job.id] ?? false;
-          const descriptionId = `job-description-${job.id}`;
           return (
             <article
               key={job.id}
@@ -219,27 +236,18 @@ export function OpeningsGrid({
                   <span className="min-w-0 break-words">{job.location}</span>
                 </p>
 
-                <p
-                  id={descriptionId}
-                  className="mt-3 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted"
-                >
-                  {hasMore && !expanded ? `${preview}…` : description}
+                <p className="mt-3 font-description text-sm leading-relaxed font-medium break-words whitespace-pre-line text-muted">
+                  {hasMore ? `${preview}…` : description}
                 </p>
                 {hasMore && (
                   <button
                     type="button"
-                    aria-expanded={expanded}
-                    aria-controls={descriptionId}
-                    aria-label={`${expanded ? "View less" : "View more"} about ${job.title}`}
-                    onClick={() =>
-                      setExpandedDescriptions((previous) => ({
-                        ...previous,
-                        [job.id]: !previous[job.id],
-                      }))
-                    }
+                    aria-haspopup="dialog"
+                    aria-label={`View more about ${job.title}`}
+                    onClick={(event) => openRole(job.id, event.currentTarget)}
                     className="mt-2 min-h-10 rounded-sm text-sm font-semibold text-accent-ink underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
                   >
-                    {expanded ? "View less" : "View more"}
+                    View more
                   </button>
                 )}
               </div>
@@ -248,10 +256,8 @@ export function OpeningsGrid({
                 <button
                   type="button"
                   disabled={showPreview}
-                  onClick={() => {
-                    setFeedback(null);
-                    setActiveJobId(job.id);
-                  }}
+                  aria-haspopup="dialog"
+                  onClick={(event) => openRole(job.id, event.currentTarget, true)}
                   className="inline-flex min-h-10 w-full items-center justify-center rounded-full bg-forest px-4 py-2 text-sm font-semibold text-white enabled:hover:bg-forest-soft disabled:opacity-60"
                 >
                   Apply for this role
@@ -266,6 +272,7 @@ export function OpeningsGrid({
       {activeJob && (
         <div
           role="presentation"
+          data-lenis-prevent
           className="fixed inset-0 z-50 flex items-center justify-center bg-forest/70 p-4 sm:p-6"
           onClick={(event) => {
             if (event.target === event.currentTarget && !submitting) {
@@ -279,7 +286,7 @@ export function OpeningsGrid({
             role="dialog"
             aria-modal="true"
             aria-labelledby="apply-modal-title"
-            className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-line bg-white"
+            className="max-h-[92vh] w-full max-w-2xl overflow-y-auto overscroll-contain rounded-3xl border border-line bg-white supports-[height:100dvh]:max-h-[92dvh]"
           >
             <div className="relative isolate flex items-start justify-between gap-4 overflow-hidden bg-forest-surface px-6 py-5 text-white sm:px-8 sm:py-6">
               <div
@@ -306,8 +313,10 @@ export function OpeningsGrid({
                   Open position
                 </p>
                 <h3
+                  ref={titleRef}
                   id="apply-modal-title"
-                  className="mt-1 font-heading text-2xl font-bold break-words text-white"
+                  tabIndex={-1}
+                  className="mt-1 font-heading text-2xl font-bold break-words text-white focus:outline-none"
                 >
                   {activeJob.title}
                 </h3>
@@ -331,7 +340,7 @@ export function OpeningsGrid({
                   setActiveJobId(null);
                   setFeedback(null);
                 }}
-                aria-label="Close application dialog"
+                aria-label="Close role dialog"
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10 focus-visible:outline-accent-soft disabled:opacity-50"
               >
                 <X size={18} aria-hidden="true" />
@@ -348,7 +357,10 @@ export function OpeningsGrid({
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
+              <form
+                onSubmit={handleSubmit}
+                className={showPreview ? "hidden" : "mt-6 grid gap-4"}
+              >
                 <label className="block text-sm font-semibold text-forest">
                   Full name
                   <input
